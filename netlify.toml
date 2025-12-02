@@ -1,0 +1,12 @@
+[build]
+  # Directory containing the site files
+  publish = "idea_cards"
+
+  # No build command needed since this is static HTML
+  command = ""
+
+# Redirect root to index.html
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
