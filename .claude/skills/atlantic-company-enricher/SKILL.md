@@ -35,6 +35,13 @@ Produce comprehensive company intelligence profiles for Atlantic Canada mid-mark
    - Competitive position (market share, key competitors)
    - Potential transaction triggers
 
+   **CRITICAL - SOURCE CITATION REQUIREMENT:**
+   - **EVERY data point MUST have a source URL**
+   - No information should be presented without a verifiable source link
+   - If a source cannot be found for a claim, mark it as "Unverified" or omit it
+   - Users MUST be able to click through to verify any information
+   - This is non-negotiable for M&A deal intelligence credibility
+
 3. **Synthesize into structured profile**
    - Use the output template below
    - Flag confidence levels for uncertain data
@@ -81,21 +88,27 @@ Produce comprehensive company intelligence profiles for Atlantic Canada mid-mark
 | Locations | | | |
 
 ## Recent Activity (Last 24 Months)
-- [Date]: [Event]
-- [Date]: [Event]
 
-## Succession Signals
-| Signal | Present? | Evidence |
-|--------|----------|----------|
-| Owner age 55+ | | |
-| Long tenure (15+ years) | | |
-| No obvious successor | | |
-| Recent health/life event | | |
-| Slowing growth/investment | | |
-| Key person departures | | |
-| Estate/wealth planning activity | | |
+| Date | Event | Source |
+|------|-------|--------|
+| [Date] | [Event description] | [Source name](URL) |
+| [Date] | [Event description] | [Source name](URL) |
 
-**Succession Risk Assessment:** [High/Medium/Low/Unknown]
+*Always include source URLs for verification and deeper research.*
+
+## Succession Scorecard
+
+| Dimension | Score (1-5) | Evidence |
+|-----------|-------------|----------|
+| Owner Age | [1: <55, 2: 55-60, 3: 60-65, 4: 65-72, 5: >72] | |
+| Tenure | [1: <10yr, 2: 10-15yr, 3: 15-25yr, 4: 25-35yr, 5: >35yr] | |
+| Next-Gen Clarity | [1: Clear successor, 3: Unclear, 5: No successor] | |
+| Legacy Signals | [1: None, 3: Some (awards), 5: Strong (philanthropy, foundation)] | |
+| Activity Trajectory | [1: Active M&A, 3: Steady, 5: Slowing/divesting] | |
+
+**Composite Score:** [X]/25
+**Succession Readiness:** [Low (<10) / Medium (10-15) / High (16-20) / Very High (>20)]
+**Assessment:** [Narrative summary - e.g., "High probability of transaction consideration within 2-3 years based on owner age and legacy signals"]
 
 ## Deal Readiness Indicators
 | Factor | Assessment | Notes |
@@ -105,6 +118,45 @@ Produce comprehensive company intelligence profiles for Atlantic Canada mid-mark
 | Management depth | | |
 | Clean ownership | | |
 | Industry dynamics | | |
+
+## Potential Acquirers
+
+**CRITICAL: Every acquirer entry MUST include source URLs for recent deals and rationale.**
+
+### Strategic Buyers
+| Company | Rationale | Recent Relevant Deals | Source |
+|---------|-----------|----------------------|--------|
+| [Name] | [Why they would acquire] | [Deal name, value, date] | [Source URL] |
+
+### Financial Buyers (PE)
+| Firm | Investment Thesis Fit | Relevant Portfolio Cos | Source |
+|------|----------------------|------------------------|--------|
+| [Name] | [Why thesis fits] | [Portfolio examples] | [Source URL] |
+
+**Buyer Research Notes:** [Any additional context on buyer landscape, consolidation trends, recent activity]
+
+## Comparable Transactions
+
+**CRITICAL: Every transaction MUST include a source URL for deal value/multiple.**
+
+| Date | Target | Acquirer | Deal Value | Multiple | Source |
+|------|--------|----------|------------|----------|--------|
+| [Date] | [Company] | [Buyer] | [Value] | [xEBITDA] | [Source URL] |
+
+**Comps Notes:** [Market context, valuation trends, data limitations]
+
+## Market Context ("Why Now")
+
+**CRITICAL: Every data point MUST include a source URL.**
+
+| Factor | Data Point | Source | Implication |
+|--------|------------|--------|-------------|
+| Industry Consolidation | [stat] | [Source URL] | [what it means] |
+| Owner Demographics | [stat] | [Source URL] | [timing window] |
+| Capital Availability | [stat] | [Source URL] | [buyer appetite] |
+| Sector Tailwinds | [stat] | [Source URL] | [strategic drivers] |
+
+**Timing Assessment:** [Summary of why now is/isn't a good time for a transaction]
 
 ## Potential Transaction Triggers
 1. [Trigger + rationale]
@@ -126,8 +178,38 @@ Based on this research, potential advisory opportunities:
 1. [Specific action]
 2. [Specific action]
 
+## Connection Opportunities (Public Sources)
+
+**CRITICAL: Every connection MUST include a verifiable source URL.**
+
+| Connection Type | Detail | Source |
+|-----------------|--------|--------|
+| Board/Association | [e.g., "JA New Brunswick board member"] | [Source URL] |
+| Conference Circuit | [e.g., "Spoke at ACG Atlantic 2024"] | [Source URL] |
+| Philanthropy | [e.g., "Major donor to Dalhousie"] | [Source URL] |
+| Shared Advisors | [e.g., "Uses McInnes Cooper (per press)"] | [Source URL] |
+| University/Alumni | [e.g., "Dalhousie MBA, active alumni"] | [Source URL] |
+
+**Warm Intro Paths:** [Narrative on best connection angles and who might facilitate introductions]
+
+## Master Sources List
+
+**CRITICAL: Consolidate ALL sources used in this profile. Every claim must be traceable.**
+
+| Source | URL | Data Points Sourced |
+|--------|-----|---------------------|
+| [Source name] | [Full URL] | [List what data came from this source] |
+| [Source name] | [Full URL] | [List what data came from this source] |
+
+**Source Quality Notes:**
+- Primary sources (company website, press releases, filings): HIGH confidence
+- News articles (reputable outlets): MEDIUM-HIGH confidence
+- Industry reports: MEDIUM confidence
+- LinkedIn/social: MEDIUM confidence (verify independently)
+- Estimates/inferences: LOW confidence (must flag)
+
 ---
-*Research conducted using public sources. Verify critical data points before engagement.*
+*Research conducted using public sources. All data points include source citations for verification. Critical information should be independently verified before engagement.*
 ```
 
 ## Research Priorities
@@ -135,10 +217,13 @@ Based on this research, potential advisory opportunities:
 When time/resources are limited, prioritize in this order:
 
 1. **Ownership** - Who owns it? This determines everything.
-2. **Owner profile** - Age, tenure, family situation
+2. **Owner profile** - Age, tenure, family situation → Calculate Succession Score
 3. **Size** - Revenue/employees (is it in the sweet spot?)
-4. **Recent news** - Any transaction triggers?
-5. **Competitive context** - Industry consolidation?
+4. **Buyer landscape** - Who's acquiring in this space? (Strategic + PE)
+5. **Recent news** - Any transaction triggers?
+6. **Deal comps** - What have similar companies sold for?
+7. **Competitive context** - Industry consolidation trends
+8. **Connection paths** - How can we get introduced?
 
 ## Confidence Scoring
 
