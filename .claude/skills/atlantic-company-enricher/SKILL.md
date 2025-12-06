@@ -51,6 +51,11 @@ Produce comprehensive company intelligence profiles for Atlantic Canada mid-mark
    - Based on findings, suggest why this company might need advisory services
    - Flag any red flags or disqualifiers
 
+5. **Save to Supabase**
+   - After generating the markdown profile, save structured data to Supabase
+   - Use the MCP tools (morrison_park) to insert data
+   - See "Supabase Integration" section below for details
+
 ## Output Template
 
 ```markdown
@@ -255,3 +260,121 @@ Key regional factors to consider:
 [Outputs structured profile using template]
 
 [Identifies that Clearwater was acquired by Premium Brands + Mi'kmaq coalition in 2021 for $1B, so no longer a target - but demonstrates methodology]
+
+## Supabase Integration
+
+After generating the markdown profile, save structured data to Supabase for querying and dashboard display.
+
+### Database Schema
+
+The Supabase database (`vuuoukfcbucgsqnnsaii`) has these tables:
+- `companies` - Core company data with succession scores
+- `key_people` - Executives and owners
+- `research_sources` - All sources with URLs
+- `potential_acquirers` - Strategic and PE buyers
+- `user_feedback` - Ken's scoring (accuracy, novelty, actionability)
+
+### How to Save Data
+
+Use the `morrison_park` MCP tools to insert data:
+
+1. **Insert company** using `execute_sql`:
+```sql
+INSERT INTO companies (
+  name, legal_name, location, province, industry, founded_year, website,
+  ownership_type, revenue_estimate, employee_count,
+  score_owner_age, score_tenure, score_nextgen_clarity,
+  score_legacy_signals, score_activity_trajectory,
+  confidence, markdown_content
+) VALUES (
+  'Company Name',
+  'Legal Name',
+  'City, Province',
+  'NS',  -- Must be NS, NB, PEI, or NL
+  'Industry Description',
+  2000,  -- Founded year
+  'company.com',
+  'founder-owned',  -- founder-owned, family-held, employee-owned, pe-backed, public, other
+  100,  -- Revenue in millions
+  500,  -- Employee count
+  4,    -- Owner age score (1-5)
+  5,    -- Tenure score (1-5)
+  3,    -- Next-gen clarity score (1-5)
+  4,    -- Legacy signals score (1-5)
+  2,    -- Activity trajectory score (1-5)
+  'high',  -- high, medium, low
+  '# Full markdown content...'
+) RETURNING id;
+```
+
+2. **Insert key people** (for each person):
+```sql
+INSERT INTO key_people (
+  company_id, name, title, role, ownership_percentage,
+  age_estimate, tenure_years, notes, source_url
+) VALUES (
+  '[company_id from step 1]',
+  'Person Name',
+  'CEO',
+  'owner',  -- owner, executive, board, other
+  100,
+  65,
+  20,
+  'Key insight about this person',
+  'https://source.url'  -- REQUIRED
+);
+```
+
+3. **Insert research sources** (for each source):
+```sql
+INSERT INTO research_sources (
+  company_id, source_name, source_url, source_type,
+  data_points, confidence
+) VALUES (
+  '[company_id]',
+  'Source Name',
+  'https://full-url.com',
+  'company_website',  -- company_website, press_release, news, linkedin, industry_report, government_filing, other
+  ARRAY['data point 1', 'data point 2'],
+  'high'  -- high, medium-high, medium, low
+);
+```
+
+4. **Insert potential acquirers** (if identified):
+```sql
+INSERT INTO potential_acquirers (
+  company_id, acquirer_name, acquirer_type,
+  rationale, recent_deals, source_url
+) VALUES (
+  '[company_id]',
+  'Acquirer Name',
+  'strategic',  -- strategic, pe, family_office
+  'Why they would acquire',
+  'Recent deal details',
+  'https://source.url'  -- REQUIRED
+);
+```
+
+### Succession Score Mapping
+
+Map your Succession Scorecard to database columns:
+- `score_owner_age`: 1 (<55), 2 (55-60), 3 (60-65), 4 (65-72), 5 (>72)
+- `score_tenure`: 1 (<10yr), 2 (10-15yr), 3 (15-25yr), 4 (25-35yr), 5 (>35yr)
+- `score_nextgen_clarity`: 1 (clear successor), 3 (unclear), 5 (no successor)
+- `score_legacy_signals`: 1 (none), 3 (some), 5 (strong)
+- `score_activity_trajectory`: 1 (active M&A), 3 (steady), 5 (slowing)
+
+The `succession_composite` (sum) and `succession_readiness` (Low/Medium/High/Very High) are auto-calculated.
+
+### Verification
+
+After inserting, verify the data appears in the dashboard:
+- Dashboard URL: https://mpa-deal-intelligence.netlify.app/
+- Or query: `SELECT * FROM company_dashboard_view ORDER BY created_at DESC LIMIT 1;`
+
+### Important Notes
+
+- **Every person, source, and acquirer MUST have a `source_url`** - this is enforced by the schema
+- Continue generating markdown files for human review
+- Supabase storage enables filtering, searching, and POC metrics tracking
+- The dashboard will automatically show the new company after insertion
