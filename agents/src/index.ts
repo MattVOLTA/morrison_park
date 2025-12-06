@@ -182,11 +182,36 @@ export async function runOrchestrator(task: string, options?: {
           break;
 
         case 'assistant':
-          const content = typeof message.content === 'string'
-            ? message.content
-            : JSON.stringify(message.content);
-          results.push(content);
-          console.log('\n[Orchestrator]', content);
+          // Handle different content formats from Claude Agent SDK
+          let content = '';
+          const msgContent = (message as { message?: { content?: unknown } }).message?.content || message.content;
+
+          if (typeof msgContent === 'string') {
+            content = msgContent;
+          } else if (Array.isArray(msgContent)) {
+            content = msgContent
+              .filter((block: { type: string }) => block.type === 'text')
+              .map((block: { text?: string }) => block.text || '')
+              .join('\n');
+          } else if (msgContent && typeof msgContent === 'object' && 'text' in msgContent) {
+            content = (msgContent as { text: string }).text;
+          }
+
+          if (content && content.trim()) {
+            results.push(content);
+            console.log('\n[Orchestrator]', content);
+          }
+          break;
+
+        case 'result':
+          // Handle final result
+          const resultMsg = message as { result?: string; subtype?: string };
+          if (resultMsg.result) {
+            console.log('\n[Orchestrator] Final Result:', resultMsg.result);
+          }
+          if (resultMsg.subtype === 'success') {
+            console.log('\n[Orchestrator] Task completed successfully');
+          }
           break;
 
         case 'tool_call':
@@ -366,7 +391,11 @@ Examples:
 }
 
 // Run if executed directly
-if (import.meta.url === `file://${process.argv[1]}`) {
+const isMainModule = import.meta.url === `file://${process.argv[1]}` ||
+  process.argv[1]?.endsWith('index.ts') ||
+  process.argv[1]?.includes('tsx');
+
+if (isMainModule) {
   main();
 }
 
