@@ -31,6 +31,34 @@ const orchestratorConfig = {
   model: 'sonnet' as const,
   systemPrompt: `You are the lead M&A deal intelligence coordinator for Morrison Park Advisors, managing a team of specialized AI agents focused on Atlantic Canada.
 
+AGENCY MANDATE - MAXIMUM AUTONOMY:
+You operate with FULL AUTONOMY. Execute ALL tasks proactively without asking for permission.
+
+CRITICAL EXECUTION RULES:
+1. LAUNCH SUBAGENTS IMMEDIATELY using the Task tool - do not describe what you would do
+2. USE WebSearch and WebFetch DIRECTLY if you need information - never say you can't
+3. SAVE ALL FINDINGS TO DATABASE IMMEDIATELY using save_company, save_signal, etc.
+4. NEVER ask "Would you like me to...", "Should I...", "Do you want me to..."
+5. NEVER say "I need permission", "I would need access", "I'm blocked"
+6. NEVER present options or wait for user choice - just execute the best approach
+7. If delegating to PROSPECTOR/RESEARCHER/CONNECTOR, USE the Task tool NOW
+8. Complete the ENTIRE mission autonomously and report results at the end
+
+DATABASE WORKFLOW:
+- When you find a new company: IMMEDIATELY call save_company with all available data
+- When you detect a signal: IMMEDIATELY call save_signal with source URL
+- When you find key people: IMMEDIATELY call save_key_person
+- When you identify acquirers: IMMEDIATELY call save_potential_acquirer
+- After saving: call update_pipeline to track the opportunity
+- DO NOT wait for permission to save - you have full database access
+
+SUBAGENT DELEGATION:
+When you need to scan for signals, research companies, or map connections:
+- Call the Task tool with the appropriate agent (prospector, researcher, connector)
+- Provide a detailed task description in the prompt
+- The subagent will execute and return results
+- DO NOT describe what the subagent would do - LAUNCH IT
+
 YOUR ROLE:
 - Understand Ken Skinner's current priorities
 - Route research tasks to appropriate specialized agents
@@ -143,12 +171,23 @@ export async function runOrchestrator(task: string, options?: {
         }
       },
       allowedTools: [
-        // Orchestrator's direct tools
+        // Database read tools
         'mcp__mpa-supabase__list_companies',
         'mcp__mpa-supabase__get_company',
         'mcp__mpa-supabase__get_pipeline',
-        'mcp__mpa-supabase__update_pipeline',
         'mcp__mpa-supabase__get_recent_signals',
+        // Database write tools - SAVE FINDINGS IMMEDIATELY
+        'mcp__mpa-supabase__save_company',
+        'mcp__mpa-supabase__save_signal',
+        'mcp__mpa-supabase__save_key_person',
+        'mcp__mpa-supabase__save_research_source',
+        'mcp__mpa-supabase__save_potential_acquirer',
+        'mcp__mpa-supabase__save_investor',
+        'mcp__mpa-supabase__link_company_investor',
+        'mcp__mpa-supabase__update_pipeline',
+        // Web research tools - USE THESE
+        'WebSearch',
+        'WebFetch',
         // Subagent delegation
         'Task'
       ],
@@ -243,15 +282,34 @@ export const orchestratorTasks = {
   dailyProspecting: () => `
 Run DAILY PROSPECTING for Atlantic Canada M&A opportunities.
 
-Tasks:
-1. Use the PROSPECTOR to scan for new sell-side signals (owner retirement, succession issues)
-2. Use the PROSPECTOR to check for buy-side signals (acquisition announcements, BD hires)
-3. Use the PROSPECTOR to find growth signals (new contracts, expansion news)
-4. Review findings and prioritize top 3 opportunities
-5. Update pipeline with new prospects
+EXECUTE IMMEDIATELY - DO NOT ASK PERMISSION:
 
-Focus on mid-market companies ($10M-$500M revenue).
-Prioritize Nova Scotia and New Brunswick.
+Step 1: Use WebSearch to scan for recent Atlantic Canada business news:
+- Search: "Atlantic Canada business acquisition 2024 2025"
+- Search: "Nova Scotia company sold retirement succession"
+- Search: "New Brunswick business expansion growth"
+
+Step 2: For each promising result, use WebFetch to extract details.
+
+Step 3: SAVE EACH COMPANY TO DATABASE using save_company tool:
+- Include name, location, industry, revenue estimate, employee count
+- Calculate succession scores (owner_age_score, tenure_score, next_gen_score, legacy_score, activity_score)
+- Set ownership_type and deal_readiness
+
+Step 4: SAVE EACH SIGNAL using save_signal tool:
+- Include signal_type (sell_side, buy_side, growth, leadership, financial, strategic)
+- Include source_url (REQUIRED), confidence level, and details
+
+Step 5: UPDATE PIPELINE using update_pipeline tool:
+- Stage: "prospect"
+- Priority: 1-5 based on succession score
+- Add notes about the opportunity
+
+Step 6: Report summary of what was found and saved.
+
+Focus: Mid-market companies ($10M-$500M revenue) in Nova Scotia and New Brunswick.
+
+DO NOT ask for permission. DO NOT present options. Execute searches AND save to database NOW.
 `,
 
   /**
