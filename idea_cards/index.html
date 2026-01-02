@@ -721,14 +721,23 @@
   </div>
 
   <script>
-    // Supabase configuration
-    const SUPABASE_URL = 'https://vuuoukfcbucgsqnnsaii.supabase.co';
-    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ1dW91a2ZjYnVjZ3Nxbm5zYWlpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ4OTU4MTgsImV4cCI6MjA4MDQ3MTgxOH0.L9xpsTOwSpLvY7OdVvsd74oGS6ubVOJxtNCZSiXdjQY';
+    // Initialize app once
+    if (!window.appInitialized) {
+      window.appInitialized = true;
 
-    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+      // Supabase configuration
+      const SUPABASE_URL = 'https://vuuoukfcbucgsqnnsaii.supabase.co';
+      const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ1dW91a2ZjYnVjZ3Nxbm5zYWlpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ4OTU4MTgsImV4cCI6MjA4MDQ3MTgxOH0.L9xpsTOwSpLvY7OdVvsd74oGS6ubVOJxtNCZSiXdjQY';
 
-    let companies = [];
-    let selectedCompanyId = null;
+      window.supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+      window.companies = [];
+      window.selectedCompanyId = null;
+    }
+
+    // Use window variables to avoid redeclaration errors
+    var supabase = window.supabaseClient;
+    var companies = window.companies || [];
+    var selectedCompanyId = window.selectedCompanyId || null;
 
     // Initialize
     document.addEventListener('DOMContentLoaded', async () => {
