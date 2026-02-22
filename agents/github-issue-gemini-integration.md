@@ -244,7 +244,7 @@ Core tables:
 ANTHROPIC_API_KEY=sk-ant-api03-...
 SUPABASE_ANON_KEY=eyJhbGci...
 SUPABASE_URL=https://vuuoukfcbucgsqnnsaii.supabase.co
-GEMINI_API_KEY=AIzaSyBX00Wst-8aDJu2LDfjcVH4-uHl7IUpS7M
+GEMINI_API_KEY=your-gemini-api-key-here
 ```
 ✅ Both API keys already configured
 
