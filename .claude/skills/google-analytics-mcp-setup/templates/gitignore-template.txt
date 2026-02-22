@@ -1,0 +1,18 @@
+# Google Analytics MCP Credentials
+# Add these lines to your .gitignore file
+
+# Service account credentials directory
+credentials/
+
+# Any JSON files (in case credentials are stored elsewhere)
+*-credentials.json
+*-service-account.json
+google-analytics-*.json
+
+# MCP configuration (if it contains sensitive paths)
+# Uncomment if your .mcp.json contains sensitive information
+# .mcp.json
+
+# Environment files
+.env
+.env.local

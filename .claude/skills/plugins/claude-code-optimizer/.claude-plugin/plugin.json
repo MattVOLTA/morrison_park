@@ -1,0 +1,8 @@
+{
+  "name": "claude-code-optimizer",
+  "description": "Audits projects for Claude Code best practices (hooks, MCP servers, skills, sub-agents). Provides pragmatic recommendations based on actual project needs.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Matt"
+  }
+}

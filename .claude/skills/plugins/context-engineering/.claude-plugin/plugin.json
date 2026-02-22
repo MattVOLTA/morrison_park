@@ -1,0 +1,8 @@
+{
+  "name": "context-engineering",
+  "description": "Context engineering patterns, anti-patterns, and optimization for AI systems",
+  "version": "1.0.0",
+  "author": {
+    "name": "Matt"
+  }
+}

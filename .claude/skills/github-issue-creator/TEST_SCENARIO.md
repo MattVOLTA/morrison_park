@@ -18,6 +18,7 @@ User: Can you create a GitHub issue for this fix?
    - Specific file reference: `src/services/profileService.ts:45`
    - Code snippet showing problematic code
    - Proposed solution with implementation details
+   - **UX / UI Updates section** describing user-facing changes (error states, loading behavior)
    - Testing strategy
 3. Agent shows draft to user for approval
 4. Agent auto-detects repo: `MattVOLTA/builders`
@@ -42,6 +43,7 @@ User: Create a GitHub issue for this
    - Database schema changes needed
    - Component architecture
    - Files to create/modify with specific details
+   - **UX / UI Updates section** with user interaction walkthrough (adding/viewing/removing favorites)
    - Integration with existing network page
    - Acceptance criteria
 3. Shows draft for approval
@@ -66,6 +68,7 @@ User: Document this as a GitHub issue
    - Root cause (N+1 queries in portfolio fetch)
    - Specific query code with line references
    - Optimization strategy (batch loading)
+   - **UX / UI Updates section** (faster load times, or "No Changes" if invisible optimization)
    - Expected performance improvement
    - Benchmarking approach
 3. Gets approval and creates issue
@@ -76,6 +79,7 @@ The skill works correctly if:
 - ✅ Activates when user asks to create GitHub issue
 - ✅ Drafts comprehensive issue with all research context
 - ✅ Includes specific file references and line numbers
+- ✅ **Includes UX / UI Updates section** (user interaction walkthrough or "No Changes")
 - ✅ Explains WHY decisions were made, not just WHAT to do
 - ✅ Shows draft to user before creating
 - ✅ Auto-detects repository from git context
@@ -90,5 +94,6 @@ The skill should NOT:
 - ❌ Skip the approval step and create immediately
 - ❌ Forget to include research findings
 - ❌ Miss specific file/line references
+- ❌ **Omit UX / UI Updates section** (every issue needs this, even if "No Changes")
 - ❌ Fail to explain technical decisions
 - ❌ Create issues that require redoing research to implement
