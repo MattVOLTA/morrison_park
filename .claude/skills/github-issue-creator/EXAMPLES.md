@@ -57,6 +57,23 @@ Implement circuit breaker with exponential backoff:
 - Add error boundary in `src/app/network/page.tsx:45`
 - Display error state with retry button
 
+## UX / UI Updates
+
+**User-facing changes after this fix:**
+
+1. **Error State Display** (new):
+   - When rate limiting occurs, users see a friendly error message instead of a frozen page
+   - Error message: "We're having trouble loading profiles. Please wait a moment and try again."
+   - Includes a "Retry" button for manual retry
+
+2. **Loading State** (improved):
+   - Loading spinner remains visible during retry attempts
+   - No more page freeze or unresponsive UI
+
+3. **Recovery Flow**:
+   - After circuit closes (Supabase available again), profiles load automatically
+   - User does not need to refresh the page manually
+
 ## Testing Strategy
 
 1. **Manual test**: Load network page with >50 profiles
@@ -194,6 +211,33 @@ Use existing React Query pattern (established in `src/lib/react-query.ts:23`):
 - **Icons**: Use heart icon from `lucide-react` (already in dependencies)
 - **Styling**: Follow existing BuilderCard button patterns
 
+## UX / UI Updates
+
+**User interaction walkthrough:**
+
+### Adding a Favorite
+1. User browses builder cards on the network page
+2. User sees a **heart icon** (outline) on each builder card
+3. User clicks heart icon → icon fills in immediately (optimistic update)
+4. Toast notification appears: "Added to favorites"
+5. Builder card now shows filled heart icon
+
+### Viewing Favorites
+1. User sees new **"My Favorites" section** at top of network page (above main directory)
+2. Section shows all favorited builder cards in a horizontal scrollable row
+3. If no favorites, shows: "No favorites yet. Click the heart icon on any profile to save it."
+4. Each favorite card displays the same info as regular builder cards
+
+### Removing a Favorite
+1. User clicks filled heart icon on any builder card
+2. Heart icon becomes outline immediately (optimistic update)
+3. Toast notification appears: "Removed from favorites"
+4. Card is removed from "My Favorites" section
+
+### Error States
+- **Network error on favorite**: Toast shows "Failed to save favorite. Please try again." Heart reverts to previous state.
+- **Unauthenticated user clicks heart**: Modal appears prompting sign-in
+
 ## Edge Cases to Handle
 
 1. **Unauthenticated users**: Hide favorite buttons, show auth prompt on click
@@ -251,6 +295,7 @@ Both examples demonstrate:
 ✅ **Specific references** - Exact file paths and line numbers
 ✅ **Research findings** - What you discovered during investigation
 ✅ **Code snippets** - Show current state and proposed changes
+✅ **UX / UI Updates** - Clear walkthrough of user-facing changes
 ✅ **Integration points** - How it fits with existing code
 ✅ **Testing strategy** - Clear verification approach
 ✅ **Edge cases** - Anticipated problems and solutions

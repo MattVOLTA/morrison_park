@@ -59,6 +59,19 @@ npm test 2>/dev/null || yarn test 2>/dev/null || pytest 2>/dev/null
 
 **If no test command found:** Proceed, but note in commit if significant changes.
 
+**TDD Verification (for feat/fix commits):**
+```bash
+# Check if test files are included in this commit
+git diff --staged --name-only | grep -E '\.(test|spec)\.(ts|tsx|js|jsx)$'
+```
+
+**If committing a feature/fix without tests:**
+> "⚠️ No test files detected in this commit. TDD is required for features and fixes.
+> Would you like to:
+> 1. Add tests to this commit (recommended)
+> 2. Continue without tests (explain why)
+> 3. Cancel and write tests first"
+
 ### 3. Compose Commit Message
 
 Follow [Conventional Commits](reference/conventional-commits.md) format:
@@ -253,16 +266,52 @@ EOF
 
 ## Orchestration
 
+### TDD Verification at Commit Time
+
+**CRITICAL: Before committing feature or fix changes, verify TDD was followed.**
+
+When processing a commit for feature (`feat`) or fix (`fix`) types:
+
+1. **Check for corresponding test files:**
+   ```bash
+   # Look for test files in staged changes
+   git diff --staged --name-only | grep -E '\.(test|spec)\.(ts|tsx|js|jsx)$'
+   ```
+
+2. **If NO test files in commit:**
+   ```
+   ⚠️ TDD WARNING: No test files detected in this commit.
+
+   This appears to be a feature/fix without tests.
+
+   Per project standards, you should:
+   1. Write failing tests FIRST (RED)
+   2. Implement the feature (GREEN)
+   3. Refactor while keeping tests passing
+
+   Options:
+   a) Add tests to this commit (recommended)
+   b) Continue without tests (document why)
+   c) Cancel and write tests first
+
+   Which would you like to do?
+   ```
+
+3. **If tests exist, verify they were written FIRST:**
+   - Check if test file timestamps predate implementation (when possible)
+   - Look for `test:` or `spec:` in recent commit history for this branch
+
 ### When to Invoke Other Skills
 
-**Before implementation work:**
-> "This looks like a feature implementation. Invoking `test-driven-development` skill to ensure TDD practices."
+**At implementation start (not commit time):**
+- The `/start-work` command now handles TDD enforcement when starting work on issues
+- If you're asked to implement a feature WITHOUT going through `/start-work`, invoke `test-driven-development` skill FIRST
 
 **When workspace isolation needed:**
 > "This work could benefit from an isolated workspace. Invoking `using-git-worktrees` skill."
 
 **This skill handles:**
-- All git commit operations
+- All git commit operations (with TDD verification)
 - Branch management
 - Merge/rebase operations
 - PR creation and updates
@@ -346,6 +395,7 @@ Before finalizing any git operation:
 - [ ] Changes analyzed and understood
 - [ ] Sensitive files excluded
 - [ ] Tests passing (or user acknowledged)
+- [ ] **TDD verified for feat/fix** - Test files included or user provided justification
 - [ ] Commit message follows conventional format
 - [ ] User explicitly confirmed action
 - [ ] No force operations on shared branches

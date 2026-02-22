@@ -1,6 +1,10 @@
 ---
 name: problem-statement-definer
-description: Guides users through defining a rigorous problem statement by collecting six key pieces of information - who has the problem, what the problem is, its negative impact, frequency, root cause, and desired outcome. The skill validates responses to ensure objectivity and prevents common pitfalls like defining problems as absence of solutions. Outputs a formatted problem statement under 150 words and saves it with all collected data.
+description: "Guides users through defining a rigorous problem statement. Use when user wants to define, articulate, or document a problem before jumping to solutions. Collects who, what, impact, frequency, root cause, and desired outcome."
+triggers:
+  - defining a problem
+  - articulating a problem statement
+  - before jumping to solutions
 ---
 
 # Problem Statement Definer
