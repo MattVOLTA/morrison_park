@@ -517,6 +517,79 @@
       margin-left: 12px;
     }
 
+    /* Pipeline Edit Section */
+    .pipeline-section {
+      background: var(--accent-blue-dim);
+      border: 2px solid var(--accent-blue);
+      border-radius: 16px;
+      padding: 24px;
+      margin-top: 32px;
+    }
+
+    .pipeline-title {
+      font-weight: 600;
+      font-size: 16px;
+      color: var(--accent-blue);
+      margin-bottom: 16px;
+    }
+
+    .pipeline-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    @media (max-width: 700px) {
+      .pipeline-grid { grid-template-columns: 1fr; }
+    }
+
+    .pipeline-field label {
+      display: block;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+    }
+
+    .pipeline-field select,
+    .pipeline-field input,
+    .pipeline-field textarea {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--border-medium);
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: inherit;
+      background: var(--bg-secondary);
+    }
+
+    .pipeline-field textarea {
+      min-height: 80px;
+      resize: vertical;
+    }
+
+    .btn-pipeline {
+      background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+
+    .btn-pipeline:hover { opacity: 0.9; }
+    .btn-pipeline:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .pipeline-status {
+      font-size: 13px;
+      color: var(--accent-emerald);
+      margin-left: 12px;
+    }
+
     /* Sources */
     .sources-list { display: flex; flex-direction: column; gap: 8px; }
 
@@ -679,6 +752,20 @@
             <option value="name">Company Name (A-Z)</option>
           </select>
         </div>
+        <div>
+          <div class="filter-label">Pipeline Stage</div>
+          <select class="filter-select" id="stage-filter" onchange="applyFilters()">
+            <option value="">All Stages</option>
+            <option value="prospect">Prospect</option>
+            <option value="researching">Researching</option>
+            <option value="outreach">Outreach</option>
+            <option value="engaged">Engaged</option>
+            <option value="active_deal">Active Deal</option>
+            <option value="closed">Closed</option>
+            <option value="passed">Passed</option>
+            <option value="none">No Status</option>
+          </select>
+        </div>
       </div>
 
       <!-- Company List -->
@@ -807,12 +894,20 @@
     function applyFilters() {
       const province = document.getElementById('province-filter').value;
       const sortBy = document.getElementById('sort-by').value;
+      const stage = document.getElementById('stage-filter').value;
 
       let filtered = [...companies];
 
       // Filter by province
       if (province) {
         filtered = filtered.filter(c => c.province === province);
+      }
+
+      // Filter by pipeline stage
+      if (stage === 'none') {
+        filtered = filtered.filter(c => !c.pipeline_stage);
+      } else if (stage) {
+        filtered = filtered.filter(c => c.pipeline_stage === stage);
       }
 
       // Sort
@@ -854,6 +949,7 @@
             <div class="company-meta">
               <span>${company.location}</span>
               <span class="priority-badge ${priorityClass}">${company.succession_readiness || 'Unknown'}</span>
+              ${company.pipeline_stage ? `<span style="font-size:10px; padding:2px 6px; border-radius:4px; background:var(--accent-blue-dim); color:var(--accent-blue); text-transform:uppercase; letter-spacing:0.03em;">${company.pipeline_stage.replace('_',' ')}</span>` : ''}
             </div>
           </div>
         `;
@@ -1026,39 +1122,58 @@
         </div>
         ` : ''}
 
-        <!-- Pipeline Status -->
-        ${pipeline ? `
-        <div class="section-grid">
-          <div class="section" style="grid-column: 1 / -1;">
-            <div class="section-header">
-              <span class="section-title">Pipeline Status</span>
-              <span class="section-badge ${pipeline.stage === 'engaged' || pipeline.stage === 'active_deal' ? 'badge-high' : pipeline.stage === 'outreach' || pipeline.stage === 'researching' ? 'badge-medium' : 'badge-low'}">${pipeline.stage?.replace('_', ' ').toUpperCase()}</span>
+        <!-- Pipeline Edit Form -->
+        <div class="pipeline-section">
+          <div class="pipeline-title">Pipeline Status</div>
+          <form id="pipeline-form" onsubmit="submitPipeline(event, '${company.id}')">
+            <div class="pipeline-grid">
+              <div class="pipeline-field">
+                <label for="pipeline-stage">Stage</label>
+                <select id="pipeline-stage" name="stage" required>
+                  ${['prospect', 'researching', 'outreach', 'engaged', 'active_deal', 'closed', 'passed'].map(s =>
+                    `<option value="${s}" ${pipeline?.stage === s ? 'selected' : ''}>${s.replace('_', ' ').replace(/^\w/, c => c.toUpperCase())}</option>`
+                  ).join('')}
+                </select>
+              </div>
+              <div class="pipeline-field">
+                <label for="pipeline-priority">Priority</label>
+                <select id="pipeline-priority" name="priority" required>
+                  ${[1,2,3,4,5].map(n =>
+                    `<option value="${n}" ${(pipeline?.priority || 3) === n ? 'selected' : ''}>${n} - ${['Lowest', 'Low', 'Medium', 'High', 'Highest'][n-1]}</option>`
+                  ).join('')}
+                </select>
+              </div>
+              <div class="pipeline-field">
+                <label for="pipeline-client-type">Client Type</label>
+                <select id="pipeline-client-type" name="client_type" required>
+                  ${['sell_side', 'buy_side', 'growth_capital'].map(t =>
+                    `<option value="${t}" ${(pipeline?.client_type || 'sell_side') === t ? 'selected' : ''}>${t.replace(/_/g, ' ').replace(/^\w/, c => c.toUpperCase())}</option>`
+                  ).join('')}
+                </select>
+              </div>
             </div>
-            <div class="data-table">
-              <div class="data-row">
-                <span class="data-label">Priority</span>
-                <span class="data-value">${pipeline.priority || '-'}/5</span>
+            <div class="pipeline-grid" style="grid-template-columns: 1fr 1fr;">
+              <div class="pipeline-field">
+                <label for="pipeline-next-action">Next Action</label>
+                <input type="text" id="pipeline-next-action" name="next_action" placeholder="e.g., Call owner, Send intro email..." value="${pipeline?.next_action || ''}">
               </div>
-              <div class="data-row">
-                <span class="data-label">Client Type</span>
-                <span class="data-value">${pipeline.client_type?.replace('_', ' ') || 'Unknown'}</span>
+              <div class="pipeline-field">
+                <label for="pipeline-next-date">Next Action Date</label>
+                <input type="date" id="pipeline-next-date" name="next_action_date" value="${pipeline?.next_action_date || ''}">
               </div>
-              ${pipeline.next_action ? `
-              <div class="data-row">
-                <span class="data-label">Next Action</span>
-                <span class="data-value">${pipeline.next_action}${pipeline.next_action_date ? ` (by ${new Date(pipeline.next_action_date).toLocaleDateString()})` : ''}</span>
-              </div>
-              ` : ''}
-              ${pipeline.notes ? `
-              <div class="data-row">
-                <span class="data-label">Notes</span>
-                <span class="data-value">${pipeline.notes}</span>
-              </div>
-              ` : ''}
             </div>
-          </div>
+            <div class="pipeline-field" style="margin-bottom: 16px;">
+              <label for="pipeline-notes">Notes</label>
+              <textarea id="pipeline-notes" name="notes" placeholder="Pipeline notes...">${pipeline?.notes || ''}</textarea>
+            </div>
+            <div class="feedback-actions">
+              <button type="submit" class="btn-pipeline" id="pipeline-submit-btn">
+                ${pipeline ? 'Update Pipeline' : 'Set Pipeline Status'}
+              </button>
+              <span class="pipeline-status" id="pipeline-status"></span>
+            </div>
+          </form>
         </div>
-        ` : ''}
 
         <!-- Transaction Signals -->
         ${signals.length > 0 ? `
@@ -1284,6 +1399,74 @@
         setTimeout(() => { statusEl.textContent = ''; }, 3000);
       } catch (err) {
         console.error('Error saving feedback:', err);
+        statusEl.textContent = 'Error saving: ' + err.message;
+        statusEl.style.color = 'var(--accent-rose)';
+      } finally {
+        submitBtn.disabled = false;
+      }
+    }
+
+    // Submit pipeline status
+    async function submitPipeline(event, companyId) {
+      event.preventDefault();
+
+      const form = event.target;
+      const submitBtn = document.getElementById('pipeline-submit-btn');
+      const statusEl = document.getElementById('pipeline-status');
+
+      submitBtn.disabled = true;
+      statusEl.textContent = 'Saving...';
+      statusEl.style.color = 'var(--text-muted)';
+
+      const pipelineData = {
+        company_id: companyId,
+        stage: form.stage.value,
+        priority: parseInt(form.priority.value),
+        client_type: form.client_type.value,
+        next_action: form.next_action.value || null,
+        next_action_date: form.next_action_date.value || null,
+        notes: form.notes.value || null,
+        updated_at: new Date().toISOString()
+      };
+
+      try {
+        const { data: existing } = await supabase
+          .from('pipeline')
+          .select('id')
+          .eq('company_id', companyId)
+          .maybeSingle();
+
+        let result;
+        if (existing) {
+          result = await supabase
+            .from('pipeline')
+            .update(pipelineData)
+            .eq('company_id', companyId);
+        } else {
+          result = await supabase
+            .from('pipeline')
+            .insert(pipelineData);
+        }
+
+        if (result.error) throw result.error;
+
+        statusEl.textContent = 'Saved!';
+        statusEl.style.color = 'var(--accent-emerald)';
+        submitBtn.textContent = 'Update Pipeline';
+
+        // Refresh sidebar to reflect stage change in filter
+        await loadCompanies();
+        applyFilters();
+
+        // Re-select the company to refresh detail view
+        await selectCompany(companyId);
+
+        setTimeout(() => {
+          const el = document.getElementById('pipeline-status');
+          if (el) el.textContent = '';
+        }, 3000);
+      } catch (err) {
+        console.error('Error saving pipeline:', err);
         statusEl.textContent = 'Error saving: ' + err.message;
         statusEl.style.color = 'var(--accent-rose)';
       } finally {
