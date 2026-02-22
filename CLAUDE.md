@@ -16,7 +16,7 @@ AI proof-of-concept for Morrison Park Advisors (Ken Skinner). Testing whether Cl
 | **Gmail** | Google Workspace MCP | `matt@voltaeffect.com`, search `kskinner@morrisonpark.com` |
 | **Fireflies** | Fireflies MCP tools | search `ken skinner` |
 | **Perplexity** | Perplexity MCP tools | Company research |
-| **Todoist** | curl (Sync API) | project: `6g4JH95McmPHjwGV` |
+| **Todoist** | curl (REST v1 API) | project: `6g4JH95McmPHjwGV` |
 
 ## Key Skill: atlantic-company-enricher
 
@@ -47,6 +47,17 @@ Invoke when user asks to "research", "enrich", or "profile" an Atlantic Canada c
 - `get_gmail_attachment_content` downloads an actual file to disk (requires message_id + attachment_id)
 
 **Attachment workflow:** `search_gmail_messages` → `get_gmail_message_content` (one at a time) → `get_gmail_attachment_content` if needed
+
+## Todoist Integration
+
+- **Env file**: Source `/Volumes/SD/Morrison Park/.env` (NOT Laurie/.env)
+- **Token var**: `TODOIST_API_TOKEN` (not TODOIST_API_KEY)
+- **API**: REST v1 at `https://api.todoist.com/api/v1/` with `Authorization: Bearer $TODOIST_API_TOKEN`
+- **Sync API v9 is deprecated** — do not use
+- **Before adding tasks**: Always list existing tasks first to avoid duplicates
+- **Before updating**: Read the task to confirm current state
+- **Moving tasks between sections**: Use `POST /api/v1/tasks/{id}/move` with `{"section_id": "..."}` (not the update endpoint)
+- **Sections**: Triage (`6g4MRQPV5wJPJ6J3`), Do (`6g4MRQRVmQh3qH33`), Waiting (`6g4MRQMrxGHgG3F3`), Defer (`6g4MRQR35w92w5VV`)
 
 ## Deployment
 

@@ -7,6 +7,32 @@
 
 ## February 2026
 
+### 2026-02-22 — Session: Pipeline self-service shipped + Ken notified
+
+> Built and shipped pipeline edit form, stage filter, and sidebar badges for the dashboard. Emailed Ken with walkthrough of new features. Updated Todoist tasks.
+
+- **Type**: session
+- **Created**:
+  - Pipeline edit form with 6 fields (stage, priority, client type, next action, date, notes) → [idea_cards/index.html](idea_cards/index.html)
+  - Sidebar stage filter dropdown with 8 pipeline stages + "No Status" option
+  - Pipeline stage badges on sidebar company items
+  - `submitPipeline()` JS handler following existing `submitFeedback()` upsert pattern
+  - PR [#5](https://github.com/MattVOLTA/morrison_park/pull/5) on branch `feature/4-pipeline-self-service`
+- **Modified**:
+  - `company_dashboard_view` — added `pipeline_priority` column via migration → Supabase
+  - Pipeline data defaults — set `priority=3, client_type=sell_side` for all 31 companies → Supabase
+  - `applyFilters()` — added stage filtering with province+stage combination support
+  - CLAUDE.md — added Todoist integration docs (correct env file, token var, API version, section IDs)
+- **Resolved**: Todoist API integration — was using wrong env file (`Laurie/.env`) and wrong var name (`TODOIST_API_KEY`). Corrected to `Morrison Park/.env` with `TODOIST_API_TOKEN` and REST v1 API.
+- **Sources**: Supabase MCP, GitHub (`gh`), Gmail (Google Workspace MCP), Todoist REST v1 API
+- **Next**:
+  - [ ] Merge PR #5 after confirming Netlify preview
+  - [ ] Build St. John's NL regional scan (due before call with Ken)
+  - [ ] Ken to review pipeline status for all 31 companies
+  - [ ] Ken to confirm call time (Thu Feb 26 or Fri Feb 27)
+
+---
+
 ### 2026-02-22 -- Todoist project created with initial tasks
 - **Source**: Todoist
 - Created Morrison Park project (ID: `6g4JH95McmPHjwGV`) with 4 tasks: Reply to Ken's Feb 17 follow-up email, Build St. John's regional test, Schedule call with Ken to discuss next steps, Refine enricher skill based on Ken's Dec 4 feedback
