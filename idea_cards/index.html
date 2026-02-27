@@ -761,6 +761,7 @@
     <!-- Sidebar Overlay -->
     <div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
 
+
     <!-- Sidebar -->
     <aside class="sidebar" id="sidebar">
       <div class="sidebar-header">
@@ -881,11 +882,12 @@
 
         if (error) throw error;
         companies = data || [];
-        renderCompanyList();
+        restoreFilters();
+        const filtered = applyFilters();
 
-        // Auto-select first company
-        if (companies.length > 0) {
-          selectCompany(companies[0].id);
+        // Auto-select first company in the filtered/sorted list
+        if (filtered.length > 0) {
+          selectCompany(filtered[0].id);
         }
       } catch (err) {
         console.error('Error loading companies:', err);
@@ -929,11 +931,25 @@
       }
     }
 
+    // Restore saved filter state
+    function restoreFilters() {
+      try {
+        const saved = JSON.parse(localStorage.getItem('mpa-filters'));
+        if (!saved) return;
+        if (saved.province) document.getElementById('province-filter').value = saved.province;
+        if (saved.sortBy) document.getElementById('sort-by').value = saved.sortBy;
+        if (saved.stage) document.getElementById('stage-filter').value = saved.stage;
+      } catch (e) { /* ignore */ }
+    }
+
     // Apply filters
     function applyFilters() {
       const province = document.getElementById('province-filter').value;
       const sortBy = document.getElementById('sort-by').value;
       const stage = document.getElementById('stage-filter').value;
+
+      // Persist to localStorage
+      localStorage.setItem('mpa-filters', JSON.stringify({ province, sortBy, stage }));
 
       let filtered = [...companies];
 
@@ -962,6 +978,7 @@
       });
 
       renderCompanyList(filtered);
+      return filtered;
     }
 
     // Render company list
