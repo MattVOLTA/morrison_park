@@ -57,6 +57,7 @@ The Crosbie family's business legacy is among the most enduring in Newfoundland 
 | 2019 | Crosbie partners with Farfan & Mendes (Guyana) to form Panthera Solutions | [crosbiegroup.com](https://crosbiegroup.com/news-media/crosbie-and-farfan-mendes-announce-new-partnership/) |
 | Jan 31, 2022 | Rob Crosbie steps down as CEO; Mark Collett becomes CEO; Jeremy Whittle becomes COO; Rob remains Chair | [crosbiegroup.com](https://crosbiegroup.com/news-media/crosbie-ceo-stepping-down-after-exceptional-four-decade-career/) |
 | Apr 2022 | Tracey Power appointed CFO | [crosbiegroup.com](https://crosbieworld.com/news-media/tracey-power-named-chief-financial-officer-crosbie/) |
+| Early 2026 | Tracey Power departs as CFO; joins North Atlantic as CFO. Crosbie begins CFO recruitment via Boyden | [LinkedIn](https://www.linkedin.com/posts/tracey-power-cpa-cga-17253756_i-am-pleased-to-share-that-ive-started-a-activity-7428437212620443648-MChU), [Crosbie/Boyden](https://www.linkedin.com/posts/crosbie_chief-financial-officer-boyden-activity-7420512531838042112-yMUa) |
 | 2022 | Achieves Platinum Club status in Canada's Best Managed Companies | [crosbiegroup.com](https://crosbiegroup.com/about-us/) |
 | Apr 18, 2025 | Rob Crosbie passes away at age 67 | [CBC](https://www.cbc.ca/news/canada/newfoundland-labrador/rob-crosbie-obit-1.7514715) |
 | Jun 1, 2025 | Crosbie Job Insurance sold to BrokerLink (Intact Financial subsidiary) | [BrokerLink](https://www.brokerlink.ca/newsroom/crosbie-job) |
@@ -73,7 +74,8 @@ The Crosbie family's business legacy is among the most enduring in Newfoundland 
 | Rob Crosbie (deceased) | Chairman (to Apr 2025) | 67 (d. Apr 18, 2025) | 1991–2025 (34 yrs) | N/A | [CBC](https://www.cbc.ca/news/canada/newfoundland-labrador/rob-crosbie-obit-1.7514715) |
 | G. Mark Collett, ICD.D, SCMP | Chief Executive Officer | ~55 est. | Joined May 2016; CEO since Jan 2022 | [LinkedIn](https://www.linkedin.com/in/g-mark-collett-icd-d-scmp-561b099/) | [crosbiegroup.com](https://crosbiegroup.com/about-us/) |
 | Jeremy Whittle | Chief Operating Officer | ~45–50 est. | Joined Nov 2017; COO since Jan 2022 | [LinkedIn](https://ca.linkedin.com/in/jeremy-whittle-b3414158) | [crosbiegroup.com](https://crosbiegroup.com/news-media/crosbie-ceo-stepping-down-after-exceptional-four-decade-career/) |
-| Tracey Power, CPA, CGA | Chief Financial Officer | ~45 est. | CFO since Apr 2022 | [LinkedIn](https://www.linkedin.com/in/tracey-power-cpa-cga-17253756/) | [crosbiegroup.com](https://crosbieworld.com/news-media/tracey-power-named-chief-financial-officer-crosbie/) |
+| Tracey Power, CPA, CGA | **FORMER** CFO (LEFT — now CFO at North Atlantic) | ~45 est. | CFO Apr 2022 – early 2026 | [LinkedIn](https://www.linkedin.com/in/tracey-power-cpa-cga-17253756/) | [LinkedIn post](https://www.linkedin.com/posts/tracey-power-cpa-cga-17253756_i-am-pleased-to-share-that-ive-started-a-activity-7428437212620443648-MChU) |
+| **CFO VACANCY** | Actively recruiting via Boyden executive search | — | — | — | [Crosbie LinkedIn post](https://www.linkedin.com/posts/crosbie_chief-financial-officer-boyden-activity-7420512531838042112-yMUa) |
 
 ### 3.2 Board of Directors
 | Name | Role | Background | Source |
@@ -86,19 +88,18 @@ The Crosbie family's business legacy is among the most enduring in Newfoundland 
 |------|-------|---------|--------|
 | G. Mark Collett | CEO | MBA (Durham, Distinction), BBA (Acadia), Yale GEL Program 2022. Prior: Husky Energy, K&D Pratt Group, ASCO, Petro-Canada, AGRA Inc. ICD.D, SCMP designations | [crosbiegroup.com](https://crosbiegroup.com/about-us/), [Memorial U](https://www.business.mun.ca/engagement/ab-mark-collett.php) |
 | Jeremy Whittle | COO | MBA (Durham), BMS (Memorial). Past Chair of Energy NL board. Instrumental in operationalizing Panthera Solutions (Guyana) | [crosbiegroup.com](https://crosbiegroup.com/news-media/crosbie-ceo-stepping-down-after-exceptional-four-decade-career/) |
-| Tracey Power | CFO | CPA, CGA. B.Comm (Memorial). 18+ years experience: CRA, Bell Aliant, 10+ years at Husky Energy/Cenovus Energy | [crosbiegroup.com](https://crosbieworld.com/news-media/tracey-power-named-chief-financial-officer-crosbie/) |
+| Tracey Power | **FORMER** CFO (now CFO at North Atlantic) | CPA, CGA. B.Comm (Memorial). LEFT Crosbie early 2026. 18+ years experience: CRA, Bell Aliant, 10+ years at Husky Energy/Cenovus Energy | [LinkedIn post](https://www.linkedin.com/posts/tracey-power-cpa-cga-17253756_i-am-pleased-to-share-that-ive-started-a-activity-7428437212620443648-MChU) |
 | Scott MacKinnon | Group VP, MacKinnon & Olding | B.Comm. Leads the marine construction subsidiary | [crosbiegroup.com](https://crosbiegroup.com/about-us/) |
 | Matthew Follett | EVP, Corporate Development | CPA, CA. Leads strategic growth and transactions | [crosbiegroup.com](https://crosbiegroup.com/about-us/) |
 | Michael MacDonald | VP, Account Management - Industrial & Marine | GSC designation | [crosbiegroup.com](https://crosbiegroup.com/about-us/) |
 
 ### 3.4 LinkedIn Intelligence
 
-**LinkedIn enrichment: API unavailable** — ScrapingDog API key not found in Supabase vault. LinkedIn profiles identified but not scraped. Below is intelligence gathered from public sources.
-
-#### G. Mark Collett — Public Profile Intelligence
+#### G. Mark Collett — LinkedIn Intelligence
 - **Headline**: Chief Executive Officer at Crosbie — [LinkedIn](https://www.linkedin.com/in/g-mark-collett-icd-d-scmp-561b099/)
+- **LinkedIn Status**: Profile restricted/empty — unable to scrape detailed content. Intelligence gathered from public sources (BCC podcast, Memorial University, media).
 - **Professional Narrative**: A seasoned industrial services executive with supply chain, operations, and business development expertise spanning Husky Energy (11 years), ASCO, K&D Pratt Group, and Petro-Canada. Recruited by Rob Crosbie in 2016 specifically as part of succession planning; drove diversification into Nova Scotia (M&O acquisition) and Guyana (Panthera Solutions). Completed Yale Global Executive Leadership Program in 2022.
-- **Public Themes** (based on podcast, media, LinkedIn posts):
+- **Public Themes** (based on podcast, media):
   - Canadian energy sector advocacy — regulatory reform needed to attract investment
   - International growth — Guyana as the next frontier for NL offshore expertise
   - Family business stewardship — values-based leadership and long-term thinking
@@ -108,16 +109,55 @@ The Crosbie family's business legacy is among the most enduring in Newfoundland 
   3. Memorial University's Faculty of Business Advisory Board — Collett has been a member since 2014; potential shared network
 - **Key Boards**: CNIB National Board of Directors; Memorial University Faculty of Business Administration Board of Advisors; Past Board member of Energy NL (Chair 2019/20)
 - **Source**: [BCC Podcast](https://www.thebusinesscouncil.ca/podcasts/seizing-the-moment-mark-collett-crosbie-group/), [Memorial U](https://www.business.mun.ca/engagement/ab-mark-collett.php)
+- **Data freshness**: LinkedIn scrape attempted 2026-02-27 (profile restricted); public intelligence current
+
+#### Matthew Follett — LinkedIn Insights
+- **Headline**: EVP Corporate Development at Crosbie
+- **Professional Narrative**: Corporate development executive with CPA, CA designation. Completed Stanford GSB's "Emerging CFO: Strategic Financial Leadership Program" in April 2024 — a credential designed for finance leaders preparing for broader strategic roles. Past Chair of Young Adult Cancer Canada. Member of CPA Canada. 4K+ followers and 500+ connections — the most publicly networked member of Crosbie's executive team. Based in Greater St. John's.
+- **Recent Themes** (last 6 months):
+  - Atlantic Canada economic policy and trade — engages with Atlantic Economic Panel proceedings, PM Carney's Defence Industrial Strategy ("Build. Partner. Buy."), and NL economic roundtable content. Tracks macro policy developments affecting regional business
+  - Corporate leadership and executive transitions — liked posts about tech sector CEO transitions (techNL CEO stepping down), finance role changes, and CFO hiring posts. Notably, liked Crosbie's own post about partnering with Boyden to recruit a new CFO (replacing Tracey Power)
+  - NL business community — follows Board of Trade CEO roundtables, CBC Signal panels on future skills, and local business leadership events. Active participant in St. John's business ecosystem
+  - Fisheries and natural resources — engaged with content about Canada's coldwater shrimp industry and China trade dynamics. Shows breadth beyond oil & gas
+- **Conversation Starters for Ken**:
+  1. Matthew completed Stanford GSB's "Emerging CFO" program in April 2024 — Ken can reference this directly: "I noticed your Stanford credential — we see that investment as a signal of companies getting serious about strategic financial planning." This demonstrates Ken has done his homework
+  2. He liked Crosbie's own Boyden CFO recruitment post — this is the opening to discuss the leadership transition (Tracey Power's departure) and what it means for Crosbie's strategic direction, especially in the wake of Rob Crosbie's passing
+  3. His role as Past Chair of Young Adult Cancer Canada shows personal depth beyond corporate finance — Ken should acknowledge this work genuinely, as it reveals character and community commitment that matters in Atlantic Canada relationship-building
+- **Key Observation**: Matthew is the most transaction-oriented mind in Crosbie's C-suite. His EVP Corporate Development title, Stanford CFO credential, CPA/CA designation, and 4K-follower network make him the natural conversation partner for Ken on strategic advisory topics. He is likely the person who would evaluate any advisory engagement.
+- **Profile**: [linkedin.com/in/matthew-follett-44701716](https://www.linkedin.com/in/matthew-follett-44701716)
+- **Data freshness**: LinkedIn scraped 2026-02-27
+
+#### Scott MacKinnon — LinkedIn Insights
+- **Headline**: Group VP at MacKinnon and Olding Ltd. (Crosbie Member Company)
+- **Professional Narrative**: Group Vice President leading MacKinnon and Olding, the marine construction subsidiary Crosbie acquired a 50% stake in. Based in Dartmouth, Nova Scotia — not St. John's — which makes him the Crosbie executive managing the Nova Scotia expansion. Saint Mary's University background. 910 followers, 500+ connections.
+- **Recent Themes** (last 6 months):
+  - Healthcare and community giving — actively engaged with Dartmouth General Hospital Foundation Golf Classic (on the planning committee), Nova Scotia healthcare innovation (first robotic surgery at DGH), and Make-A-Wish Canada. Strong community ties in the Dartmouth/Halifax area
+  - Defence and naval construction — likes content about the Royal Canadian Navy's River-class destroyer program and national defence construction contracts. Directly relevant to MacKinnon & Olding's marine construction positioning
+  - Health, safety, and team culture — engages with workplace safety culture content and employee work anniversary celebrations at MacKinnon & Olding
+  - Atlantic Canada food and lifestyle — engages with diverse personal content (sourdough bread, community events), suggesting a well-rounded personality who would respond to genuine, non-transactional relationship-building
+- **Conversation Starters for Ken**:
+  1. Scott sits on the committee for the Dartmouth General Hospital Foundation Golf Classic — Ken could use this as a low-pressure networking angle when visiting Halifax, connecting over community philanthropy in a social setting
+  2. His engagement with National Defence content about the River-class destroyer program suggests MacKinnon & Olding is positioning for defence-related marine construction contracts — Ken could ask about the growth implications of Canada's naval shipbuilding strategy for the subsidiary
+  3. A 5-year work anniversary post from his Safety Director explicitly referenced the "Crosbie Member Company" framing — Ken could explore how the Crosbie/M&O integration is progressing and whether further marine construction consolidation is on the table
+- **Key Observation**: Scott is the gateway to understanding Crosbie's Nova Scotia expansion. His Dartmouth base and community engagement suggest he operates with significant autonomy. For Ken's Halifax-based networking, Scott is a natural connection point.
+- **Profile**: [linkedin.com/in/scott-mackinnon-47621a4b](https://www.linkedin.com/in/scott-mackinnon-47621a4b)
+- **Data freshness**: LinkedIn scraped 2026-02-27
+
+#### Tracey Power, CPA, CGA — CRITICAL UPDATE: Has LEFT Crosbie Group
+- **Current Position**: **CFO at North Atlantic** (petroleum/energy company) — NOT at Crosbie
+- **LinkedIn Post** (recent): "I am pleased to share that I've started a new position as CFO at North Atlantic. I want to thank everyone at Crosbie, as I had the opportunity to..."
+- **Previous Role**: CFO at Crosbie Group (joined after serving as CFO at 360 Marine Ltd; 10+ years prior at Husky Energy/Cenovus)
+- **Board**: Choices for Youth (Board Member since Oct 2021)
+- **Key Intelligence**: Tracey's departure triggered Crosbie's active recruitment of a new CFO via Boyden executive search. This CFO vacancy — coming during the critical post-Rob Crosbie transition period — is a significant signal. The company is simultaneously navigating (a) the founder-family chairman's death, (b) CFO departure, and (c) strategic portfolio changes (Crosbie Job Insurance divestiture). This combination creates both risk and advisory opportunity.
+- **Implication for Ken**: Tracey is no longer the Crosbie contact for financial/strategic discussions. Matthew Follett (EVP Corporate Development) is now the primary financial strategy interlocutor. However, Tracey's move to North Atlantic may itself be interesting — North Atlantic is a Crosbie-adjacent company in the NL energy ecosystem, and her knowledge of both organizations could be valuable context for Ken.
+- **Profile**: [linkedin.com/in/tracey-power-cpa-cga-17253756](https://www.linkedin.com/in/tracey-power-cpa-cga-17253756)
+- **Data freshness**: LinkedIn scraped 2026-02-27
 
 #### Jeremy Whittle — Public Profile Intelligence
 - **Headline**: Chief Operating Officer at Crosbie — [LinkedIn](https://ca.linkedin.com/in/jeremy-whittle-b3414158)
 - **Professional Narrative**: Marine and energy sector specialist with MBA from Durham University and BMS from Memorial. Joined Crosbie in November 2017 and was instrumental in operationalizing Panthera Solutions in Guyana. Past Chair of Energy NL board.
+- **LinkedIn Status**: Profile not scraped (not in initial target list). Intelligence from public sources.
 - **Source**: [crosbiegroup.com](https://crosbiegroup.com/news-media/crosbie-ceo-stepping-down-after-exceptional-four-decade-career/)
-
-#### Tracey Power — Public Profile Intelligence
-- **Headline**: CFO at Crosbie — [LinkedIn](https://www.linkedin.com/in/tracey-power-cpa-cga-17253756/)
-- **Professional Narrative**: Deep oil & gas financial expertise from 10+ years at Husky Energy/Cenovus Energy covering upstream offshore NL, oil sands JV partnerships, and downstream manufacturing. Returned to NL from Calgary in 2021; CFO at 360 Marine Ltd before joining Crosbie.
-- **Source**: [crosbiegroup.com](https://crosbieworld.com/news-media/tracey-power-named-chief-financial-officer-crosbie/)
 
 #### Rob Crosbie (deceased) — Legacy Profile
 - **Professional Legacy**: 4th-generation Crosbie family leader. B.Comm from Memorial (1979). Joined family business 1991; Chair and CEO for 31 years. Drove offshore oil and gas entry in the 1990s. Order of Canada (2018). NL Business Hall of Fame (2016). Ernst & Young Atlantic Entrepreneur of the Year (2016). Honorary LL.D from Memorial (2018). Board member: ASCO Canada, Emera NL, Dean's Advisory Board at Memorial.
@@ -197,7 +237,7 @@ The Crosbie family's business legacy is among the most enduring in Newfoundland 
 - **Chris Crosbie (cousin/extended family)**: Forged his own path — founded Atlantic Cultivation Ltd (cannabis), not involved in Crosbie Group — [Canadian Family Offices](https://canadianfamilyoffices.com/wealth/with-n-l-family-in-politics-and-business-chris-crosbie-forges-unconventional-path/)
 - **Non-core divestiture**: Crosbie Job Insurance (legacy dating to 1860s) sold to BrokerLink/Intact June 2025 — classic "simplify the portfolio" move ahead of transition — [BrokerLink](https://www.brokerlink.ca/newsroom/crosbie-job)
 - **Heavy legacy/philanthropy signals**: Order of Canada, 4 generations in Business Hall of Fame, Memorial University endowments, community foundation — [CBC](https://www.cbc.ca/news/canada/newfoundland-labrador/rob-crosbie-order-of-canada-1.4959516)
-- **Professional management installed**: CFO (Tracey Power), COO (Jeremy Whittle) both hired 2017–2022 — management professionalization typical of pre-transaction preparation — [crosbiegroup.com](https://crosbiegroup.com/about-us/)
+- **Professional management installed then disrupted**: CFO (Tracey Power) and COO (Jeremy Whittle) both hired 2017-2022 — management professionalization typical of pre-transaction preparation. However, Tracey Power has since LEFT for CFO role at North Atlantic, creating a CFO vacancy being recruited via Boyden. This C-suite churn during a critical transition period is a notable signal — [crosbiegroup.com](https://crosbiegroup.com/about-us/), [LinkedIn](https://www.linkedin.com/posts/tracey-power-cpa-cga-17253756_i-am-pleased-to-share-that-ive-started-a-activity-7428437212620443648-MChU)
 
 ---
 
@@ -389,4 +429,4 @@ Based on this research, potential advisory opportunities:
 - Revenue/employee estimates: LOW confidence — based on industry estimates and dated Hall of Fame data
 
 ---
-*Research conducted using public sources. All data points include source citations for verification. Critical information should be independently verified before engagement. LinkedIn enrichment unavailable due to ScrapingDog API key not found in vault.*
+*Research conducted using public sources. All data points include source citations for verification. Critical information should be independently verified before engagement. LinkedIn profiles scraped 2026-02-27 for Matthew Follett, Scott MacKinnon, Tracey Power. Mark Collett profile restricted. CRITICAL UPDATE: Tracey Power has left Crosbie for CFO role at North Atlantic; CFO vacancy being recruited via Boyden.*

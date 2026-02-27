@@ -95,9 +95,23 @@ Purity manufactures **over 50 products** across six main categories:
 
 ### 3.4 LinkedIn Intelligence
 
-**LinkedIn Intelligence: Unavailable** — ScrapingDog API key not available in Supabase vault. Rodney Paul's LinkedIn profile was not identifiable in public search (multiple Rodney Pauls exist; none clearly linked to Purity Factories in NL). B. Andrew Paul has a LinkedIn profile at [linkedin.com/in/b-andrew-paul-82b76216a](https://www.linkedin.com/in/b-andrew-paul-82b76216a/) but detailed scraping was not possible.
+#### B. Andrew Paul -- LinkedIn Insights
+- **Headline**: Logistics Manager at Purity Factories
+- **Professional Narrative**: Self-described career arc: "Started career as a tower crane rigger/signalman, through hard work and goals I made my way..." Operating Engineers College background. This is a blue-collar-to-management trajectory, not a traditional corporate path. Based in Greater St. John's. Very small network (60 followers, 52 connections) -- indicating this is not someone who uses LinkedIn for professional networking.
+- **Recent Themes**: Profile is largely dormant. Last meaningful engagement was 2019-2020 era. Older activity shows:
+  - Heavy equipment and industrial operations -- engaged with crane operations, heavy haul transport (1.4M lb generator move), and industrial construction content
+  - Newfoundland construction and marine industry -- liked content about NL construction projects (Deer Arm Brook bridge, North Atlantic/Dairy Queen construction site)
+- **Conversation Starters for Ken**: B. Andrew Paul is not the right entry point for Ken. His extremely small network, dormant profile, and operational (not strategic) background suggest he is a family member contributing to operations rather than a decision-maker on strategic matters. The key intelligence is the shared "Paul" surname with CEO Rodney Paul, confirming the family connection identified in the original research.
+- **Profile**: [linkedin.com/in/b-andrew-paul-82b76216a](https://www.linkedin.com/in/b-andrew-paul-82b76216a/)
+- **Data freshness**: LinkedIn scraped 2026-02-27
 
-**Key observation:** The absence of prominent LinkedIn profiles for the CEO (Rodney Paul) and General Manager (Doug Spurrell) is notable. This is consistent with a traditional, low-profile private company culture rather than a company actively seeking external partnerships or visibility. This may indicate a preference for privacy that could extend to reluctance around M&A conversations.
+#### Rodney Paul (CEO) -- LinkedIn Intelligence
+- **LinkedIn**: Not found. No LinkedIn profile identifiable for Rodney Paul linked to Purity Factories (multiple Rodney Pauls exist nationally; none clearly connected to the NL food manufacturer).
+
+#### Doug Spurrell (GM/Co-Owner) -- LinkedIn Intelligence
+- **LinkedIn**: Not found. No LinkedIn profile identified for Doug Spurrell.
+
+**Key Observation**: The absence of LinkedIn profiles for both the CEO and General Manager/co-owner is itself significant intelligence. Combined with B. Andrew Paul's dormant, minimal-network profile, this confirms Purity Factories operates with a traditional, low-profile private company culture. The leadership team does not use social media for professional networking or brand-building. This is consistent with a company that has not engaged external advisors and may be cautious about M&A conversations. Ken's approach must come through trusted local intermediaries (Prime Creative agency, Board of Trade, industry contacts) -- not through digital channels.
 
 ---
 
@@ -389,4 +403,4 @@ Based on this research, potential advisory opportunities:
 - Union/government archives (NAPE, NUPGE, BBB): HIGH confidence
 
 ---
-*Research conducted using public sources. All data points include source citations for verification. Critical information (especially ownership structure, revenue, and key people ages) should be independently verified before engagement. LinkedIn enrichment was unavailable due to missing ScrapingDog API key in Supabase vault.*
+*Research conducted using public sources. All data points include source citations for verification. Critical information (especially ownership structure, revenue, and key people ages) should be independently verified before engagement. LinkedIn profile for B. Andrew Paul scraped 2026-02-27; CEO Rodney Paul and GM Doug Spurrell have no LinkedIn presence.*

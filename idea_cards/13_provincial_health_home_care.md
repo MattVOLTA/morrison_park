@@ -84,16 +84,28 @@ No public board information available. As a family-owned private company, govern
 
 #### Scott Vatcher -- LinkedIn Insights
 - **Headline**: COO / Manager of Corporate Development at Provincial Homecare
-- **Professional Narrative**: A finance professional who transitioned from capital markets to healthcare operations. Career arc: Memorial University BCom (Co-op) Honours -> Portfolio Manager (student role, Faculty of Business) -> Canaccord Genuity (Equity Capital Markets Investment Banking Analyst) -> CIBC (Commercial Banking Relationship Manager) -> Provincial Health (Manager of Corporate Development -> COO). Also held roles at Cal LeGrow (Marketing Strategy Coordinator) and Imperial Oil (Procurement Associate) during co-op terms.
+- **Professional Narrative**: A finance professional who transitioned from capital markets to healthcare operations. Career arc: Memorial University BCom (Co-op) Honours -> The Fund Memorial University (Investment Committee Chair) -> Canaccord Genuity (Equity Capital Markets Investment Banking Analyst) -> CIBC (Commercial Banking Relationship Manager) -> Provincial Health (Manager of Corporate Development -> COO). Also held roles at Cal LeGrow (Marketing Strategy Coordinator) and Imperial Oil (Procurement Associate) during co-op terms. Now holds certifications in Mental Health First Aid (CMHA), Google Ads, and Bloomberg Market Concepts -- an eclectic mix that suggests both operational breadth and retained capital markets identity.
+- **Recent Themes** (last 6 months):
+  - Memorial University business community -- chairs The Fund's Investment Committee, engages with Faculty of Business content, celebrated when MUN's team won the Atlantic Canada CFA Research Challenge for the first time. Deep connection to MUN's finance and investment ecosystem
+  - St. John's Board of Trade -- recently joined as Director (Feb 2026). Likes Board of Trade networking socials and board member announcements. Deliberately expanding his civic business leadership profile
+  - Home care industry advocacy -- Past President of the Home Care Association of NL (served as Board Member 2023, VP 2024, President 2025, Past President 2026). Rapid rise through industry leadership signals he is positioning Provincial Homecare as a sector leader and building his own credibility as an industry voice
+  - NL tech and entrepreneurship -- engages with local tech community content, including a post about building a NL tech ecosystem. Shows intellectual curiosity beyond healthcare operations
+  - Financial markets and investment -- Bloomberg certification and CFA-related content engagement suggest he maintains his capital markets identity alongside his operational role
 - **Conversation Starters for Ken**:
-  1. Scott's Canaccord Genuity background gives Ken an immediate peer-level connection -- investment banking professionals speak the same language, and Ken's Scotia Capital background creates natural rapport
-  2. Scott's transition from capital markets to a family healthcare business as COO/Corporate Development suggests he may have been brought in specifically to professionalize operations or explore strategic options -- this is a conversation Ken can probe directly
-  3. Memorial University BCom connection -- Ken travels to NL regularly and can leverage the local business school network
+  1. Scott just joined the St. John's Board of Trade as a Director (Feb 2026) -- Ken can reference this new appointment directly: "Congrats on the Board of Trade appointment -- I'd love to hear what you're seeing in the St. John's business community." This is a warm, natural opening
+  2. His role as Investment Committee Chair at The Fund (Memorial University's student-managed investment fund) directly connects to Ken's CFA background and capital markets expertise. Ken could offer to speak to The Fund students or reference their recent CFA Research Challenge win -- this creates genuine value exchange, not just a pitch
+  3. His rapid progression through the Home Care Association of NL (board member to Past President in 4 years) shows deliberate industry leadership building. Ken can acknowledge this trajectory: "You've clearly become a voice for the home care sector in NL -- how do you see the industry evolving?" This positions the conversation around industry dynamics rather than transactional interest
+  4. Scott's Canaccord Genuity background gives Ken an immediate peer-level connection -- investment banking professionals speak the same language, and Ken's Scotia Capital background creates natural rapport. The fact that Scott chose to leave capital markets for a family healthcare business is itself a conversation worth exploring
+- **Notable Volunteer & Board Positions**:
+  - Director, St. John's Board of Trade (Feb 2026 -- present)
+  - Investment Committee Chair, The Fund Memorial University (Sep 2024 -- present)
+  - Past President, Home Care Association of NL (Jan 2026 -- present; served as VP, President in prior years)
+- **Key Observation**: Scott's LinkedIn profile reveals a much more ambitious and strategically-minded leader than the "COO of a family home care company" title might suggest. His Board of Trade directorship, industry association leadership, investment fund chairing, and capital markets background paint a picture of someone building institutional credibility -- either as preparation for growing Provincial Homecare into a much larger platform, or as preparation for a transaction that would demonstrate his track record to future employers/investors. Either way, Ken should engage.
 - **Profile**: [linkedin.com/in/scott-vatcher-2b324713b](https://ca.linkedin.com/in/scott-vatcher-2b324713b)
-- **Data freshness**: Compiled from web sources, 2026-02-27
+- **Data freshness**: LinkedIn scraped 2026-02-27
 
 #### Jean Tremblett -- LinkedIn Intelligence
-- **LinkedIn**: Not found. No LinkedIn profile identified for Jean Tremblett. This is consistent with a founder who has been in healthcare for 40+ years and may not be active on professional social media.
+- **LinkedIn**: Not found. No LinkedIn profile identified for Jean Tremblett. This is consistent with a founder who has been in healthcare for 40+ years and may not be active on professional social media. Ken's approach to Jean should be through Scott Vatcher or through community connections, not social media.
 
 ---
 

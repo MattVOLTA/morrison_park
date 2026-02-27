@@ -92,9 +92,8 @@ The Cahill Group is a privately held, family-owned industrial construction power
 
 ### 3.4 LinkedIn Intelligence
 
-*LinkedIn Intelligence: ScrapingDog API key unavailable — LinkedIn profile scraping could not be completed. Fred Cahill does not appear to have a publicly accessible LinkedIn profile (no direct profile link found despite multiple searches). David Cahill has a LinkedIn profile at ca.linkedin.com/in/david-cahill-p-eng-mba-6987431b7 but full content could not be scraped.*
-
 **Fred Cahill — Public Intelligence (Non-LinkedIn Sources)**
+- **LinkedIn**: Not found. No publicly accessible LinkedIn profile identified for Fred Cahill despite multiple searches. Consistent with a founder-generation leader who builds through relationships and reputation rather than online presence.
 - **Professional Narrative**: Engineer-turned-entrepreneur who transformed his father's small electrical shop into one of Canada's largest construction companies. Deeply connected to Memorial University, NL business community, and energy industry governance.
 - **Recent Themes**:
   - Innovation and entrepreneurship support (Genesis Centre, nearly 20-year tenure as Chair)
@@ -106,6 +105,54 @@ The Cahill Group is a privately held, family-owned industrial construction power
   2. The $33B Churchill Falls/Gull Island opportunity is the defining event for NL construction. Cahill is publicly positioning for it. Ask about how they are preparing for the scale of this project.
   3. Fred's induction as a Fellow of the Canadian Academy of Engineering (2015) and the JA NL Business Hall of Fame (2010) — these are legacy milestone signals. Combined with the Cahill Family Foundation (2019) and stepping down from Genesis (2022), there's a pattern of legacy consolidation.
 - **Data freshness**: Web research 2026-02-27
+
+#### Brad Forsey — LinkedIn Insights
+- **Headline**: Director of Business Development at The Cahill Group
+- **Professional Narrative**: Business development leader based in Paradise, NL, with Medicine Hat College background. 2K+ followers and 500+ connections — significant network for a BD role, suggesting he is a key external-facing voice for Cahill. No about section or detailed experience listed publicly, but his activity reveals deep engagement across NL's energy, construction, and industrial services ecosystem.
+- **Recent Themes** (last 6 months):
+  - Energy infrastructure and industrial projects — consistently engages with offshore oil & gas, nuclear, and hydroelectric content (Bull Arm tanker incident, Irving Shipbuilding, energy policy discussions)
+  - Atlantic Canada economic development — follows Board of Trade leadership transitions, Atlantic Economic Panel proceedings, and regional business investment announcements
+  - Construction industry workforce and safety — engages with NLCA board appointments, skilled trades certification milestones (AMPP CIP), and project management development
+  - Indigenous and community partnerships — tracks First Nations partnership content and community-building initiatives across the NL ecosystem
+- **Conversation Starters for Ken**:
+  1. Brad recently engaged with content about the Atlantic Economic Panel and NL Board of Trade leadership transitions — Ken could open with his perspective on NL's economic trajectory and how Cahill is positioning for the next wave of energy infrastructure spending (Churchill Falls, Gull Island, offshore)
+  2. His engagement with additive manufacturing content (Atlantic XL achieving Lloyd's Register qualification) suggests interest in advanced fabrication — connects directly to Cahill's nuclear qualification through Makwa-Cahill. Ken could probe whether Cahill sees technology-driven diversification beyond traditional construction
+  3. As Vice-Chair of Energy NL, Brad is deeply embedded in the institutional layer Ken needs to access for NL deal origination — this is a relationship investment, not just a single-company play
+- **Notable Activity Pattern**: Broad engagement across NL energy, construction, and community content. Likes rather than posts — a listener and connector, not a self-promoter. This style suggests Brad is best approached through shared interests and industry events rather than cold outreach.
+- **Profile**: [linkedin.com/in/bradforsey](https://ca.linkedin.com/in/bradforsey)
+- **Data freshness**: LinkedIn scraped 2026-02-27
+
+#### David Cahill, P.Eng, MBA — LinkedIn Insights
+- **Headline**: Senior Vice President Operations at The Cahill Group
+- **Professional Narrative**: Second-generation Cahill family member. P.Eng with MBA from the Australian Institute of Business — an unusual choice that suggests international outlook and deliberate investment in professional development outside the family firm. 1K+ followers, 500+ connections. No about section publicly visible, but activity pattern reveals a values-driven leader deeply engaged with community causes and company culture.
+- **Recent Themes** (last 6 months):
+  - Construction industry development and workforce — actively engages with NLCA AGM proceedings, board leadership announcements, and skilled trades recruitment (NSCC job fairs, Atlantica Contractors Nova Scotia activities)
+  - Community and social causes — frequently likes Pink Shirt Day, anti-bullying campaigns, cancer care, and senior care content. Consistent pattern of engagement with NL charitable organizations (United Way NL, Cancer Care Foundation)
+  - Company culture and team pride — engages with Cahill Group corporate posts about new contracts (Northern Alberta scaffolding), Indigenous Storytelling Month, student co-op programs, and employee wellness initiatives
+  - Family business stewardship — engagement pattern emphasizes people, community, and sustainable growth rather than aggressive dealmaking or personal branding
+- **Conversation Starters for Ken**:
+  1. David's MBA from the Australian Institute of Business is distinctive — Ken could explore what drove that decision and what David sees as Cahill's next growth chapter. The international education signals a leader thinking beyond NL
+  2. His engagement with Atlantica Contractors' Nova Scotia activities (NSCC skilled trades job fair) shows he is tracking the Nova Scotia operations closely — connects to Cahill's cross-provincial expansion strategy and potential acquisition appetite
+  3. David recently engaged with content about The Residence at Littledale (senior care facility) and United Way NL — community care and family values are genuine themes for him. Ken should approach David through shared community interests rather than transactional M&A language
+- **Key Observation**: David's profile presents as the operational steward of the family business — focused on people, culture, and community rather than deal-making. If Ken engages with Cahill, David is the relationship-builder, while James Parmiter (SVP Strategy & Development) is the strategic thinker.
+- **Profile**: [linkedin.com/in/david-cahill-p-eng-mba-6987431b7](https://ca.linkedin.com/in/david-cahill-p-eng-mba-6987431b7)
+- **Data freshness**: LinkedIn scraped 2026-02-27
+
+#### James Parmiter — LinkedIn Insights
+- **Headline**: SVP Strategy & Development at The Cahill Group
+- **Professional Narrative**: Strategy and development executive based in St. John's. 2K+ followers, 500+ connections. Extensive board and volunteer portfolio: Chair of Noia NL (Oil & Gas Industries Association), former Board Member of PEGNL (Professional Engineers & Geoscientists NL), Director of PanGeo Subsea (2018-2021), Director of Makwa-Cahill JV, Director of St. John's Tennis Association. No about section publicly visible, but his activity and volunteer roles paint a picture of a deeply networked strategic thinker at the centre of NL's energy and business ecosystem.
+- **Recent Themes** (last 6 months):
+  - Energy and industrial services network — engages with content from colleagues who have moved to international roles (Dubai, Riyadh), financial services transitions, and oil & gas industry career moves. Tracks the movement of talent across the NL energy ecosystem
+  - Atlantic Canada business community — likes posts about Board of Trade events, NLCA conferences, Atlantic Business gatherings, and NL construction industry activities
+  - Strategic partnerships and Indigenous business — serves as Director of Makwa-Cahill JV, demonstrating hands-on commitment to Indigenous partnership in nuclear/energy fabrication
+  - Academic and innovation engagement — liked posts about AMCIS conference panels and Memorial University's Harlow Campus business programs, showing intellectual curiosity beyond day-to-day operations
+- **Conversation Starters for Ken**:
+  1. James's role as Chair of Noia NL makes him one of the most connected people in NL's energy sector — Ken should reference specific Noia initiatives and ask about the association's view on offshore investment trends and the Churchill Falls/Gull Island opportunity
+  2. James recently liked Tracey Power's post about starting as CFO at North Atlantic (leaving Crosbie) — he is clearly plugged into the St. John's executive transition circuit. This is a natural conversation bridge: "I've noticed several executive transitions in St. John's lately — the market seems dynamic"
+  3. His board role at PanGeo Subsea (2018-2021) shows comfort with technology companies and board governance — Ken could explore whether Cahill sees opportunities in subsea tech, advanced marine services, or other technology-adjacent investments as part of their strategic development portfolio
+- **Key Observation**: James is the most strategically relevant contact for Ken at Cahill. His Noia chairmanship, PanGeo board experience, and SVP Strategy & Development title make him the person who thinks about Cahill's future — not just its operations. He is also the contact most likely to understand and value MPA's advisory services.
+- **Profile**: [linkedin.com/in/james-parmiter-6b31a2](https://ca.linkedin.com/in/james-parmiter-6b31a2)
+- **Data freshness**: LinkedIn scraped 2026-02-27
 
 ---
 

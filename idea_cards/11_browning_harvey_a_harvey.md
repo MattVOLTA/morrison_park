@@ -121,18 +121,20 @@ A. Harvey & Co. Ltd. is one of Newfoundland's oldest continuously operating busi
 
 ### 3.4 LinkedIn Intelligence
 
-**LinkedIn Intelligence: Unavailable**
+**LinkedIn Intelligence: No profiles found for key Patten family members**
 
-The ScrapingDog API key was not found in the Supabase vault or local environment files. LinkedIn enrichment could not be performed for this profile. Manual searches confirmed:
+LinkedIn profile scraping was completed across all five St. John's target companies (Feb 2026). The Patten family was specifically searched but no LinkedIn profiles were found for:
 
-- **Lynn Pike** (Harvey & Company LTD CEO, unrelated Pike Group entity) has a LinkedIn profile at [linkedin.com/in/lynn-pike-5a6139228](https://ca.linkedin.com/in/lynn-pike-5a6139228) -- but this is NOT part of the A. Harvey / Browning Harvey group.
-- **John Patten** (President, Browning Harvey) -- no LinkedIn profile found matching this individual.
-- **Robert Patten** (President, A. Harvey) -- no LinkedIn profile found.
-- **Browning Harvey Limited** has a [LinkedIn company page](https://ca.linkedin.com/company/browning-harvey-limited).
+- **John Patten** (President, Browning Harvey) -- no LinkedIn profile found
+- **Robert Patten** (President, A. Harvey) -- no LinkedIn profile found
+- **Susan Harvey Patten** (Chair) -- no LinkedIn profile found
+- **Anna Patten**, **Allan Patten**, **Stephanie Patten-Kibyuk** -- no LinkedIn profiles found
 
-The Patten family appears to maintain a deliberately low social media presence, consistent with their conservative family-business ethos. This is notable itself -- a family that communicates through actions (Pepsi Bottler of the Year, JA Hall of Fame, Order of Canada) rather than personal branding.
+The Patten family maintains a deliberately zero social media presence. This is itself significant intelligence -- a family that communicates through actions (Pepsi Bottler of the Year, JA Hall of Fame, Order of Canada) rather than personal branding. This is consistent with conservative, multi-generational family business culture where reputation is built through industry performance and community contribution, not online visibility.
 
-*LinkedIn Intelligence: API key unavailable; key personnel do not appear to maintain LinkedIn profiles.*
+**Implication for Ken**: Cold outreach via LinkedIn is not viable for this family. The approach must be through shared community circles (JA NL, Board of Trade, Memorial University, QMJHL/Newfoundland Regiment hockey), trusted intermediaries, or industry events. The Patten family's communication style rewards patience, discretion, and demonstrated relevance over aggressive networking.
+
+*Data freshness: LinkedIn search completed 2026-02-27. Browning Harvey Limited has a [company page](https://ca.linkedin.com/company/browning-harvey-limited) but individual family member profiles do not exist.*
 
 ---
 
