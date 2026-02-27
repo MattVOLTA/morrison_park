@@ -393,6 +393,45 @@
     .person-title { font-size: 12px; color: var(--text-secondary); margin-bottom: 2px; }
     .person-meta { font-size: 11px; color: var(--text-muted); }
 
+    .person-card.has-linkedin { cursor: pointer; transition: background 0.15s; }
+    .person-card.has-linkedin:hover { background: var(--bg-secondary); }
+
+    .person-header { display: flex; align-items: flex-start; gap: 12px; width: 100%; }
+
+    .person-expand-hint {
+      font-size: 10px; color: var(--text-muted); margin-top: 2px;
+      display: flex; align-items: center; gap: 3px;
+    }
+    .person-expand-hint .chevron { transition: transform 0.2s; display: inline-block; }
+    .person-card.expanded .person-expand-hint .chevron { transform: rotate(90deg); }
+
+    .person-linkedin-link {
+      display: inline-flex; align-items: center; gap: 4px;
+      font-size: 11px; color: var(--accent-blue, #0a66c2); text-decoration: none;
+      margin-top: 2px;
+    }
+    .person-linkedin-link:hover { text-decoration: underline; }
+
+    .person-linkedin {
+      display: none; width: 100%;
+      padding-top: 10px; margin-top: 10px;
+      border-top: 1px solid var(--border-color);
+    }
+    .person-linkedin.open { display: block; }
+
+    .person-headline { font-size: 12px; color: var(--text-secondary); margin-bottom: 8px; font-style: italic; }
+
+    .person-themes { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 8px; }
+    .person-theme-tag {
+      font-size: 10px; padding: 2px 8px; border-radius: 10px;
+      background: var(--bg-secondary); color: var(--text-secondary);
+    }
+
+    .person-starters { font-size: 12px; color: var(--text-primary); padding-left: 18px; margin: 0; }
+    .person-starters li { margin-bottom: 4px; }
+
+    .person-scraped { font-size: 10px; color: var(--text-muted); margin-top: 6px; }
+
     /* Succession Scorecard */
     .scorecard-grid {
       display: grid;
@@ -959,7 +998,7 @@
     // Select company and show details
     async function selectCompany(companyId) {
       selectedCompanyId = companyId;
-      renderCompanyList();
+      applyFilters();
 
       // Close sidebar on mobile
       if (window.innerWidth <= 900) {
@@ -1104,19 +1143,38 @@
               <span class="section-title">Key People (${people.length})</span>
             </div>
             <div class="people-grid">
-              ${people.map(person => `
-                <div class="person-card">
-                  <div class="person-avatar">${getInitials(person.name)}</div>
-                  <div class="person-info">
-                    <div class="person-name">${person.name}</div>
-                    <div class="person-title">${person.title || 'Title unknown'}</div>
-                    <div class="person-meta">
-                      ${person.age_estimate ? `~${person.age_estimate} years old` : ''}
-                      ${person.tenure_years ? ` · ${person.tenure_years} years tenure` : ''}
+              ${people.map(person => {
+                const hasLinkedin = person.linkedin_url || person.linkedin_themes || person.conversation_starters;
+                const themes = (person.linkedin_themes || '').split(/[,;•\n]/).map(t => t.trim()).filter(Boolean);
+                const starters = (person.conversation_starters || '').split(/\n|(?:^|\s)\d+[\.\)]\s/).map(s => s.trim()).filter(Boolean);
+                return `
+                <div class="person-card${hasLinkedin ? ' has-linkedin' : ''}" ${hasLinkedin ? `onclick="togglePersonLinkedin(this)"` : ''}>
+                  <div style="display:flex;flex-direction:column;width:100%">
+                    <div class="person-header">
+                      <div class="person-avatar">${getInitials(person.name)}</div>
+                      <div class="person-info">
+                        <div class="person-name">
+                          ${person.name}
+                          ${person.linkedin_url ? `<a class="person-linkedin-link" href="${person.linkedin_url}" target="_blank" rel="noopener" onclick="event.stopPropagation()" title="View LinkedIn profile">in</a>` : ''}
+                        </div>
+                        <div class="person-title">${person.title || 'Title unknown'}</div>
+                        <div class="person-meta">
+                          ${person.age_estimate ? `~${person.age_estimate} years old` : ''}
+                          ${person.tenure_years ? ` · ${person.tenure_years} years tenure` : ''}
+                        </div>
+                        ${hasLinkedin ? `<div class="person-expand-hint"><span class="chevron">›</span> LinkedIn intel</div>` : ''}
+                      </div>
                     </div>
+                    ${hasLinkedin ? `
+                    <div class="person-linkedin">
+                      ${person.linkedin_headline ? `<div class="person-headline">"${person.linkedin_headline}"</div>` : ''}
+                      ${themes.length > 0 ? `<div class="person-themes">${themes.map(t => `<span class="person-theme-tag">${t}</span>`).join('')}</div>` : ''}
+                      ${starters.length > 0 ? `<ol class="person-starters">${starters.map(s => `<li>${s}</li>`).join('')}</ol>` : ''}
+                      ${person.linkedin_scraped_at ? `<div class="person-scraped">Scraped ${new Date(person.linkedin_scraped_at).toLocaleDateString()}</div>` : ''}
+                    </div>` : ''}
                   </div>
-                </div>
-              `).join('')}
+                </div>`;
+              }).join('')}
             </div>
           </div>
         </div>
@@ -1472,6 +1530,13 @@
       } finally {
         submitBtn.disabled = false;
       }
+    }
+
+    // LinkedIn person card expand/collapse
+    function togglePersonLinkedin(el) {
+      el.classList.toggle('expanded');
+      const panel = el.querySelector('.person-linkedin');
+      if (panel) panel.classList.toggle('open');
     }
 
     // Mobile sidebar
