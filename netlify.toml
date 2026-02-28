@@ -5,7 +5,12 @@
   # No build command needed since this is static HTML
   command = ""
 
-# Redirect root to index.html
+# Serve static files first, then fallback to index.html for SPA routes
+[[redirects]]
+  from = "/one-pager.html"
+  to = "/one-pager.html"
+  status = 200
+
 [[redirects]]
   from = "/*"
   to = "/index.html"
