@@ -6,7 +6,7 @@
   <title>MPA Deal Intelligence | Idea Cards</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,400&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
   <style>
     :root {
@@ -19,6 +19,8 @@
       --text-primary: #1a1f2e;
       --text-secondary: #5a6275;
       --text-muted: #8b95a8;
+      --navy: #0D1C28;
+      --blue: #345572;
       --accent-gold: #b8860b;
       --accent-gold-dim: rgba(184, 134, 11, 0.1);
       --accent-emerald: #059669;
@@ -37,7 +39,7 @@
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
-      font-family: 'DM Sans', -apple-system, sans-serif;
+      font-family: 'Lato', -apple-system, sans-serif;
       background: var(--bg-primary);
       color: var(--text-primary);
       min-height: 100vh;
@@ -129,8 +131,9 @@
     }
 
     .sidebar-header {
-      padding: 28px 24px;
-      border-bottom: 1px solid var(--border-subtle);
+      padding: 24px;
+      background: var(--navy);
+      border-bottom: none;
     }
 
     .logo {
@@ -140,31 +143,19 @@
       margin-bottom: 4px;
     }
 
-    .logo-mark {
-      width: 32px;
-      height: 32px;
-      background: var(--gradient-gold);
-      border-radius: 8px;
+    .logo-mark-img {
       display: flex;
       align-items: center;
-      justify-content: center;
-      font-family: 'Fraunces', serif;
-      font-weight: 700;
-      font-size: 16px;
-      color: #ffffff;
     }
 
-    .logo-text {
-      font-family: 'Fraunces', serif;
-      font-size: 18px;
-      font-weight: 600;
-      color: var(--text-primary);
-      letter-spacing: -0.02em;
+    .logo-mark-img img {
+      height: 28px;
+      width: auto;
     }
 
     .sidebar-subtitle {
       font-size: 12px;
-      color: var(--text-muted);
+      color: rgba(255, 255, 255, 0.6);
       text-transform: uppercase;
       letter-spacing: 0.08em;
       margin-top: 8px;
@@ -282,8 +273,20 @@
       align-items: center;
       justify-content: space-between;
       padding: 16px;
-      background: var(--bg-secondary);
-      border-bottom: 1px solid var(--border-subtle);
+      background: var(--navy);
+      border-bottom: none;
+    }
+
+    .mobile-header .menu-btn {
+      color: #ffffff;
+    }
+
+    .mobile-header .logo-text {
+      font-family: 'Lato', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      color: #ffffff;
+      letter-spacing: 0.02em;
     }
 
     .menu-btn {
@@ -328,7 +331,7 @@
     .metric-card {
       background: var(--bg-card);
       border: 1px solid var(--border-subtle);
-      border-radius: 12px;
+      border-radius: 4px;
       padding: 20px;
     }
 
@@ -344,7 +347,7 @@
       font-family: 'JetBrains Mono', monospace;
       font-size: 24px;
       font-weight: 600;
-      color: var(--text-primary);
+      color: var(--navy);
     }
 
     .metric-sub {
@@ -369,23 +372,27 @@
     .section {
       background: var(--bg-card);
       border: 1px solid var(--border-subtle);
-      border-radius: 16px;
+      border-radius: 8px;
       padding: 24px;
     }
 
     .section-header {
       display: flex;
-      justify-content: space-between;
       align-items: center;
+      gap: 12px;
       margin-bottom: 20px;
     }
 
     .section-title {
-      font-weight: 600;
-      font-size: 14px;
+      font-weight: 700;
+      font-size: 13px;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: var(--text-secondary);
+      letter-spacing: 1.2px;
+      color: #ffffff;
+      background: var(--blue);
+      padding: 6px 16px;
+      border-radius: 2px;
+      flex: 1;
     }
 
     .section-badge {
@@ -730,7 +737,7 @@
       width: 40px;
       height: 40px;
       border: 3px solid var(--border-subtle);
-      border-top-color: var(--accent-gold);
+      border-top-color: var(--blue);
       border-radius: 50%;
       animation: spin 1s linear infinite;
     }
@@ -798,10 +805,11 @@
     <aside class="sidebar" id="sidebar">
       <div class="sidebar-header">
         <div class="logo">
-          <div class="logo-mark">M</div>
-          <span class="logo-text">Morrison Park</span>
+          <div class="logo-mark-img">
+            <img src="MPA-Advisors-white.png" alt="Morrison Park Advisors">
+          </div>
         </div>
-        <div class="sidebar-subtitle">Deal Intelligence POC</div>
+        <div class="sidebar-subtitle">Deal Intelligence</div>
       </div>
 
       <!-- Filter Controls -->
@@ -1144,11 +1152,11 @@
             </div>
             <div class="people-grid">
               ${people.map(person => {
-                const hasLinkedin = person.linkedin_url || person.linkedin_themes || person.conversation_starters;
                 const themes = (person.linkedin_themes || '').split(/[,;•\n]/).map(t => t.trim()).filter(Boolean);
                 const starters = (person.conversation_starters || '').split(/\n|(?:^|\s)\d+[\.\)]\s/).map(s => s.trim()).filter(Boolean);
+                const hasLinkedinIntel = person.linkedin_headline || themes.length > 0 || starters.length > 0;
                 return `
-                <div class="person-card${hasLinkedin ? ' has-linkedin' : ''}" ${hasLinkedin ? `onclick="togglePersonLinkedin(this)"` : ''}>
+                <div class="person-card${hasLinkedinIntel ? ' has-linkedin' : ''}" ${hasLinkedinIntel ? `onclick="togglePersonLinkedin(this)"` : ''}>
                   <div style="display:flex;flex-direction:column;width:100%">
                     <div class="person-header">
                       <div class="person-avatar">${getInitials(person.name)}</div>
@@ -1162,10 +1170,10 @@
                           ${person.age_estimate ? `~${person.age_estimate} years old` : ''}
                           ${person.tenure_years ? ` · ${person.tenure_years} years tenure` : ''}
                         </div>
-                        ${hasLinkedin ? `<div class="person-expand-hint"><span class="chevron">›</span> LinkedIn intel</div>` : ''}
+                        ${hasLinkedinIntel ? `<div class="person-expand-hint"><span class="chevron">›</span> LinkedIn intel</div>` : ''}
                       </div>
                     </div>
-                    ${hasLinkedin ? `
+                    ${hasLinkedinIntel ? `
                     <div class="person-linkedin">
                       ${person.linkedin_headline ? `<div class="person-headline">"${person.linkedin_headline}"</div>` : ''}
                       ${themes.length > 0 ? `<div class="person-themes">${themes.map(t => `<span class="person-theme-tag">${t}</span>`).join('')}</div>` : ''}
@@ -1179,59 +1187,6 @@
           </div>
         </div>
         ` : ''}
-
-        <!-- Pipeline Edit Form -->
-        <div class="pipeline-section">
-          <div class="pipeline-title">Pipeline Status</div>
-          <form id="pipeline-form" onsubmit="submitPipeline(event, '${company.id}')">
-            <div class="pipeline-grid">
-              <div class="pipeline-field">
-                <label for="pipeline-stage">Stage</label>
-                <select id="pipeline-stage" name="stage" required>
-                  ${['prospect', 'researching', 'outreach', 'engaged', 'active_deal', 'closed', 'passed'].map(s =>
-                    `<option value="${s}" ${pipeline?.stage === s ? 'selected' : ''}>${s.replace('_', ' ').replace(/^\w/, c => c.toUpperCase())}</option>`
-                  ).join('')}
-                </select>
-              </div>
-              <div class="pipeline-field">
-                <label for="pipeline-priority">Priority</label>
-                <select id="pipeline-priority" name="priority" required>
-                  ${[1,2,3,4,5].map(n =>
-                    `<option value="${n}" ${(pipeline?.priority || 3) === n ? 'selected' : ''}>${n} - ${['Lowest', 'Low', 'Medium', 'High', 'Highest'][n-1]}</option>`
-                  ).join('')}
-                </select>
-              </div>
-              <div class="pipeline-field">
-                <label for="pipeline-client-type">Client Type</label>
-                <select id="pipeline-client-type" name="client_type" required>
-                  ${['sell_side', 'buy_side', 'growth_capital'].map(t =>
-                    `<option value="${t}" ${(pipeline?.client_type || 'sell_side') === t ? 'selected' : ''}>${t.replace(/_/g, ' ').replace(/^\w/, c => c.toUpperCase())}</option>`
-                  ).join('')}
-                </select>
-              </div>
-            </div>
-            <div class="pipeline-grid" style="grid-template-columns: 1fr 1fr;">
-              <div class="pipeline-field">
-                <label for="pipeline-next-action">Next Action</label>
-                <input type="text" id="pipeline-next-action" name="next_action" placeholder="e.g., Call owner, Send intro email..." value="${pipeline?.next_action || ''}">
-              </div>
-              <div class="pipeline-field">
-                <label for="pipeline-next-date">Next Action Date</label>
-                <input type="date" id="pipeline-next-date" name="next_action_date" value="${pipeline?.next_action_date || ''}">
-              </div>
-            </div>
-            <div class="pipeline-field" style="margin-bottom: 16px;">
-              <label for="pipeline-notes">Notes</label>
-              <textarea id="pipeline-notes" name="notes" placeholder="Pipeline notes...">${pipeline?.notes || ''}</textarea>
-            </div>
-            <div class="feedback-actions">
-              <button type="submit" class="btn-pipeline" id="pipeline-submit-btn">
-                ${pipeline ? 'Update Pipeline' : 'Set Pipeline Status'}
-              </button>
-              <span class="pipeline-status" id="pipeline-status"></span>
-            </div>
-          </form>
-        </div>
 
         <!-- Transaction Signals -->
         ${signals.length > 0 ? `
@@ -1348,6 +1303,59 @@
           </div>
         </div>
         ` : ''}
+
+        <!-- Pipeline Edit Form -->
+        <div class="pipeline-section">
+          <div class="pipeline-title">Pipeline Status</div>
+          <form id="pipeline-form" onsubmit="submitPipeline(event, '${company.id}')">
+            <div class="pipeline-grid">
+              <div class="pipeline-field">
+                <label for="pipeline-stage">Stage</label>
+                <select id="pipeline-stage" name="stage" required>
+                  ${['prospect', 'researching', 'outreach', 'engaged', 'active_deal', 'closed', 'passed'].map(s =>
+                    `<option value="${s}" ${pipeline?.stage === s ? 'selected' : ''}>${s.replace('_', ' ').replace(/^\w/, c => c.toUpperCase())}</option>`
+                  ).join('')}
+                </select>
+              </div>
+              <div class="pipeline-field">
+                <label for="pipeline-priority">Priority</label>
+                <select id="pipeline-priority" name="priority" required>
+                  ${[1,2,3,4,5].map(n =>
+                    `<option value="${n}" ${(pipeline?.priority || 3) === n ? 'selected' : ''}>${n} - ${['Lowest', 'Low', 'Medium', 'High', 'Highest'][n-1]}</option>`
+                  ).join('')}
+                </select>
+              </div>
+              <div class="pipeline-field">
+                <label for="pipeline-client-type">Client Type</label>
+                <select id="pipeline-client-type" name="client_type" required>
+                  ${['sell_side', 'buy_side', 'growth_capital'].map(t =>
+                    `<option value="${t}" ${(pipeline?.client_type || 'sell_side') === t ? 'selected' : ''}>${t.replace(/_/g, ' ').replace(/^\w/, c => c.toUpperCase())}</option>`
+                  ).join('')}
+                </select>
+              </div>
+            </div>
+            <div class="pipeline-grid" style="grid-template-columns: 1fr 1fr;">
+              <div class="pipeline-field">
+                <label for="pipeline-next-action">Next Action</label>
+                <input type="text" id="pipeline-next-action" name="next_action" placeholder="e.g., Call owner, Send intro email..." value="${pipeline?.next_action || ''}">
+              </div>
+              <div class="pipeline-field">
+                <label for="pipeline-next-date">Next Action Date</label>
+                <input type="date" id="pipeline-next-date" name="next_action_date" value="${pipeline?.next_action_date || ''}">
+              </div>
+            </div>
+            <div class="pipeline-field" style="margin-bottom: 16px;">
+              <label for="pipeline-notes">Notes</label>
+              <textarea id="pipeline-notes" name="notes" placeholder="Pipeline notes...">${pipeline?.notes || ''}</textarea>
+            </div>
+            <div class="feedback-actions">
+              <button type="submit" class="btn-pipeline" id="pipeline-submit-btn">
+                ${pipeline ? 'Update Pipeline' : 'Set Pipeline Status'}
+              </button>
+              <span class="pipeline-status" id="pipeline-status"></span>
+            </div>
+          </form>
+        </div>
 
         <!-- Feedback Form -->
         <div class="feedback-section">
