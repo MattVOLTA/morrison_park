@@ -7,6 +7,31 @@
 
 ## February 2026
 
+### 2026-02-27 — Session: Branding alignment, LinkedIn fix, NL comparison, Ken email
+
+> Aligned dashboard styling with one-pager branding (navy/blue palette, Lato font, MPA logo). Fixed LinkedIn intel empty panel bug. Moved Pipeline Status above rating card. Compared NL database against Ken's outreach list (zero overlap). Drafted and created Gmail reply to Ken with update summary.
+
+- **Type**: session
+- **Modified**:
+  - `idea_cards/index.html` — switched DM Sans to Lato font, added navy/blue CSS variables, replaced gold "M" logo with MPA white logo on navy sidebar header, restyled section headers as blue bars with white text, tightened card border-radius, updated loading spinner to blue, styled mobile header to match
+  - `idea_cards/index.html` — fixed LinkedIn intel: `hasLinkedin` replaced with `hasLinkedinIntel` (only shows expandable panel when headline, themes, or starters exist)
+  - `idea_cards/index.html` — moved Pipeline Status section above Rate This Idea Card
+- **Discovered**:
+  - Ken's NL outreach list (12 companies) has zero overlap with our 9 NL database companies
+  - 5 new NL records added today: Crosbie Group, The Cahill Group, Provincial Health & Home Care, Purity Factories, Browning Harvey
+  - 4 existing NL records enriched: CoLab Software, Cal LeGrow Insurance, Mysa, Sparrow BioAcoustics
+  - Ken's outreach list skews ocean/marine/offshore; our enricher surfaced broader industries (insurance, food, healthtech, construction)
+- **Created**:
+  - Gmail draft reply to Ken → Draft ID `r6362763239539361683`
+  - PR [#19](https://github.com/MattVOLTA/morrison_park/pull/19) — feat(dashboard): align styling with one-pager branding + UX fixes
+- **Sources**: Fireflies transcript `01KJFE9GKG0AF5YTFQN73387S1`, Gmail thread `19ca15a415c7ab22`, Ken's PDF "Newfoundland and Labrador Outreach List - March 2, 2026"
+- **Next**:
+  - [ ] Enrich NL company profiles to one-pager depth (company description, management/board, deal activity, recent news)
+  - [ ] Get Ken's quality feedback on the 9 NL companies
+  - [ ] Merge PR #19
+
+---
+
 ### 2026-02-27 — Session: Dashboard UX upgrades, one-pager template, Ken call follow-up
 
 > Shipped filter persistence and LinkedIn expand on person cards. Built MPA-style one-pager template modeled on Ken's analyst format. Pulled Ken's meeting transcript, downloaded his one-pager PDF, and drafted follow-up email.
