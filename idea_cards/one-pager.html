@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MPA One-Pager</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+  <style>
+    :root {
+      --teal: #1a7a7a;
+      --teal-light: #e8f4f4;
+      --gold: #b8860b;
+      --gold-dim: rgba(184, 134, 11, 0.08);
+      --text: #1a1f2e;
+      --text-secondary: #5a6275;
+      --text-muted: #8b95a8;
+      --border: #e2e5ea;
+      --bg: #ffffff;
+      --bg-alt: #f8f9fb;
+    }
+
+    @page {
+      size: letter;
+      margin: 0.6in 0.65in;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'DM Sans', -apple-system, sans-serif;
+      font-size: 11px;
+      line-height: 1.5;
+      color: var(--text);
+      background: var(--bg);
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    /* --- Page Shell --- */
+    .page {
+      max-width: 8.5in;
+      margin: 0 auto;
+      padding: 32px 40px;
+      position: relative;
+    }
+
+    @media print {
+      .page { padding: 0; max-width: none; }
+      .no-print { display: none !important; }
+      .page-break { page-break-before: always; }
+    }
+
+    /* --- Header --- */
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      border-bottom: 2.5px solid var(--teal);
+      padding-bottom: 12px;
+      margin-bottom: 18px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-mark {
+      background: var(--teal);
+      color: white;
+      font-weight: 700;
+      font-size: 14px;
+      padding: 5px 10px;
+      letter-spacing: 0.5px;
+    }
+
+    .logo-text {
+      font-size: 12px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--text);
+      line-height: 1.2;
+    }
+
+    .logo-text span { display: block; font-weight: 300; letter-spacing: 4.5px; }
+
+    .confidential {
+      font-size: 8px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    /* --- Company Title --- */
+    .company-title {
+      text-align: center;
+      margin-bottom: 18px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .company-title h1 {
+      font-family: 'Fraunces', Georgia, serif;
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--text);
+      letter-spacing: -0.3px;
+    }
+
+    .company-title .subtitle {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    /* --- Section Bars --- */
+    .section-bar {
+      background: var(--teal);
+      color: white;
+      font-size: 10.5px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      text-align: center;
+      padding: 5px 16px;
+      margin: 16px 0 10px 0;
+      border-radius: 1px;
+    }
+
+    .section-bar:first-of-type { margin-top: 0; }
+
+    /* --- Content Lists --- */
+    .section-content {
+      padding: 0 4px;
+    }
+
+    .section-content ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .section-content ul li {
+      position: relative;
+      padding-left: 14px;
+      margin-bottom: 5px;
+      line-height: 1.55;
+    }
+
+    .section-content ul li::before {
+      content: "\25AA";
+      position: absolute;
+      left: 0;
+      top: 0;
+      color: var(--teal);
+      font-size: 8px;
+      line-height: 1.55;
+    }
+
+    .section-content ul li ul {
+      margin-top: 3px;
+    }
+
+    .section-content ul li ul li {
+      padding-left: 16px;
+      font-size: 10.5px;
+    }
+
+    .section-content ul li ul li::before {
+      content: "\25AB";
+    }
+
+    .section-content strong {
+      font-weight: 600;
+    }
+
+    /* --- Two Column Layout --- */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4px 32px;
+      padding: 0 4px;
+    }
+
+    .two-col li {
+      position: relative;
+      padding-left: 14px;
+      margin-bottom: 4px;
+      line-height: 1.55;
+      list-style: none;
+    }
+
+    .two-col li::before {
+      content: "\25AA";
+      position: absolute;
+      left: 0;
+      top: 0;
+      color: var(--teal);
+      font-size: 8px;
+      line-height: 1.55;
+    }
+
+    /* --- Footnotes --- */
+    sup.fn {
+      color: var(--teal);
+      font-size: 8px;
+      font-weight: 600;
+      cursor: help;
+      vertical-align: super;
+      line-height: 0;
+    }
+
+    .footnotes {
+      margin-top: 20px;
+      padding-top: 10px;
+      border-top: 1px solid var(--border);
+    }
+
+    .footnotes ol {
+      list-style: none;
+      padding: 0;
+      counter-reset: fn;
+    }
+
+    .footnotes ol li {
+      counter-increment: fn;
+      font-size: 8.5px;
+      color: var(--text-muted);
+      margin-bottom: 1px;
+      line-height: 1.5;
+      padding-left: 12px;
+      position: relative;
+    }
+
+    .footnotes ol li::before {
+      content: counter(fn);
+      position: absolute;
+      left: 0;
+      color: var(--teal);
+      font-weight: 600;
+      font-size: 7.5px;
+      top: 1px;
+    }
+
+    .footnotes a {
+      color: var(--text-muted);
+      text-decoration: none;
+      word-break: break-all;
+    }
+
+    .footnotes a:hover { color: var(--teal); text-decoration: underline; }
+
+    /* --- Page Footer --- */
+    .page-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-top: 14px;
+      padding-top: 8px;
+      border-top: 1px solid var(--border);
+    }
+
+    .footer-logo {
+      background: var(--teal);
+      color: white;
+      font-weight: 700;
+      font-size: 10px;
+      padding: 3px 8px;
+      letter-spacing: 0.5px;
+    }
+
+    .page-number {
+      font-size: 9px;
+      color: var(--text-muted);
+    }
+
+    /* --- Quick Facts Strip --- */
+    .quick-facts {
+      display: flex;
+      gap: 0;
+      margin-bottom: 4px;
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .quick-fact {
+      flex: 1;
+      text-align: center;
+      padding: 8px 10px;
+      border-right: 1px solid var(--border);
+    }
+
+    .quick-fact:last-child { border-right: none; }
+
+    .quick-fact .label {
+      font-size: 8.5px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-muted);
+      font-weight: 500;
+      margin-bottom: 2px;
+    }
+
+    .quick-fact .value {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .quick-fact .value.gold { color: var(--gold); }
+
+    /* --- Signals Timeline --- */
+    .signal-item {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      padding: 6px 4px;
+      border-bottom: 1px solid var(--bg-alt);
+    }
+
+    .signal-item:last-child { border-bottom: none; }
+
+    .signal-date {
+      font-size: 9px;
+      color: var(--text-muted);
+      white-space: nowrap;
+      min-width: 70px;
+      padding-top: 1px;
+    }
+
+    .signal-badge {
+      font-size: 8px;
+      padding: 1px 6px;
+      border-radius: 2px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      white-space: nowrap;
+    }
+
+    .signal-badge.succession { background: var(--gold-dim); color: var(--gold); }
+    .signal-badge.market { background: #e8f4f4; color: var(--teal); }
+    .signal-badge.financial { background: #eff6ff; color: #2563eb; }
+    .signal-badge.news { background: #f1f3f7; color: #5a6275; }
+
+    .signal-text { font-size: 11px; flex: 1; }
+
+    /* --- Loading State --- */
+    .loading {
+      text-align: center;
+      padding: 120px 20px;
+      color: var(--text-muted);
+    }
+
+    .loading-spinner {
+      width: 32px;
+      height: 32px;
+      border: 3px solid var(--border);
+      border-top-color: var(--teal);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 0 auto 16px;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* --- Nav bar (screen only) --- */
+    .nav-bar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--text);
+      padding: 10px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-bar a {
+      color: rgba(255,255,255,0.7);
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .nav-bar a:hover { color: white; }
+
+    .btn-print {
+      background: var(--teal);
+      color: white;
+      border: none;
+      padding: 6px 16px;
+      border-radius: 3px;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      letter-spacing: 0.5px;
+    }
+
+    .btn-print:hover { filter: brightness(1.1); }
+
+    /* --- Empty State --- */
+    .empty { color: var(--text-muted); font-style: italic; font-size: 10.5px; padding: 4px 4px; }
+  </style>
+</head>
+<body>
+
+  <!-- Screen-only nav -->
+  <div class="nav-bar no-print">
+    <a href="index.html">&larr; Back to Dashboard</a>
+    <button class="btn-print" onclick="window.print()">Print / Save PDF</button>
+  </div>
+
+  <div class="page" id="page">
+    <div class="loading" id="loading">
+      <div class="loading-spinner"></div>
+      <div>Loading company profile&hellip;</div>
+    </div>
+  </div>
+
+  <script>
+    const SUPABASE_URL = 'https://vuuoukfcbucgsqnnsaii.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ1dW91a2ZjYnVjZ3Nxbm5zYWlpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ4OTU4MTgsImV4cCI6MjA4MDQ3MTgxOH0.L9xpsTOwSpLvY7OdVvsd74oGS6ubVOJxtNCZSiXdjQY';
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    const params = new URLSearchParams(window.location.search);
+    const companyId = params.get('id');
+
+    if (!companyId) {
+      document.getElementById('loading').innerHTML = '<div style="color:#dc2626;">No company ID provided. Use ?id=&lt;company-id&gt;</div>';
+    } else {
+      loadCompany(companyId);
+    }
+
+    async function loadCompany(id) {
+      try {
+        const [companyRes, peopleRes, sourcesRes, signalsRes, acquirersRes, investorsRes, connectionsRes] = await Promise.all([
+          supabase.from('companies').select('*').eq('id', id).single(),
+          supabase.from('key_people').select('*').eq('company_id', id),
+          supabase.from('research_sources').select('*').eq('company_id', id),
+          supabase.from('signals').select('*').eq('company_id', id).order('signal_date', { ascending: false }),
+          supabase.from('potential_acquirers').select('*').eq('company_id', id),
+          supabase.from('company_investors').select('*, investors(*)').eq('company_id', id),
+          supabase.from('connections').select('*').eq('company_id', id),
+        ]);
+
+        if (companyRes.error) throw companyRes.error;
+
+        const company = companyRes.data;
+        const people = peopleRes.data || [];
+        const sources = sourcesRes.data || [];
+        const signals = signalsRes.data || [];
+        const acquirers = acquirersRes.data || [];
+        const investors = investorsRes.data || [];
+        const connections = connectionsRes.data || [];
+
+        document.title = `MPA One-Pager | ${company.name}`;
+        render(company, people, sources, signals, acquirers, investors, connections);
+      } catch (err) {
+        console.error(err);
+        document.getElementById('loading').innerHTML = `<div style="color:#dc2626;">Error loading company: ${err.message}</div>`;
+      }
+    }
+
+    // Footnote tracker
+    let footnotes = [];
+    function fn(url, label) {
+      if (!url) return '';
+      let idx = footnotes.findIndex(f => f.url === url);
+      if (idx === -1) {
+        footnotes.push({ url, label: label || url });
+        idx = footnotes.length - 1;
+      }
+      return `<sup class="fn" title="${url}">${idx + 1}</sup>`;
+    }
+
+    function renderFootnotes() {
+      if (footnotes.length === 0) return '';
+      return `<div class="footnotes"><ol>${footnotes.map(f =>
+        `<li><a href="${f.url}" target="_blank" rel="noopener">${truncateUrl(f.url)}</a></li>`
+      ).join('')}</ol></div>`;
+    }
+
+    function truncateUrl(url) {
+      try {
+        const u = new URL(url);
+        const path = u.pathname.length > 50 ? u.pathname.substring(0, 50) + '...' : u.pathname;
+        return u.hostname + path;
+      } catch { return url.length > 80 ? url.substring(0, 80) + '...' : url; }
+    }
+
+    function formatRevenue(val) {
+      if (!val) return 'N/A';
+      if (val >= 1e9) return `$${(val / 1e9).toFixed(1)}B`;
+      if (val >= 1e6) return `$${(val / 1e6).toFixed(0)}M`;
+      return `$${val.toLocaleString()}`;
+    }
+
+    function formatDate(d) {
+      if (!d) return '';
+      return new Date(d).toLocaleDateString('en-CA', { year: 'numeric', month: 'short', day: 'numeric' });
+    }
+
+    function signalCategory(cat) {
+      if (!cat) return 'news';
+      const c = cat.toLowerCase();
+      if (c.includes('success') || c.includes('owner') || c.includes('retire') || c.includes('legacy')) return 'succession';
+      if (c.includes('market') || c.includes('growth') || c.includes('industry')) return 'market';
+      if (c.includes('financ') || c.includes('capital') || c.includes('invest') || c.includes('fund')) return 'financial';
+      return 'news';
+    }
+
+    function render(company, people, sources, signals, acquirers, investors, connections) {
+      footnotes = [];
+
+      // Split people into leadership and board
+      const leadership = people.filter(p => {
+        const t = (p.title || '').toLowerCase();
+        return t.includes('ceo') || t.includes('president') || t.includes('founder') ||
+               t.includes('cfo') || t.includes('coo') || t.includes('cto') ||
+               t.includes('vp') || t.includes('chief') || t.includes('owner') ||
+               t.includes('director') || t.includes('partner') || t.includes('manager') || t.includes('general');
+      });
+      const board = people.filter(p => {
+        const t = (p.title || '').toLowerCase();
+        return t.includes('board') || t.includes('chair') || t.includes('trustee');
+      });
+      // If no clear split, just show all under management
+      const mgmt = leadership.length > 0 ? leadership : people;
+
+      // Company overview from markdown or build from fields
+      const overviewBullets = buildOverview(company, sources);
+
+      // Signals grouped as news
+      const newsSignals = signals.filter(s => s.description);
+
+      // Build the HTML
+      const page = document.getElementById('page');
+      page.innerHTML = `
+        <!-- Header -->
+        <div class="page-header">
+          <div class="logo">
+            <div class="logo-mark">MPA</div>
+            <div class="logo-text">
+              Morrison Park
+              <span>Advisors</span>
+            </div>
+          </div>
+          <div class="confidential">Private &amp; Confidential</div>
+        </div>
+
+        <!-- Company Title -->
+        <div class="company-title">
+          <h1>${company.legal_name || company.name}</h1>
+          ${company.legal_name && company.legal_name !== company.name ? `<div class="subtitle">Operating as ${company.name}</div>` : ''}
+        </div>
+
+        <!-- Quick Facts -->
+        <div class="quick-facts">
+          <div class="quick-fact">
+            <div class="label">Location</div>
+            <div class="value">${company.location || company.province || 'N/A'}</div>
+          </div>
+          <div class="quick-fact">
+            <div class="label">Founded</div>
+            <div class="value">${company.founded_year || 'N/A'}</div>
+          </div>
+          <div class="quick-fact">
+            <div class="label">Industry</div>
+            <div class="value">${company.industry || 'N/A'}</div>
+          </div>
+          <div class="quick-fact">
+            <div class="label">Revenue Est.</div>
+            <div class="value gold">${formatRevenue(company.revenue_estimate)}</div>
+          </div>
+          <div class="quick-fact">
+            <div class="label">Employees</div>
+            <div class="value">${company.employee_count ? `~${company.employee_count.toLocaleString()}` : 'N/A'}</div>
+          </div>
+          <div class="quick-fact">
+            <div class="label">Ownership</div>
+            <div class="value">${company.ownership_type || 'N/A'}</div>
+          </div>
+        </div>
+
+        <!-- Company Overview -->
+        <div class="section-bar">Company Overview</div>
+        <div class="section-content">
+          ${overviewBullets}
+        </div>
+
+        <!-- Products / Services (from markdown if available) -->
+        ${renderProductsSection(company, sources)}
+
+        <!-- Key People / Management and Board -->
+        ${people.length > 0 ? `
+          <div class="section-bar">Management and Board</div>
+          <ul class="two-col">
+            ${people.map(p => `<li><strong>${p.name}:</strong> ${p.title || 'Role unknown'}${p.age_estimate ? ` (~${p.age_estimate})` : ''}${p.tenure_years ? ` &middot; ${p.tenure_years}yr tenure` : ''}${fn(p.source_url, p.name)}</li>`).join('')}
+          </ul>
+        ` : ''}
+
+        <!-- Investment History -->
+        ${investors.length > 0 ? `
+          <div class="section-bar">Capital Raising History</div>
+          <div class="section-content">
+            <ul>
+              ${investors.map(inv => {
+                const name = inv.investors?.name || 'Unknown investor';
+                const amt = inv.investment_amount ? formatRevenue(inv.investment_amount) : 'Undisclosed';
+                const date = inv.investment_date ? ` on ${formatDate(inv.investment_date)}` : '';
+                return `<li>${amt} from ${name}${date}${inv.board_seat ? ' (board seat)' : ''}${fn(inv.source_url)}</li>`;
+              }).join('')}
+            </ul>
+          </div>
+        ` : ''}
+
+        <!-- M&A Activity / Potential Acquirers -->
+        ${acquirers.length > 0 ? `
+          <div class="section-bar">M&amp;A Activity &amp; Potential Acquirers</div>
+          <div class="section-content">
+            <ul>
+              ${acquirers.map(a => `<li><strong>${a.acquirer_name}</strong> (${a.acquirer_type || 'Strategic'})${a.rationale ? ` &mdash; ${a.rationale}` : ''}${a.recent_deals ? ` Recent: ${a.recent_deals}` : ''}${fn(a.source_url)}</li>`).join('')}
+            </ul>
+          </div>
+        ` : ''}
+
+        <!-- Company News & Signals -->
+        ${newsSignals.length > 0 ? `
+          <div class="section-bar">Company News and Recent Transactions</div>
+          <div class="section-content">
+            <ul>
+              ${newsSignals.map(s => `<li>${s.description}${s.signal_date ? ` (${formatDate(s.signal_date)})` : ''}${fn(s.source_url)}</li>`).join('')}
+            </ul>
+          </div>
+        ` : ''}
+
+        <!-- Connections / Warm Introductions -->
+        ${connections.length > 0 ? `
+          <div class="section-bar">Connections &amp; Warm Introductions</div>
+          <div class="section-content">
+            <ul>
+              ${connections.map(c => `<li>${c.connection_detail}${c.potential_introducer ? ` &mdash; <strong>Via:</strong> ${c.potential_introducer}` : ''}${c.introducer_relationship ? ` (${c.introducer_relationship})` : ''}${fn(c.source_url)}</li>`).join('')}
+            </ul>
+          </div>
+        ` : ''}
+
+        <!-- Succession Readiness (unique to our platform) -->
+        ${company.succession_readiness ? `
+          <div class="section-bar">Succession Readiness Assessment</div>
+          <div class="quick-facts" style="margin-top:0">
+            <div class="quick-fact">
+              <div class="label">Overall</div>
+              <div class="value gold">${company.succession_readiness}</div>
+            </div>
+            <div class="quick-fact">
+              <div class="label">Owner Age</div>
+              <div class="value">${company.score_owner_age || '-'}/5</div>
+            </div>
+            <div class="quick-fact">
+              <div class="label">Tenure</div>
+              <div class="value">${company.score_tenure || '-'}/5</div>
+            </div>
+            <div class="quick-fact">
+              <div class="label">Legacy</div>
+              <div class="value">${company.score_legacy_signals || '-'}/5</div>
+            </div>
+            <div class="quick-fact">
+              <div class="label">Next Gen</div>
+              <div class="value">${company.score_nextgen_clarity || '-'}/5</div>
+            </div>
+            <div class="quick-fact">
+              <div class="label">Activity</div>
+              <div class="value">${company.score_activity_trajectory || '-'}/5</div>
+            </div>
+          </div>
+        ` : ''}
+
+        <!-- Research Sources -->
+        ${renderFootnotes()}
+
+        <!-- Footer -->
+        <div class="page-footer">
+          <div class="footer-logo">MPA</div>
+          <div class="page-number">Generated ${new Date().toLocaleDateString('en-CA', { year: 'numeric', month: 'long', day: 'numeric' })} &middot; AI-Assisted Research</div>
+        </div>
+      `;
+    }
+
+    function buildOverview(company, sources) {
+      const bullets = [];
+
+      // Try to extract overview from markdown
+      if (company.markdown_content) {
+        const md = company.markdown_content;
+        // Look for overview/description section
+        const overviewMatch = md.match(/##?\s*(?:Company\s*)?Overview[^\n]*\n([\s\S]*?)(?=\n##|\n---|\n\*\*[A-Z]|$)/i)
+          || md.match(/##?\s*(?:Business\s*)?Description[^\n]*\n([\s\S]*?)(?=\n##|\n---|\n\*\*[A-Z]|$)/i);
+
+        if (overviewMatch) {
+          const lines = overviewMatch[1].split('\n')
+            .map(l => l.replace(/^[\s*-]+/, '').trim())
+            .filter(l => l.length > 10);
+          lines.forEach(l => bullets.push(l));
+        }
+      }
+
+      // Fallback: build from structured data
+      if (bullets.length === 0) {
+        if (company.founded_year) {
+          bullets.push(`Founded in ${company.founded_year}, ${company.name} is a ${(company.ownership_type || 'privately held').toLowerCase()} company based in ${company.location || company.province}.`);
+        } else {
+          bullets.push(`${company.name} is a ${(company.ownership_type || 'privately held').toLowerCase()} company based in ${company.location || company.province}.`);
+        }
+        if (company.industry) {
+          bullets.push(`Operates in the ${company.industry} sector${company.employee_count ? ` with approximately ${company.employee_count.toLocaleString()} employees` : ''}.`);
+        }
+        if (company.website) {
+          bullets.push(`Website: ${company.website}`);
+        }
+      }
+
+      // Add source footnotes for first few research sources
+      const overviewSources = sources.filter(s => s.source_type === 'company_website' || s.source_type === 'corporate_registry' || s.source_type === 'news');
+      overviewSources.slice(0, 3).forEach((s, i) => {
+        if (bullets[i] && s.source_url) {
+          bullets[i] += fn(s.source_url, s.source_name);
+        }
+      });
+
+      return `<ul>${bullets.map(b => `<li>${b}</li>`).join('')}</ul>`;
+    }
+
+    function renderProductsSection(company, sources) {
+      if (!company.markdown_content) return '';
+
+      const md = company.markdown_content;
+      const productsMatch = md.match(/##?\s*(?:Products?|Services?|Business\s*(?:Lines?|Units?|Segments?)|Operations?|Solutions?|Offerings?)[^\n]*\n([\s\S]*?)(?=\n##|\n---|\n\*\*(?:Key|Management|Board|M&A|Capital|Company News|Succession|Potential|Warm))/i);
+
+      if (!productsMatch) return '';
+
+      const lines = productsMatch[1].split('\n')
+        .map(l => l.replace(/^[\s*-]+/, '').trim())
+        .filter(l => l.length > 5);
+
+      if (lines.length === 0) return '';
+
+      // Add source footnotes
+      const productSources = sources.filter(s => s.source_type === 'company_website' || s.data_points?.some(dp => dp.toLowerCase().includes('product') || dp.toLowerCase().includes('service')));
+      lines.forEach((l, i) => {
+        if (productSources[0]?.source_url && i === 0) {
+          lines[i] += fn(productSources[0].source_url, productSources[0].source_name);
+        }
+      });
+
+      return `
+        <div class="section-bar">Products &amp; Services</div>
+        <div class="section-content">
+          <ul>${lines.map(l => `<li>${l}</li>`).join('')}</ul>
+        </div>
+      `;
+    }
+  </script>
+</body>
+</html>

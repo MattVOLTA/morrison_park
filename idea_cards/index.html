@@ -1065,7 +1065,9 @@
         <div class="breadcrumb">Idea Cards / ${company.province}</div>
         <div class="company-header">
           <h1 class="company-title">${company.name}</h1>
-          <p class="company-subtitle">${company.industry || 'Industry not specified'} · ${company.location}</p>
+          <p class="company-subtitle">${company.industry || 'Industry not specified'} · ${company.location}
+            <a href="one-pager.html?id=${company.id}" target="_blank" style="margin-left:12px;font-size:11px;color:var(--accent-blue);text-decoration:none;font-weight:500;">View One-Pager &rarr;</a>
+          </p>
         </div>
 
         <!-- Metrics -->
