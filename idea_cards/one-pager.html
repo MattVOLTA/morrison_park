@@ -6,20 +6,20 @@
   <title>MPA One-Pager</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,400&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
   <style>
     :root {
-      --teal: #1a7a7a;
-      --teal-light: #e8f4f4;
-      --gold: #b8860b;
-      --gold-dim: rgba(184, 134, 11, 0.08);
-      --text: #1a1f2e;
-      --text-secondary: #5a6275;
-      --text-muted: #8b95a8;
-      --border: #e2e5ea;
+      --navy: #0D1C28;
+      --blue: #345572;
+      --blue-light: #e9eef3;
+      --blue-dim: rgba(52, 85, 114, 0.08);
+      --text: #0D1C28;
+      --text-secondary: #3a4a5c;
+      --text-muted: #6b7d92;
+      --border: #d4dbe3;
       --bg: #ffffff;
-      --bg-alt: #f8f9fb;
+      --bg-alt: #f5f7fa;
     }
 
     @page {
@@ -30,7 +30,7 @@
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
-      font-family: 'DM Sans', -apple-system, sans-serif;
+      font-family: 'Lato', -apple-system, sans-serif;
       font-size: 11px;
       line-height: 1.5;
       color: var(--text);
@@ -58,35 +58,21 @@
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
-      border-bottom: 2.5px solid var(--teal);
+      border-bottom: 2.5px solid var(--navy);
       padding-bottom: 12px;
       margin-bottom: 18px;
     }
 
     .logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
+      background: var(--navy);
+      padding: 8px 18px;
+      border-radius: 2px;
     }
 
-    .logo-mark {
-      background: var(--teal);
-      color: white;
-      font-weight: 700;
-      font-size: 14px;
-      padding: 5px 10px;
-      letter-spacing: 0.5px;
+    .logo img {
+      height: 22px;
+      display: block;
     }
-
-    .logo-text {
-      font-size: 12px;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      color: var(--text);
-      line-height: 1.2;
-    }
-
-    .logo-text span { display: block; font-weight: 300; letter-spacing: 4.5px; }
 
     .confidential {
       font-size: 8px;
@@ -120,7 +106,7 @@
 
     /* --- Section Bars --- */
     .section-bar {
-      background: var(--teal);
+      background: var(--blue);
       color: white;
       font-size: 10.5px;
       font-weight: 600;
@@ -156,7 +142,7 @@
       position: absolute;
       left: 0;
       top: 0;
-      color: var(--teal);
+      color: var(--blue);
       font-size: 8px;
       line-height: 1.55;
     }
@@ -199,19 +185,24 @@
       position: absolute;
       left: 0;
       top: 0;
-      color: var(--teal);
+      color: var(--blue);
       font-size: 8px;
       line-height: 1.55;
     }
 
     /* --- Footnotes --- */
-    sup.fn {
-      color: var(--teal);
+    sup.fn a {
+      color: var(--blue);
       font-size: 8px;
       font-weight: 600;
-      cursor: help;
+      text-decoration: none;
       vertical-align: super;
       line-height: 0;
+    }
+
+    sup.fn a:hover {
+      text-decoration: underline;
+      color: var(--navy);
     }
 
     .footnotes {
@@ -240,7 +231,7 @@
       content: counter(fn);
       position: absolute;
       left: 0;
-      color: var(--teal);
+      color: var(--blue);
       font-weight: 600;
       font-size: 7.5px;
       top: 1px;
@@ -252,7 +243,7 @@
       word-break: break-all;
     }
 
-    .footnotes a:hover { color: var(--teal); text-decoration: underline; }
+    .footnotes a:hover { color: var(--blue); text-decoration: underline; }
 
     /* --- Page Footer --- */
     .page-footer {
@@ -265,12 +256,14 @@
     }
 
     .footer-logo {
-      background: var(--teal);
-      color: white;
-      font-weight: 700;
-      font-size: 10px;
-      padding: 3px 8px;
-      letter-spacing: 0.5px;
+      background: var(--navy);
+      padding: 3px 10px;
+      border-radius: 1px;
+    }
+
+    .footer-logo img {
+      height: 12px;
+      display: block;
     }
 
     .page-number {
@@ -312,7 +305,7 @@
       color: var(--text);
     }
 
-    .quick-fact .value.gold { color: var(--gold); }
+    .quick-fact .value.gold { color: var(--navy); }
 
     /* --- Signals Timeline --- */
     .signal-item {
@@ -343,8 +336,8 @@
       white-space: nowrap;
     }
 
-    .signal-badge.succession { background: var(--gold-dim); color: var(--gold); }
-    .signal-badge.market { background: #e8f4f4; color: var(--teal); }
+    .signal-badge.succession { background: var(--blue-dim); color: var(--navy); }
+    .signal-badge.market { background: var(--blue-light); color: var(--blue); }
     .signal-badge.financial { background: #eff6ff; color: #2563eb; }
     .signal-badge.news { background: #f1f3f7; color: #5a6275; }
 
@@ -361,7 +354,7 @@
       width: 32px;
       height: 32px;
       border: 3px solid var(--border);
-      border-top-color: var(--teal);
+      border-top-color: var(--blue);
       border-radius: 50%;
       animation: spin 0.8s linear infinite;
       margin: 0 auto 16px;
@@ -391,7 +384,7 @@
     .nav-bar a:hover { color: white; }
 
     .btn-print {
-      background: var(--teal);
+      background: var(--navy);
       color: white;
       border: none;
       padding: 6px 16px;
@@ -483,7 +476,7 @@
         footnotes.push({ url, label: label || url });
         idx = footnotes.length - 1;
       }
-      return `<sup class="fn" title="${url}">${idx + 1}</sup>`;
+      return `<sup class="fn"><a href="${url}" target="_blank" rel="noopener" title="${url}">${idx + 1}</a></sup>`;
     }
 
     function renderFootnotes() {
@@ -552,11 +545,7 @@
         <!-- Header -->
         <div class="page-header">
           <div class="logo">
-            <div class="logo-mark">MPA</div>
-            <div class="logo-text">
-              Morrison Park
-              <span>Advisors</span>
-            </div>
+            <img src="MPA-Advisors-white.png" alt="Morrison Park Advisors">
           </div>
           <div class="confidential">Private &amp; Confidential</div>
         </div>
@@ -760,7 +749,7 @@
 
         <!-- Footer -->
         <div class="page-footer">
-          <div class="footer-logo">MPA</div>
+          <div class="footer-logo"><img src="MPA-Advisors-white.png" alt="MPA"></div>
           <div class="page-number">Generated ${new Date().toLocaleDateString('en-CA', { year: 'numeric', month: 'long', day: 'numeric' })} &middot; AI-Assisted Research</div>
         </div>
       `;

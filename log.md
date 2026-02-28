@@ -7,6 +7,33 @@
 
 ## February 2026
 
+### 2026-02-27 — Session: Dashboard UX upgrades, one-pager template, Ken call follow-up
+
+> Shipped filter persistence and LinkedIn expand on person cards. Built MPA-style one-pager template modeled on Ken's analyst format. Pulled Ken's meeting transcript, downloaded his one-pager PDF, and drafted follow-up email.
+
+- **Type**: session
+- **Created**:
+  - MPA-style one-pager template (`idea_cards/one-pager.html`) with teal section bars, footnoted citations, print-friendly layout
+  - Gmail draft to Ken summarizing dashboard updates and next steps
+- **Modified**:
+  - `idea_cards/index.html` — filter persistence via localStorage (province, sort-by, pipeline stage survive refresh)
+  - `idea_cards/index.html` — expandable LinkedIn intel on person cards with chevron toggle
+  - `idea_cards/index.html` — "View One-Pager" link in company header
+  - `netlify.toml` — removed catch-all rewrite that blocked one-pager route
+- **Discovered**:
+  - Ken sent one-pager PDF ("Newfoundland and Labrador Outreach List - March 2, 2026") with 13 NL companies for upcoming trip
+  - Ken's analyst format: Company Overview, Products/Services, Capital Raising, M&A Activity, Management & Board (two-col), Company News (footnoted), Industry Tailwinds
+  - Netlify `status: 200` rewrites override static file serving — must remove catch-all for multi-page static sites
+- **Resolved**: Fireflies transcript from today's 30-min call with Ken — captured action items and priorities
+- **Sources**: Fireflies MCP, Gmail (Google Workspace MCP), GitHub PR [#18](https://github.com/MattVOLTA/morrison_park/pull/18), Netlify deploy preview
+- **Next**:
+  - [ ] Debug one-pager "Loading..." state on deploy preview (Supabase query may be failing)
+  - [ ] Merge PR #18 to deploy one-pager to production
+  - [ ] Populate one-pager with real company data and test PDF export
+  - [ ] Add source citations to existing company profiles per Ken's feedback
+
+---
+
 ### 2026-02-22 — Session: Pipeline self-service shipped + Ken notified
 
 > Built and shipped pipeline edit form, stage filter, and sidebar badges for the dashboard. Emailed Ken with walkthrough of new features. Updated Todoist tasks.
