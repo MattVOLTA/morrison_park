@@ -49,16 +49,23 @@
       display: grid;
       grid-template-columns: 320px 1fr;
       min-height: 100vh;
+      transition: grid-template-columns 0.3s ease;
+    }
+
+    .app.sidebar-collapsed {
+      grid-template-columns: 0px 1fr;
     }
 
     @media (max-width: 900px) {
       .app { grid-template-columns: 1fr; }
+      .app.sidebar-collapsed { grid-template-columns: 1fr; }
       .sidebar {
         position: fixed; left: -100%; top: 0; height: 100vh; width: 300px;
         z-index: 1000; transition: left 0.3s ease;
       }
       .sidebar.open { left: 0; }
       .mobile-header { display: flex !important; }
+      .collapse-btn { display: none !important; }
     }
 
     /* Sidebar */
@@ -71,6 +78,54 @@
       top: 0;
       height: 100vh;
       overflow: hidden;
+      transition: width 0.3s ease, opacity 0.2s ease;
+      width: 320px;
+      min-width: 0;
+    }
+
+    .sidebar-collapsed .sidebar {
+      width: 0;
+      opacity: 0;
+      pointer-events: none;
+      border-right: none;
+    }
+
+    /* Collapse toggle button */
+    .collapse-btn {
+      position: fixed;
+      top: 12px;
+      left: 308px;
+      z-index: 50;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-medium);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: left 0.3s ease, transform 0.3s ease, background 0.15s ease;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    }
+
+    .collapse-btn:hover {
+      background: var(--bg-tertiary);
+    }
+
+    .collapse-btn svg {
+      width: 14px;
+      height: 14px;
+      color: var(--text-muted);
+      transition: transform 0.3s ease;
+    }
+
+    .sidebar-collapsed .collapse-btn {
+      left: 8px;
+    }
+
+    .sidebar-collapsed .collapse-btn svg {
+      transform: rotate(180deg);
     }
 
     .sidebar-header {
@@ -712,36 +767,6 @@
 
     .sidebar-overlay.open { display: block; }
 
-    /* POC Metrics Banner */
-    .poc-banner {
-      background: var(--accent-blue-dim);
-      border: 1px solid var(--accent-blue);
-      border-radius: 12px;
-      padding: 16px 20px;
-      margin-bottom: 24px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
-
-    .poc-metric {
-      text-align: center;
-    }
-
-    .poc-metric-value {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 18px;
-      font-weight: 600;
-      color: var(--accent-blue);
-    }
-
-    .poc-metric-label {
-      font-size: 11px;
-      color: var(--text-muted);
-      text-transform: uppercase;
-    }
   </style>
 </head>
 <body>
@@ -760,6 +785,14 @@
 
     <!-- Sidebar Overlay -->
     <div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
+
+
+    <!-- Sidebar Collapse Toggle -->
+    <button class="collapse-btn" id="collapse-btn" onclick="toggleCollapse()" title="Toggle sidebar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="15 18 9 12 15 6"></polyline>
+      </svg>
+    </button>
 
     <!-- Sidebar -->
     <aside class="sidebar" id="sidebar">
@@ -818,26 +851,6 @@
 
     <!-- Main Content -->
     <main class="main-content" id="main-content">
-      <!-- POC Metrics Banner -->
-      <div class="poc-banner" id="poc-banner" style="display: none;">
-        <div class="poc-metric">
-          <div class="poc-metric-value" id="poc-companies">0</div>
-          <div class="poc-metric-label">Companies</div>
-        </div>
-        <div class="poc-metric">
-          <div class="poc-metric-value" id="poc-avg-novelty">-</div>
-          <div class="poc-metric-label">Avg Novelty</div>
-        </div>
-        <div class="poc-metric">
-          <div class="poc-metric-value" id="poc-avg-accuracy">-</div>
-          <div class="poc-metric-label">Avg Accuracy</div>
-        </div>
-        <div class="poc-metric">
-          <div class="poc-metric-value" id="poc-avg-actionability">-</div>
-          <div class="poc-metric-label">Avg Actionability</div>
-        </div>
-      </div>
-
       <div class="empty-state" id="empty-state">
         <h2>Select a company</h2>
         <p>Choose a company from the sidebar to view details</p>
@@ -868,7 +881,6 @@
     // Initialize
     document.addEventListener('DOMContentLoaded', async () => {
       await loadCompanies();
-      await updatePOCMetrics();
     });
 
     // Load companies from Supabase
@@ -881,11 +893,12 @@
 
         if (error) throw error;
         companies = data || [];
-        renderCompanyList();
+        restoreFilters();
+        const filtered = applyFilters();
 
-        // Auto-select first company
-        if (companies.length > 0) {
-          selectCompany(companies[0].id);
+        // Auto-select first company in the filtered/sorted list
+        if (filtered.length > 0) {
+          selectCompany(filtered[0].id);
         }
       } catch (err) {
         console.error('Error loading companies:', err);
@@ -898,35 +911,16 @@
       }
     }
 
-    // Update POC metrics
-    async function updatePOCMetrics() {
+
+    // Restore saved filter state
+    function restoreFilters() {
       try {
-        const { data, error } = await supabase
-          .from('user_feedback')
-          .select('novelty_score, accuracy_score, actionability_score');
-
-        if (error) throw error;
-
-        const feedback = data || [];
-        const withNovelty = feedback.filter(f => f.novelty_score);
-        const withAccuracy = feedback.filter(f => f.accuracy_score);
-        const withActionability = feedback.filter(f => f.actionability_score);
-
-        document.getElementById('poc-companies').textContent = companies.length;
-        document.getElementById('poc-avg-novelty').textContent = withNovelty.length > 0
-          ? (withNovelty.reduce((sum, f) => sum + f.novelty_score, 0) / withNovelty.length).toFixed(1)
-          : '-';
-        document.getElementById('poc-avg-accuracy').textContent = withAccuracy.length > 0
-          ? (withAccuracy.reduce((sum, f) => sum + f.accuracy_score, 0) / withAccuracy.length).toFixed(1)
-          : '-';
-        document.getElementById('poc-avg-actionability').textContent = withActionability.length > 0
-          ? (withActionability.reduce((sum, f) => sum + f.actionability_score, 0) / withActionability.length).toFixed(1)
-          : '-';
-
-        document.getElementById('poc-banner').style.display = 'flex';
-      } catch (err) {
-        console.error('Error loading POC metrics:', err);
-      }
+        const saved = JSON.parse(localStorage.getItem('mpa-filters'));
+        if (!saved) return;
+        if (saved.province) document.getElementById('province-filter').value = saved.province;
+        if (saved.sortBy) document.getElementById('sort-by').value = saved.sortBy;
+        if (saved.stage) document.getElementById('stage-filter').value = saved.stage;
+      } catch (e) { /* ignore */ }
     }
 
     // Apply filters
@@ -934,6 +928,9 @@
       const province = document.getElementById('province-filter').value;
       const sortBy = document.getElementById('sort-by').value;
       const stage = document.getElementById('stage-filter').value;
+
+      // Persist to localStorage
+      localStorage.setItem('mpa-filters', JSON.stringify({ province, sortBy, stage }));
 
       let filtered = [...companies];
 
@@ -962,6 +959,7 @@
       });
 
       renderCompanyList(filtered);
+      return filtered;
     }
 
     // Render company list
@@ -1048,7 +1046,9 @@
         <div class="breadcrumb">Idea Cards / ${company.province}</div>
         <div class="company-header">
           <h1 class="company-title">${company.name}</h1>
-          <p class="company-subtitle">${company.industry || 'Industry not specified'} · ${company.location}</p>
+          <p class="company-subtitle">${company.industry || 'Industry not specified'} · ${company.location}
+            <a href="one-pager.html?id=${company.id}" target="_blank" style="margin-left:12px;font-size:11px;color:var(--accent-blue);text-decoration:none;font-weight:500;">View One-Pager &rarr;</a>
+          </p>
         </div>
 
         <!-- Metrics -->
@@ -1451,8 +1451,6 @@
         statusEl.style.color = 'var(--accent-emerald)';
         submitBtn.textContent = 'Update Feedback';
 
-        // Update POC metrics
-        await updatePOCMetrics();
 
         setTimeout(() => { statusEl.textContent = ''; }, 3000);
       } catch (err) {
@@ -1537,6 +1535,18 @@
       el.classList.toggle('expanded');
       const panel = el.querySelector('.person-linkedin');
       if (panel) panel.classList.toggle('open');
+    }
+
+    // Sidebar collapse (desktop)
+    function toggleCollapse() {
+      document.querySelector('.app').classList.toggle('sidebar-collapsed');
+      const collapsed = document.querySelector('.app').classList.contains('sidebar-collapsed');
+      localStorage.setItem('sidebar-collapsed', collapsed ? '1' : '');
+    }
+
+    // Restore sidebar collapse state
+    if (localStorage.getItem('sidebar-collapsed') === '1') {
+      document.querySelector('.app').classList.add('sidebar-collapsed');
     }
 
     // Mobile sidebar
