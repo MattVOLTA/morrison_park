@@ -427,7 +427,7 @@
   <script>
     const SUPABASE_URL = 'https://vuuoukfcbucgsqnnsaii.supabase.co';
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ1dW91a2ZjYnVjZ3Nxbm5zYWlpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ4OTU4MTgsImV4cCI6MjA4MDQ3MTgxOH0.L9xpsTOwSpLvY7OdVvsd74oGS6ubVOJxtNCZSiXdjQY';
-    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     const params = new URLSearchParams(window.location.search);
     const companyId = params.get('id');
@@ -441,13 +441,13 @@
     async function loadCompany(id) {
       try {
         const [companyRes, peopleRes, sourcesRes, signalsRes, acquirersRes, investorsRes, connectionsRes] = await Promise.all([
-          supabase.from('companies').select('*').eq('id', id).single(),
-          supabase.from('key_people').select('*').eq('company_id', id),
-          supabase.from('research_sources').select('*').eq('company_id', id),
-          supabase.from('signals').select('*').eq('company_id', id).order('signal_date', { ascending: false }),
-          supabase.from('potential_acquirers').select('*').eq('company_id', id),
-          supabase.from('company_investors').select('*, investors(*)').eq('company_id', id),
-          supabase.from('connections').select('*').eq('company_id', id),
+          sb.from('companies').select('*').eq('id', id).single(),
+          sb.from('key_people').select('*').eq('company_id', id),
+          sb.from('research_sources').select('*').eq('company_id', id),
+          sb.from('signals').select('*').eq('company_id', id).order('signal_date', { ascending: false }),
+          sb.from('potential_acquirers').select('*').eq('company_id', id),
+          sb.from('company_investors').select('*, investors(*)').eq('company_id', id),
+          sb.from('connections').select('*').eq('company_id', id),
         ]);
 
         if (companyRes.error) throw companyRes.error;
