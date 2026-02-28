@@ -440,7 +440,7 @@
 
     async function loadCompany(id) {
       try {
-        const [companyRes, peopleRes, sourcesRes, signalsRes, acquirersRes, investorsRes, connectionsRes] = await Promise.all([
+        const [companyRes, peopleRes, sourcesRes, signalsRes, acquirersRes, investorsRes, connectionsRes, productsRes, maRes, compsRes] = await Promise.all([
           sb.from('companies').select('*').eq('id', id).single(),
           sb.from('key_people').select('*').eq('company_id', id),
           sb.from('research_sources').select('*').eq('company_id', id),
@@ -448,6 +448,9 @@
           sb.from('potential_acquirers').select('*').eq('company_id', id),
           sb.from('company_investors').select('*, investors(*)').eq('company_id', id),
           sb.from('connections').select('*').eq('company_id', id),
+          sb.from('products').select('*').eq('company_id', id),
+          sb.from('ma_transactions').select('*').eq('company_id', id).order('transaction_date', { ascending: false }),
+          sb.from('comparable_transactions').select('*').eq('company_id', id).order('transaction_date', { ascending: false }),
         ]);
 
         if (companyRes.error) throw companyRes.error;
@@ -459,9 +462,12 @@
         const acquirers = acquirersRes.data || [];
         const investors = investorsRes.data || [];
         const connections = connectionsRes.data || [];
+        const products = productsRes.data || [];
+        const maTransactions = maRes.data || [];
+        const comps = compsRes.data || [];
 
         document.title = `MPA One-Pager | ${company.name}`;
-        render(company, people, sources, signals, acquirers, investors, connections);
+        render(company, people, sources, signals, acquirers, investors, connections, products, maTransactions, comps);
       } catch (err) {
         console.error(err);
         document.getElementById('loading').innerHTML = `<div style="color:#dc2626;">Error loading company: ${err.message}</div>`;
@@ -516,7 +522,7 @@
       return 'news';
     }
 
-    function render(company, people, sources, signals, acquirers, investors, connections) {
+    function render(company, people, sources, signals, acquirers, investors, connections, products, maTransactions, comps) {
       footnotes = [];
 
       // Split people into leadership and board
@@ -557,7 +563,7 @@
 
         <!-- Company Title -->
         <div class="company-title">
-          <h1>${company.legal_name || company.name}</h1>
+          <h1>${company.legal_name || company.name}${company.ticker_symbol ? ` (${company.stock_exchange || 'TSX'}:${company.ticker_symbol})` : ''}</h1>
           ${company.legal_name && company.legal_name !== company.name ? `<div class="subtitle">Operating as ${company.name}</div>` : ''}
         </div>
 
@@ -595,14 +601,34 @@
           ${overviewBullets}
         </div>
 
-        <!-- Products / Services (from markdown if available) -->
-        ${renderProductsSection(company, sources)}
+        <!-- Products / Services (structured products preferred, fallback to markdown) -->
+        ${products.length > 0 ? `
+          <div class="section-bar">Products &amp; Services</div>
+          <div class="section-content">
+            <ul>
+              ${products.map(p => `<li><strong>${p.name}:</strong> ${p.description || ''}${p.product_type ? ` <em>(${p.product_type})</em>` : ''}${fn(p.source_url, p.name)}</li>`).join('')}
+            </ul>
+          </div>
+        ` : renderProductsSection(company, sources)}
+
+        <!-- Financial Highlights (public companies) -->
+        ${company.financial_highlights ? `
+          <div class="section-bar">Fiscal Year Highlights</div>
+          <div class="quick-facts" style="margin-top:0">
+            ${company.financial_highlights.revenue ? `<div class="quick-fact"><div class="label">Revenue</div><div class="value">${formatRevenue(company.financial_highlights.revenue)}</div></div>` : ''}
+            ${company.financial_highlights.net_income ? `<div class="quick-fact"><div class="label">Net Income</div><div class="value">${formatRevenue(company.financial_highlights.net_income)}</div></div>` : ''}
+            ${company.financial_highlights.total_assets ? `<div class="quick-fact"><div class="label">Total Assets</div><div class="value">${formatRevenue(company.financial_highlights.total_assets)}</div></div>` : ''}
+            ${company.financial_highlights.capex ? `<div class="quick-fact"><div class="label">CapEx</div><div class="value">${formatRevenue(company.financial_highlights.capex)}</div></div>` : ''}
+            ${company.financial_highlights.eps ? `<div class="quick-fact"><div class="label">EPS</div><div class="value">$${company.financial_highlights.eps}</div></div>` : ''}
+            ${company.financial_highlights.dividend_yield ? `<div class="quick-fact"><div class="label">Div Yield</div><div class="value">${company.financial_highlights.dividend_yield}%</div></div>` : ''}
+          </div>
+        ` : ''}
 
         <!-- Key People / Management and Board -->
         ${people.length > 0 ? `
           <div class="section-bar">Management and Board</div>
           <ul class="two-col">
-            ${people.map(p => `<li><strong>${p.name}:</strong> ${p.title || 'Role unknown'}${p.age_estimate ? ` (~${p.age_estimate})` : ''}${p.tenure_years ? ` &middot; ${p.tenure_years}yr tenure` : ''}${fn(p.source_url, p.name)}</li>`).join('')}
+            ${people.map(p => `<li><strong>${p.name}:</strong> ${p.title || 'Role unknown'}${p.affiliation ? ` &ndash; ${p.affiliation}` : ''}${p.age_estimate ? ` (~${p.age_estimate})` : ''}${p.tenure_years ? ` &middot; ${p.tenure_years}yr tenure` : ''}${fn(p.source_url, p.name)}</li>`).join('')}
           </ul>
         ` : ''}
 
@@ -615,18 +641,39 @@
                 const name = inv.investors?.name || 'Unknown investor';
                 const amt = inv.investment_amount ? formatRevenue(inv.investment_amount) : 'Undisclosed';
                 const date = inv.investment_date ? ` on ${formatDate(inv.investment_date)}` : '';
-                return `<li>${amt} from ${name}${date}${inv.board_seat ? ' (board seat)' : ''}${fn(inv.source_url)}</li>`;
+                const round = inv.round_type ? `${inv.round_type}: ` : '';
+                return `<li>${round}${amt} from ${name}${date}${inv.board_seat ? ' (board seat)' : ''}${fn(inv.source_url)}</li>`;
               }).join('')}
+            </ul>
+          </div>
+        ` : ''}
+
+        <!-- M&A History (past transactions) -->
+        ${maTransactions.length > 0 ? `
+          <div class="section-bar">M&amp;A History</div>
+          <div class="section-content">
+            <ul>
+              ${maTransactions.map(t => `<li>${t.transaction_date ? formatDate(t.transaction_date) + ': ' : ''}${t.description}${t.counterparty ? ` (${t.transaction_type || 'transaction'} with ${t.counterparty})` : ''}${t.deal_value ? ` &mdash; ${formatRevenue(t.deal_value)}` : ''}${fn(t.source_url)}</li>`).join('')}
             </ul>
           </div>
         ` : ''}
 
         <!-- M&A Activity / Potential Acquirers -->
         ${acquirers.length > 0 ? `
-          <div class="section-bar">M&amp;A Activity &amp; Potential Acquirers</div>
+          <div class="section-bar">Potential Acquirers</div>
           <div class="section-content">
             <ul>
               ${acquirers.map(a => `<li><strong>${a.acquirer_name}</strong> (${a.acquirer_type || 'Strategic'})${a.rationale ? ` &mdash; ${a.rationale}` : ''}${a.recent_deals ? ` Recent: ${a.recent_deals}` : ''}${fn(a.source_url)}</li>`).join('')}
+            </ul>
+          </div>
+        ` : ''}
+
+        <!-- Comparable Transactions -->
+        ${comps.length > 0 ? `
+          <div class="section-bar">Comparable Transactions</div>
+          <div class="section-content">
+            <ul>
+              ${comps.map(c => `<li>${c.transaction_date ? formatDate(c.transaction_date) + ': ' : ''}<strong>${c.target_name}</strong>${c.acquirer_name ? ` acquired by ${c.acquirer_name}` : ''}${c.deal_value ? ` &mdash; ${formatRevenue(c.deal_value)}` : ''}${c.multiple ? ` (${c.multiple})` : ''}${c.description ? ` &mdash; ${c.description}` : ''}${fn(c.source_url)}</li>`).join('')}
             </ul>
           </div>
         ` : ''}
@@ -637,6 +684,32 @@
           <div class="section-content">
             <ul>
               ${newsSignals.map(s => `<li>${s.description}${s.signal_date ? ` (${formatDate(s.signal_date)})` : ''}${fn(s.source_url)}</li>`).join('')}
+            </ul>
+          </div>
+        ` : ''}
+
+        <!-- Industry Tailwinds -->
+        ${company.industry_tailwinds ? `
+          <div class="section-bar">Industry Tailwinds &amp; Company Positioning</div>
+          <div class="section-content">
+            <ul>
+              ${company.industry_tailwinds.split('|').map(t => t.trim()).filter(t => t).map(t => {
+                const parts = t.split(':');
+                if (parts.length > 1) {
+                  return `<li><strong>${parts[0].trim()}:</strong> ${parts.slice(1).join(':').trim()}</li>`;
+                }
+                return `<li>${t}</li>`;
+              }).join('')}
+            </ul>
+          </div>
+        ` : ''}
+
+        <!-- Geographies -->
+        ${company.geographies && company.geographies.length > 0 ? `
+          <div class="section-bar">Geographic Presence</div>
+          <div class="section-content">
+            <ul>
+              ${company.geographies.map(g => `<li>${g}</li>`).join('')}
             </ul>
           </div>
         ` : ''}

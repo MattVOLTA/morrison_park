@@ -450,10 +450,17 @@ After generating the markdown profile, save structured data to Supabase for quer
 ### Database Schema
 
 The Supabase database (`vuuoukfcbucgsqnnsaii`) has these tables:
-- `companies` - Core company data with succession scores and enriched profile fields
-- `key_people` - Executives, owners, and board members (with person type)
+- `companies` - Core company data with succession scores, enriched profile fields, and new columns: `ticker_symbol`, `stock_exchange`, `industry_tailwinds`, `financial_highlights` (JSONB), `geographies` (text[])
+- `key_people` - Executives, owners, and board members (with person type and `affiliation` for board member org ties)
+- `products` - Individual named products/services with descriptions (structured, not a text blob)
 - `research_sources` - All sources with URLs
-- `potential_acquirers` - Strategic and PE buyers
+- `signals` - Company news, succession signals, market events
+- `potential_acquirers` - Strategic and PE buyers (forward-looking)
+- `ma_transactions` - Historical M&A activity (past acquisitions, divestitures, mergers)
+- `comparable_transactions` - Deal comps from similar companies/sectors
+- `company_investors` - Capital raising history with `round_type` (Grant, Seed, Series A, etc.)
+- `investors` - Investor entities (PE firms, angels, grant agencies)
+- `connections` - Warm intro paths and connection opportunities
 - `user_feedback` - Ken's scoring (accuracy, novelty, actionability)
 
 ### How to Save Data
@@ -465,10 +472,15 @@ Use the Supabase MCP tools to insert data:
 INSERT INTO companies (
   name, legal_name, location, province, industry, founded_year, website,
   ownership_type, revenue_estimate, employee_count,
+  -- Public company fields (if applicable)
+  ticker_symbol, stock_exchange,
   -- Enriched profile fields
   executive_summary, company_description, products_services,
   company_history, markets_customers, major_projects,
   competitive_position, deal_activity, industry_memberships,
+  industry_tailwinds, geographies,
+  -- Financial highlights (JSONB — for public companies or when detailed financials available)
+  financial_highlights,
   -- Succession scores
   score_owner_age, score_tenure, score_nextgen_clarity,
   score_legacy_signals, score_activity_trajectory,
@@ -484,6 +496,9 @@ INSERT INTO companies (
   'founder-owned',  -- founder-owned, family-held, employee-owned, pe-backed, public, other
   100,  -- Revenue in millions
   500,  -- Employee count
+  -- Public company fields (NULL for private companies)
+  'FTS',  -- Ticker symbol (e.g., FTS, AH) or NULL
+  'TSX',  -- Exchange (TSX, NYSE, TSXV, CSE) or NULL
   -- Enriched profile fields (text)
   'Executive summary narrative...',
   'Company description narrative...',
@@ -494,6 +509,12 @@ INSERT INTO companies (
   'Competitive position and moats...',
   'Deal activity and M&A signals...',
   'Industry memberships and associations...',
+  -- Industry tailwinds (Ken's format: named macro trends with descriptions)
+  'Electrification & Load Growth: Rapid expansion... | Infrastructure Investment Cycle: Energy security...',
+  -- Geographies (text array of operating regions)
+  ARRAY['Atlantic Canada', 'Ontario', 'Western Canada'],
+  -- Financial highlights (JSONB — include what's available)
+  '{"fiscal_year": 2025, "revenue": 12000000000, "net_income": 1700000000, "total_assets": 75000000000, "capex": 5600000000, "dividend_yield": 4.1, "eps": 3.40}'::jsonb,
   -- Succession scores
   4,    -- Owner age score (1-5)
   5,    -- Tenure score (1-5)
@@ -510,7 +531,7 @@ INSERT INTO companies (
 INSERT INTO key_people (
   company_id, name, title, role, person_type,
   ownership_percentage, age_estimate, tenure_years,
-  linkedin_url, notes, source_url
+  affiliation, linkedin_url, notes, source_url
 ) VALUES (
   '[company_id from step 1]',
   'Person Name',
@@ -520,6 +541,7 @@ INSERT INTO key_people (
   0,
   65,
   20,
+  'CFFI Ventures Inc',  -- Board member's affiliated org (Ken's format: "John Risley: Chair – CFFI Ventures Inc")
   'https://linkedin.com/in/person',
   'Key insight about this person',
   'https://source.url'  -- REQUIRED
@@ -553,6 +575,68 @@ INSERT INTO potential_acquirers (
   'Why they would acquire',
   'Recent deal details',
   'https://source.url'  -- REQUIRED
+);
+```
+
+5. **Insert structured products** (for each product/service line):
+```sql
+INSERT INTO products (
+  company_id, name, description, product_type, source_url
+) VALUES (
+  '[company_id]',
+  'Novac',  -- Named product (Ken's format lists each individually)
+  'Physical hardware platform that projects 3D images without glasses or headsets',
+  'hardware',  -- hardware, software, service, platform, other
+  'https://source.url'
+);
+```
+
+6. **Insert historical M&A transactions** (past deals the company was involved in):
+```sql
+INSERT INTO ma_transactions (
+  company_id, transaction_date, counterparty,
+  transaction_type, deal_value, description, source_url
+) VALUES (
+  '[company_id]',
+  '2024-09-15',
+  'Target Company Inc',
+  'acquisition',  -- acquisition, divestiture, merger, joint_venture
+  25000000,  -- Deal value in dollars (NULL if undisclosed)
+  'Acquired Target Company to expand maritime operations',
+  'https://source.url'  -- REQUIRED
+);
+```
+
+7. **Insert comparable transactions** (deal comps from similar companies/sectors):
+```sql
+INSERT INTO comparable_transactions (
+  company_id, transaction_date, target_name,
+  acquirer_name, deal_value, multiple, description, source_url
+) VALUES (
+  '[company_id]',
+  '2024-06-01',
+  'Similar Company Ltd',
+  'PE Buyer Corp',
+  50000000,
+  '8.2x EBITDA',  -- Valuation multiple as text
+  'Comparable transaction in same sector and region',
+  'https://source.url'  -- REQUIRED
+);
+```
+
+8. **Insert capital raising** (with round type — new field):
+```sql
+INSERT INTO company_investors (
+  company_id, investor_id, investment_date,
+  investment_amount, round_type, board_seat, source_url
+) VALUES (
+  '[company_id]',
+  '[investor_id]',  -- From investors table
+  '2022-05-31',
+  6000000,
+  'Series A',  -- Grant, Seed, Series A, Series B, Series C, Debt, Bridge, Other
+  true,
+  'https://source.url'
 );
 ```
 
