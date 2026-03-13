@@ -23,7 +23,8 @@ export const supabaseTools = createSdkMcpServer({
         foundedYear: z.number().optional().describe('Year the company was founded'),
         website: z.string().url().optional().describe('Company website URL'),
         ownershipType: z.enum(['founder-owned', 'family-held', 'employee-owned', 'pe-backed', 'public', 'other']).optional(),
-        revenueEstimate: z.number().optional().describe('Estimated annual revenue in millions CAD'),
+        revenueEstimate: z.number().min(0).max(50000).optional()
+          .describe('Estimated annual revenue in MILLIONS CAD (e.g., 25 means $25M, NOT 25000000)'),
         employeeCount: z.number().optional().describe('Number of employees'),
         scoreOwnerAge: z.number().min(1).max(5).optional().describe('Succession score: owner age (1-5)'),
         scoreTenure: z.number().min(1).max(5).optional().describe('Succession score: tenure (1-5)'),
@@ -349,7 +350,7 @@ export const supabaseTools = createSdkMcpServer({
       'Update the pipeline stage/priority for a company',
       {
         companyId: z.string().uuid().describe('Company UUID'),
-        stage: z.enum(['prospect', 'researching', 'outreach', 'engaged', 'active_deal', 'closed', 'passed']),
+        stage: z.enum(['prospect', 'researching', 'outreach_pending', 'initial_contact_made', 'initial_discussion_complete', 'follow_up_pending', 'engaged', 'closed', 'monitor', 'passed']),
         priority: z.number().min(1).max(5).describe('Priority 1-5 (5 is highest)'),
         clientType: z.enum(['sell_side', 'buy_side', 'growth_capital']),
         nextAction: z.string().optional().describe('Next action to take'),

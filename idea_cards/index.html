@@ -838,10 +838,13 @@
             <option value="">All Stages</option>
             <option value="prospect">Prospect</option>
             <option value="researching">Researching</option>
-            <option value="outreach">Outreach</option>
+            <option value="outreach_pending">Outreach Pending</option>
+            <option value="initial_contact_made">Initial Contact Made</option>
+            <option value="initial_discussion_complete">Initial Discussion Complete</option>
+            <option value="follow_up_pending">Follow Up Pending</option>
             <option value="engaged">Engaged</option>
-            <option value="active_deal">Active Deal</option>
             <option value="closed">Closed</option>
+            <option value="monitor">Monitor</option>
             <option value="passed">Passed</option>
             <option value="none">No Status</option>
           </select>
@@ -994,7 +997,7 @@
             <div class="company-meta">
               <span>${company.location}</span>
               <span class="priority-badge ${priorityClass}">${company.succession_readiness || 'Unknown'}</span>
-              ${company.pipeline_stage ? `<span style="font-size:10px; padding:2px 6px; border-radius:4px; background:var(--accent-blue-dim); color:var(--accent-blue); text-transform:uppercase; letter-spacing:0.03em;">${company.pipeline_stage.replace('_',' ')}</span>` : ''}
+              ${company.pipeline_stage ? `<span style="font-size:10px; padding:2px 6px; border-radius:4px; background:var(--accent-blue-dim); color:var(--accent-blue); text-transform:uppercase; letter-spacing:0.03em;">${company.pipeline_stage.replace(/_/g,' ')}</span>` : ''}
             </div>
           </div>
         `;
@@ -1312,8 +1315,8 @@
               <div class="pipeline-field">
                 <label for="pipeline-stage">Stage</label>
                 <select id="pipeline-stage" name="stage" required>
-                  ${['prospect', 'researching', 'outreach', 'engaged', 'active_deal', 'closed', 'passed'].map(s =>
-                    `<option value="${s}" ${pipeline?.stage === s ? 'selected' : ''}>${s.replace('_', ' ').replace(/^\w/, c => c.toUpperCase())}</option>`
+                  ${['prospect', 'researching', 'outreach_pending', 'initial_contact_made', 'initial_discussion_complete', 'follow_up_pending', 'engaged', 'closed', 'monitor', 'passed'].map(s =>
+                    `<option value="${s}" ${pipeline?.stage === s ? 'selected' : ''}>${s.replace(/_/g, ' ').replace(/^\w/, c => c.toUpperCase())}</option>`
                   ).join('')}
                 </select>
               </div>
