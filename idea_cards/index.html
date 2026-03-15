@@ -1044,6 +1044,17 @@
     }
 
     // Render company detail
+    function renderMarkdown(md) {
+      return md
+        .replace(/^### (.+)$/gm, '<h4 style="margin:16px 0 8px;color:var(--text-primary);font-size:14px;font-weight:600;">$1</h4>')
+        .replace(/^## (.+)$/gm, '<h3 style="margin:20px 0 8px;color:var(--text-primary);font-size:15px;font-weight:600;">$1</h3>')
+        .replace(/^# (.+)$/gm, '<h2 style="margin:0 0 12px;color:var(--text-primary);font-size:17px;font-weight:700;">$1</h2>')
+        .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+        .replace(/^- (.+)$/gm, '<li style="margin:2px 0;margin-left:16px;">$1</li>')
+        .replace(/\n\n/g, '<br><br>')
+        .replace(/\n/g, '<br>');
+    }
+
     function renderCompanyDetail(company, people, sources, feedback, signals = [], connections = [], pipeline = null, acquirers = [], investors = []) {
       const getInitials = (name) => name.split(' ').map(n => n[0]).join('').substring(0, 2);
 
@@ -1121,8 +1132,8 @@
             <div class="section-header">
               <span class="section-title">Company Profile</span>
             </div>
-            <div style="white-space: pre-wrap; line-height: 1.7; color: var(--text-secondary); font-size: 14px; padding: 4px 0;">
-              ${company.markdown_content}
+            <div style="line-height: 1.7; color: var(--text-secondary); font-size: 14px; padding: 4px 0;">
+              ${renderMarkdown(company.markdown_content)}
             </div>
           </div>
         </div>
