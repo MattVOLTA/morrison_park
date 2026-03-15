@@ -1112,8 +1112,45 @@
               </div>
             </div>
           </div>
+        </div>
 
-          <div class="section">
+        <!-- Company Profile (markdown narrative) -->
+        ${company.markdown_content && company.markdown_content.length > 100 ? `
+        <div class="section-grid">
+          <div class="section" style="grid-column: 1 / -1;">
+            <div class="section-header">
+              <span class="section-title">Company Profile</span>
+            </div>
+            <div style="white-space: pre-wrap; line-height: 1.7; color: var(--text-secondary); font-size: 14px; padding: 4px 0;">
+              ${company.markdown_content}
+            </div>
+          </div>
+        </div>
+        ` : ''}
+
+        <!-- Succession Scorecard -->
+        ${(() => {
+          const owner = people.find(p =>
+            p.role?.toLowerCase().includes('owner') ||
+            p.role?.toLowerCase().includes('founder') ||
+            p.title?.toLowerCase().includes('owner') ||
+            p.title?.toLowerCase().includes('founder') ||
+            p.title?.toLowerCase().includes('ceo') ||
+            p.title?.toLowerCase().includes('president')
+          );
+          const nextGen = people.filter(p => {
+            const title = (p.title || '').toLowerCase();
+            const role = (p.role || '').toLowerCase();
+            const notes = (p.notes || '').toLowerCase();
+            return title.includes('vp') || title.includes('vice president') ||
+                   title.includes('director') || title.includes('general manager') ||
+                   role.includes('successor') || role.includes('next gen') ||
+                   notes.includes('family') || notes.includes('son') ||
+                   notes.includes('daughter') || notes.includes('succession');
+          });
+          return `
+        <div class="section-grid">
+          <div class="section" style="grid-column: 1 / -1;">
             <div class="section-header">
               <span class="section-title">Succession Scorecard</span>
               <span class="section-badge ${successBadgeClass}">${company.succession_readiness || 'UNKNOWN'}</span>
@@ -1122,14 +1159,17 @@
               <div class="score-item">
                 <div class="score-value">${company.score_owner_age || '-'}</div>
                 <div class="score-label">Owner Age</div>
+                ${owner?.age_estimate ? `<div style="font-size: 12px; color: var(--text-secondary); margin-top: 6px;">~${owner.age_estimate} yrs old</div>` : ''}
               </div>
               <div class="score-item">
                 <div class="score-value">${company.score_tenure || '-'}</div>
                 <div class="score-label">Tenure</div>
+                ${owner?.tenure_years ? `<div style="font-size: 12px; color: var(--text-secondary); margin-top: 6px;">~${owner.tenure_years} yrs</div>` : ''}
               </div>
               <div class="score-item">
                 <div class="score-value">${company.score_nextgen_clarity || '-'}</div>
                 <div class="score-label">Next Gen</div>
+                ${nextGen.length > 0 ? `<div style="font-size: 11px; color: var(--text-secondary); margin-top: 6px;">${nextGen.map(p => p.name.split(' ')[0]).join(', ')}</div>` : ''}
               </div>
               <div class="score-item">
                 <div class="score-value">${company.score_legacy_signals || '-'}</div>
@@ -1140,11 +1180,14 @@
                 <div class="score-label">Activity</div>
               </div>
             </div>
-            <p style="font-size: 12px; color: var(--text-muted); margin-top: 16px;">
+            ${owner ? `<p style="font-size: 12px; color: var(--text-muted); margin-top: 16px;">
+              Owner/Founder: ${owner.name}${owner.title ? ' (' + owner.title + ')' : ''}
+            </p>` : `<p style="font-size: 12px; color: var(--text-muted); margin-top: 16px;">
               Scores from 1-5 across 5 dimensions. Higher composite score = higher succession readiness.
-            </p>
+            </p>`}
           </div>
-        </div>
+        </div>`;
+        })()}
 
         <!-- Key People -->
         ${people.length > 0 ? `
@@ -1288,12 +1331,12 @@
         ` : ''}
 
         <!-- Research Sources -->
-        ${sources.length > 0 ? `
         <div class="section-grid">
           <div class="section" style="grid-column: 1 / -1;">
             <div class="section-header">
               <span class="section-title">Research Sources (${sources.length})</span>
             </div>
+            ${sources.length > 0 ? `
             <div class="sources-list">
               ${sources.map(source => `
                 <div class="source-item">
@@ -1303,9 +1346,13 @@
                 </div>
               `).join('')}
             </div>
+            ` : `
+            <div style="color: var(--text-muted); font-style: italic; padding: 12px 0;">
+              No research sources recorded yet. This company may need re-enrichment.
+            </div>
+            `}
           </div>
         </div>
-        ` : ''}
 
         <!-- Pipeline Edit Form -->
         <div class="pipeline-section">
