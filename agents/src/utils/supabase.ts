@@ -33,14 +33,26 @@ export async function upsertCompany(company: Database['public']['Tables']['compa
 
 export async function getCompanyByName(name: string) {
   const supabase = getSupabaseClient();
-  const { data, error } = await supabase
+
+  // Try exact match first (case-insensitive)
+  let { data, error } = await supabase
     .from('companies')
     .select('*')
-    .ilike('name', `%${name}%`)
+    .ilike('name', name)
     .limit(1)
-    .single();
+    .maybeSingle();
 
-  if (error && error.code !== 'PGRST116') throw error;
+  // Fallback to substring only if no exact match
+  if (!data) {
+    ({ data, error } = await supabase
+      .from('companies')
+      .select('*')
+      .ilike('name', `%${name}%`)
+      .limit(1)
+      .maybeSingle());
+  }
+
+  if (error) throw error;
   return data;
 }
 
