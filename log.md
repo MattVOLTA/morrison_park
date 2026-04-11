@@ -5,6 +5,53 @@
 
 ---
 
+## March 2026
+
+### 2026-03-29 — Session: Ken email recap and relationship status check
+
+> Reviewed and summarized Ken Skinner's last 5 emails chronologically (March 9–24) to re-establish context on the relationship state and outstanding threads.
+
+- **Type**: session
+- **Discovered**:
+  - Ken's March 9 NFLD feedback proposed three engines: (1) refine current search, (2) real-time monitoring/alerts, (3) CRM ideation/prediction layer
+  - Ken asked March 10 about switching from ChatGPT to Claude for Morrison Park's work
+  - Ken forwarded an AI cold outreach email March 12, impressed by quality — "this is relevant to what we are doing"
+  - Ken's March 24 reply: back from Spring Break, finds Claude comparison helpful, believes AI stronger on words than numbers, subscribes to Bloomberg/S&P Capital IQ/Pitchbook, onboarding MadeMarket CRM, wants to connect in Halifax
+- **Sources**: Gmail search `from:kskinner@morrisonpark.com` → 5 messages (19cd5063db73ea07, 19cd89553e61fc23, 19ce1f952a0bc566, 19ce2137b2e58fad, 19d1d56796da26f9)
+- **Next**: Reply to Ken's March 24 email — acknowledge AI/numbers insight, note MadeMarket integration potential, lock down Halifax visit date
+
+---
+
+### 2026-03-15 — Session: Epic #20 complete, Gen 1 re-enrichment, email to Ken
+
+> Closed all 4 phases of Epic #20 (Ken's NFLD trip feedback). Shipped pipeline stages, entity matching, dashboard UI enhancements, re-enriched all 18 Gen 1 companies, added markdown rendering, and emailed Ken with a full update and call request.
+
+- **Type**: session
+- **Created**:
+  - PR [#27](https://github.com/MattVOLTA/morrison_park/pull/27) — dashboard UI enhancements (company narrative, succession evidence, sources placeholder)
+  - 54 key_people records + 192 research_sources records across 18 Gen 1 companies → Supabase
+  - 7 new transaction signals (BA Richard acquired, Elanco sold to Merck, ICPEI acquired by Desjardins, Northumberland MBO, Site 20/20 growth investment, MacLeod Lorway/Cal LeGrow merger, City Wide/Telus acquisition)
+  - Email to Ken: "Dashboard updates + let's talk about the three engines" → Gmail 19cf39b57da57cd4
+  - Todoist task: "Waiting for reply: Ken Skinner" with waiting-reply label
+- **Modified**:
+  - `idea_cards/index.html` — renderMarkdown() function converts raw markdown to styled HTML in Company Profile section
+  - `idea_cards/index.html` — succession scorecard shows owner age, tenure years, next-gen names alongside scores
+  - `idea_cards/index.html` — research sources section always renders with placeholder for empty companies
+- **Resolved**:
+  - Epic #20 closed (all 4 phases: #21 pipeline/revenue, #22 entity matching, #23 UI enhancements, #24 re-enrichment)
+  - Phase 3 browser-verified in Chrome: company narrative, succession evidence, and sources all rendering correctly
+  - Markdown rendering fixed (was showing raw `##` and `**` syntax)
+- **Discovered**:
+  - Phase 4 enrichment uncovered several post-transaction companies: Elanco ($1.75B CAD to Merck), ICPEI (Desjardins), BA Richard (Champlain Seafood), City Wide (Telus/Altima)
+  - All 36 companies now have 10+ research sources (was 0 for 18 Gen 1 companies)
+- **Sources**: GitHub PRs #25/#27, Supabase MCP, Gmail (Google Workspace MCP), Chrome browser tools
+- **Next**:
+  - [ ] Call with Ken to discuss three engines (search refinement, real-time monitoring, CRM ideation)
+  - [ ] Confidence ratings with source info behind revenue/employee estimates
+  - [ ] Full company address + contact info for key person (deferred to Amberly)
+
+---
+
 ## February 2026
 
 ### 2026-02-27 — Session: Dashboard UX upgrades, one-pager template, Ken call follow-up

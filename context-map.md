@@ -204,7 +204,7 @@ search_gmail_messages(query: "from:kskinner@morrisonpark.com OR to:kskinner@morr
 fireflies_search(query: "keyword:\"ken skinner\" limit:10")
 
 # GitHub — commit history
-git log --oneline --all (in /Volumes/SD/Morrison Park/)
+git log --oneline --all (in /Users/matt/Development/Morrison Park/)
 ```
 
 ### Key Dates
@@ -243,7 +243,7 @@ When starting a new session, run through this checklist:
 ## File Structure
 
 ```
-/Volumes/SD/Morrison Park/
+/Users/matt/Development/Morrison Park/
 ├── context-map.md                              ← This file (deep reference)
 ├── CLAUDE.md                                   ← Lightweight pointer
 ├── .env                                        ← Credentials (Google, Todoist, Supabase, Scraping Dog)

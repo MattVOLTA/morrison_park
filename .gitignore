@@ -25,3 +25,8 @@ npm-debug.log*
 *.tmp
 *.temp
 idea_cards/.netlify/
+
+# Managed agent runtime files
+managed-agent/config.json
+managed-agent/monitor_config.json
+managed-agent/eval_results/
