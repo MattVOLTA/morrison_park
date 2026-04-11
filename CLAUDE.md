@@ -50,7 +50,7 @@ Invoke when user asks to "research", "enrich", or "profile" an Atlantic Canada c
 
 ## Todoist Integration
 
-- **Env file**: Source `/Volumes/SD/Morrison Park/.env` (NOT Laurie/.env)
+- **Env file**: Source `/Users/matt/Development/Morrison Park/.env` (NOT Laurie/.env)
 - **Token var**: `TODOIST_API_TOKEN` (not TODOIST_API_KEY)
 - **API**: REST v1 at `https://api.todoist.com/api/v1/` with `Authorization: Bearer $TODOIST_API_TOKEN`
 - **Sync API v9 is deprecated** — do not use

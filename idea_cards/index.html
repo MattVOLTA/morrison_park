@@ -189,6 +189,67 @@
       color: var(--text-primary);
     }
 
+    .multiselect {
+      position: relative;
+      width: 100%;
+    }
+
+    .multiselect-toggle {
+      width: 100%;
+      padding: 8px 12px;
+      border: 1px solid var(--border-medium);
+      border-radius: 8px;
+      font-size: 13px;
+      font-family: inherit;
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+      cursor: pointer;
+      text-align: left;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .multiselect-toggle::after {
+      content: '\25BE';
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .multiselect-dropdown {
+      display: none;
+      position: absolute;
+      top: calc(100% + 4px);
+      left: 0;
+      right: 0;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-medium);
+      border-radius: 8px;
+      padding: 4px 0;
+      z-index: 100;
+      max-height: 260px;
+      overflow-y: auto;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+
+    .multiselect-dropdown.open { display: block; }
+
+    .multiselect-option {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px;
+      font-size: 13px;
+      cursor: pointer;
+      color: var(--text-primary);
+    }
+
+    .multiselect-option:hover { background: var(--bg-tertiary); }
+
+    .multiselect-option input[type="checkbox"] {
+      accent-color: var(--accent-gold);
+    }
+
     .company-list {
       flex: 1;
       overflow-y: auto;
@@ -196,11 +257,11 @@
     }
 
     .company-item {
-      padding: 16px;
-      border-radius: 12px;
+      padding: 10px 12px;
+      border-radius: 10px;
       cursor: pointer;
       transition: all 0.2s ease;
-      margin-bottom: 8px;
+      margin-bottom: 4px;
       border: 1px solid transparent;
       position: relative;
     }
@@ -227,32 +288,32 @@
 
     .company-rank {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 10px;
+      font-size: 9px;
       color: var(--text-muted);
-      margin-bottom: 6px;
+      margin-bottom: 4px;
     }
 
     .company-name {
       font-weight: 600;
-      font-size: 15px;
-      margin-bottom: 4px;
+      font-size: 12px;
+      margin-bottom: 3px;
       color: var(--text-primary);
     }
 
     .company-meta {
       display: flex;
       align-items: center;
-      gap: 8px;
-      font-size: 12px;
+      gap: 6px;
+      font-size: 10px;
       color: var(--text-secondary);
     }
 
     .priority-badge {
       display: inline-flex;
       align-items: center;
-      padding: 3px 8px;
-      border-radius: 4px;
-      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-size: 8px;
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.05em;
@@ -261,6 +322,22 @@
     .priority-high { background: var(--accent-emerald-dim); color: var(--accent-emerald); }
     .priority-medium { background: var(--accent-amber-dim); color: var(--accent-amber); }
     .priority-low { background: var(--accent-rose-dim); color: var(--accent-rose); }
+
+    .badge-new {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      padding: 1px 5px;
+      border-radius: 3px;
+      font-size: 8px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      background: rgba(255, 120, 30, 0.15);
+      color: #ff781e;
+      animation: fade-new 0.5s ease-in;
+    }
+    @keyframes fade-new { from { opacity: 0; } to { opacity: 1; } }
 
     /* Main Content */
     .main-content {
@@ -763,6 +840,162 @@
       color: var(--text-muted);
     }
 
+    /* Activity Feed (main content) */
+    .activity-feed-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+    }
+
+    .activity-feed-header h2 {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin: 0;
+    }
+
+    .activity-feed-header .activity-subtitle {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .activity-group-header {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 12px 0 8px;
+      margin-top: 8px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .activity-group-header.urgent { color: var(--accent-rose); }
+    .activity-group-header.notable { color: var(--accent-amber); }
+    .activity-group-header.routine { color: var(--text-muted); }
+
+    .activity-item {
+      display: flex;
+      gap: 16px;
+      padding: 16px;
+      margin: 8px 0;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .activity-item:hover {
+      border-color: var(--border-medium);
+      background: var(--bg-tertiary);
+    }
+
+    .activity-type-indicator {
+      width: 4px;
+      border-radius: 2px;
+      flex-shrink: 0;
+    }
+
+    .activity-type-indicator.sell_side { background: var(--accent-amber); }
+    .activity-type-indicator.buy_side { background: var(--accent-emerald); }
+    .activity-type-indicator.growth { background: var(--accent-blue); }
+    .activity-type-indicator.leadership { background: #a78bfa; }
+    .activity-type-indicator.financial { background: var(--accent-gold); }
+    .activity-type-indicator.strategic { background: #6ee7b7; }
+
+    .activity-item-body {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .activity-item-top {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+
+    .activity-company {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .activity-province {
+      font-size: 11px;
+      color: var(--text-muted);
+      padding: 1px 6px;
+      background: var(--bg-tertiary);
+      border-radius: 4px;
+    }
+
+    .activity-signal-type {
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+
+    .activity-signal-type.sell_side { background: var(--accent-amber-dim); color: var(--accent-amber); }
+    .activity-signal-type.buy_side { background: var(--accent-emerald-dim); color: var(--accent-emerald); }
+    .activity-signal-type.growth { background: var(--accent-blue-dim); color: var(--accent-blue); }
+    .activity-signal-type.leadership { background: rgba(167, 139, 250, 0.15); color: #a78bfa; }
+    .activity-signal-type.financial { background: var(--accent-gold-dim); color: var(--accent-gold); }
+    .activity-signal-type.strategic { background: rgba(110, 231, 183, 0.15); color: #6ee7b7; }
+
+    .activity-time {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-left: auto;
+      flex-shrink: 0;
+    }
+
+    .activity-desc {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .activity-source {
+      display: inline-block;
+      font-size: 11px;
+      color: var(--accent-blue);
+      margin-top: 6px;
+      text-decoration: none;
+    }
+
+    .activity-source:hover { text-decoration: underline; }
+
+    .activity-empty {
+      text-align: center;
+      padding: 60px 24px;
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+
+    .back-to-feed {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      color: var(--text-muted);
+      cursor: pointer;
+      margin-bottom: 16px;
+      padding: 4px 0;
+      border: none;
+      background: none;
+      font-family: inherit;
+    }
+
+    .back-to-feed:hover { color: var(--text-primary); }
+
     /* Overlay for mobile */
     .sidebar-overlay {
       display: none;
@@ -774,10 +1007,123 @@
 
     .sidebar-overlay.open { display: block; }
 
+    /* Login Gate */
+    .login-gate {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg-primary);
+    }
+
+    .login-gate.hidden { display: none; }
+
+    .login-box {
+      width: 340px;
+      padding: 40px 32px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      text-align: center;
+    }
+
+    .login-box img {
+      height: 32px;
+      margin-bottom: 8px;
+    }
+
+    .login-box h2 {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin: 0 0 4px;
+    }
+
+    .login-box .login-subtitle {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+    }
+
+    .login-input {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid var(--border-medium);
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: inherit;
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+      margin-bottom: 12px;
+      box-sizing: border-box;
+    }
+
+    .login-input:focus {
+      outline: none;
+      border-color: var(--accent-gold);
+    }
+
+    .login-btn {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      font-family: inherit;
+      background: var(--accent-gold);
+      color: #000;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+
+    .login-btn:hover { opacity: 0.9; }
+
+    .login-error {
+      font-size: 12px;
+      color: var(--accent-rose);
+      margin-top: 8px;
+      min-height: 16px;
+    }
+
+    /* Logout button */
+    .logout-btn {
+      border: none;
+      background: none;
+      color: var(--text-muted);
+      font-size: 11px;
+      font-family: inherit;
+      cursor: pointer;
+      padding: 4px 8px;
+      border-radius: 4px;
+      transition: all 0.2s;
+    }
+
+    .logout-btn:hover {
+      color: var(--text-primary);
+      background: var(--bg-tertiary);
+    }
+
   </style>
 </head>
 <body>
-  <div class="app">
+  <!-- Login Gate -->
+  <div class="login-gate" id="login-gate">
+    <div class="login-box">
+      <img src="MPA-Advisors-white.png" alt="Morrison Park Advisors" style="filter: brightness(0) invert(0.7);">
+      <h2>Deal Intelligence</h2>
+      <div class="login-subtitle">Enter password to continue</div>
+      <form onsubmit="return handleLogin(event)">
+        <input type="password" class="login-input" id="login-password" placeholder="Password" autofocus>
+        <button type="submit" class="login-btn">Sign In</button>
+      </form>
+      <div class="login-error" id="login-error"></div>
+    </div>
+  </div>
+
+  <div class="app" id="app" style="display:none;">
     <!-- Mobile Header -->
     <div class="mobile-header">
       <button class="menu-btn" onclick="toggleSidebar()">
@@ -809,7 +1155,10 @@
             <img src="MPA-Advisors-white.png" alt="Morrison Park Advisors">
           </div>
         </div>
-        <div class="sidebar-subtitle">Deal Intelligence</div>
+        <div class="sidebar-subtitle" style="display:flex;align-items:center;justify-content:space-between;">
+          Deal Intelligence
+          <button class="logout-btn" onclick="handleLogout()">Logout</button>
+        </div>
       </div>
 
       <!-- Filter Controls -->
@@ -834,21 +1183,29 @@
         </div>
         <div>
           <div class="filter-label">Pipeline Stage</div>
-          <select class="filter-select" id="stage-filter" onchange="applyFilters()">
-            <option value="">All Stages</option>
-            <option value="prospect">Prospect</option>
-            <option value="researching">Researching</option>
-            <option value="outreach_pending">Outreach Pending</option>
-            <option value="initial_contact_made">Initial Contact Made</option>
-            <option value="initial_discussion_complete">Initial Discussion Complete</option>
-            <option value="follow_up_pending">Follow Up Pending</option>
-            <option value="engaged">Engaged</option>
-            <option value="closed">Closed</option>
-            <option value="monitor">Monitor</option>
-            <option value="passed">Passed</option>
-            <option value="none">No Status</option>
-          </select>
+          <div class="multiselect" id="stage-multiselect">
+            <button type="button" class="multiselect-toggle" id="stage-toggle" onclick="var d=document.getElementById('stage-dropdown');d.classList.toggle('open');event.stopPropagation();">
+              <span id="stage-label">All Stages</span>
+            </button>
+            <div class="multiselect-dropdown" id="stage-dropdown">
+              <label class="multiselect-option"><input type="checkbox" value="prospect" onchange="onStageChange()"> Prospect</label>
+              <label class="multiselect-option"><input type="checkbox" value="researching" onchange="onStageChange()"> Researching</label>
+              <label class="multiselect-option"><input type="checkbox" value="outreach_pending" onchange="onStageChange()"> Outreach Pending</label>
+              <label class="multiselect-option"><input type="checkbox" value="initial_contact_made" onchange="onStageChange()"> Initial Contact Made</label>
+              <label class="multiselect-option"><input type="checkbox" value="initial_discussion_complete" onchange="onStageChange()"> Initial Discussion Complete</label>
+              <label class="multiselect-option"><input type="checkbox" value="follow_up_pending" onchange="onStageChange()"> Follow Up Pending</label>
+              <label class="multiselect-option"><input type="checkbox" value="engaged" onchange="onStageChange()"> Engaged</label>
+              <label class="multiselect-option"><input type="checkbox" value="closed" onchange="onStageChange()"> Closed</label>
+              <label class="multiselect-option"><input type="checkbox" value="monitor" onchange="onStageChange()"> Monitor</label>
+              <label class="multiselect-option"><input type="checkbox" value="passed" onchange="onStageChange()"> Passed</label>
+              <label class="multiselect-option"><input type="checkbox" value="none" onchange="onStageChange()"> No Status</label>
+            </div>
+          </div>
         </div>
+        <label style="display:flex;align-items:center;gap:8px;margin-top:8px;font-size:12px;color:var(--text-secondary);cursor:pointer;">
+          <input type="checkbox" id="new-only-filter" onchange="applyFilters()" style="accent-color:var(--accent-gold);">
+          Display new only
+        </label>
       </div>
 
       <!-- Company List -->
@@ -862,15 +1219,115 @@
 
     <!-- Main Content -->
     <main class="main-content" id="main-content">
-      <div class="empty-state" id="empty-state">
-        <h2>Select a company</h2>
-        <p>Choose a company from the sidebar to view details</p>
-      </div>
+      <!-- Activity Feed (default view) -->
+      <div id="activity-feed"></div>
+      <!-- Company Detail (shown when a company is selected) -->
       <div id="company-detail" style="display: none;"></div>
     </main>
   </div>
 
   <script>
+    // ═══════════════════════════════════════
+    // Password Gate (30-day localStorage)
+    // ═══════════════════════════════════════
+    var AUTH_HASH = 'ee82be855c462af79e18130f7fb9670aeb623b5220247967063420a0535c87e4';
+    var AUTH_KEY = 'mpa_auth';
+    var AUTH_TTL = 30 * 24 * 60 * 60 * 1000; // 30 days
+
+    async function sha256(message) {
+      var encoder = new TextEncoder();
+      var data = encoder.encode(message);
+      var hash = await crypto.subtle.digest('SHA-256', data);
+      return Array.from(new Uint8Array(hash)).map(function(b) { return b.toString(16).padStart(2, '0'); }).join('');
+    }
+
+    function checkAuth() {
+      try {
+        var stored = JSON.parse(localStorage.getItem(AUTH_KEY));
+        if (stored && stored.hash === AUTH_HASH && Date.now() < stored.expires) {
+          showApp();
+          return;
+        }
+      } catch (e) { /* ignore */ }
+      showLogin();
+    }
+
+    function showLogin() {
+      document.getElementById('login-gate').classList.remove('hidden');
+      document.getElementById('app').style.display = 'none';
+    }
+
+    function showApp() {
+      document.getElementById('login-gate').classList.add('hidden');
+      document.getElementById('app').style.display = '';
+    }
+
+    async function handleLogin(e) {
+      e.preventDefault();
+      var password = document.getElementById('login-password').value;
+      var hash = await sha256(password);
+      if (hash === AUTH_HASH) {
+        localStorage.setItem(AUTH_KEY, JSON.stringify({ hash: AUTH_HASH, expires: Date.now() + AUTH_TTL }));
+        document.getElementById('login-error').textContent = '';
+        showApp();
+      } else {
+        document.getElementById('login-error').textContent = 'Incorrect password';
+        document.getElementById('login-password').value = '';
+        document.getElementById('login-password').focus();
+      }
+      return false;
+    }
+
+    function handleLogout() {
+      localStorage.removeItem(AUTH_KEY);
+      showLogin();
+      document.getElementById('login-password').value = '';
+      document.getElementById('login-password').focus();
+    }
+
+    // Check auth on page load
+    checkAuth();
+
+    // Seed seen state: mark all pre-existing companies/signals as seen on first visit
+    var SEEN_SEEDED_KEY = 'mpa_seen_seeded_v2';
+    if (!localStorage.getItem(SEEN_SEEDED_KEY)) {
+      // Will be populated after companies load — see loadCompanies
+      window._needsSeedSeen = true;
+    }
+
+    // ═══════════════════════════════════════
+    // Seen tracking (companies + signals)
+    // ═══════════════════════════════════════
+    var SEEN_COMPANIES_KEY = 'mpa_seen_companies';
+    var SEEN_SIGNALS_KEY = 'mpa_seen_signals';
+
+    function getSeenSet(key) {
+      try {
+        var arr = JSON.parse(localStorage.getItem(key));
+        return arr ? new Set(arr) : new Set();
+      } catch (e) { return new Set(); }
+    }
+
+    function markSeen(key, id) {
+      var seen = getSeenSet(key);
+      seen.add(id);
+      localStorage.setItem(key, JSON.stringify(Array.from(seen)));
+    }
+
+    function isSeen(key, id) {
+      return getSeenSet(key).has(id);
+    }
+
+    function markCompanySeen(companyId) {
+      markSeen(SEEN_COMPANIES_KEY, companyId);
+      // Also mark all signals for this company as seen
+      activitySignals.forEach(function(s) {
+        if (s.companies && s.companies.id === companyId) {
+          markSeen(SEEN_SIGNALS_KEY, s.id);
+        }
+      });
+    }
+
     // Initialize app once
     if (!window.appInitialized) {
       window.appInitialized = true;
@@ -904,13 +1361,34 @@
 
         if (error) throw error;
         companies = data || [];
-        restoreFilters();
-        const filtered = applyFilters();
 
-        // Auto-select first company in the filtered/sorted list
-        if (filtered.length > 0) {
-          selectCompany(filtered[0].id);
+        // Seed: mark companies created before today as seen
+        if (window._needsSeedSeen) {
+          var today = new Date().toISOString().slice(0, 10);
+          companies.forEach(function(c) {
+            if (c.created_at && c.created_at.slice(0, 10) < today) {
+              markSeen(SEEN_COMPANIES_KEY, c.id);
+            }
+          });
+          // Also seed signals
+          var thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
+          var { data: sigs } = await supabase.from('signals').select('id,created_at').gte('created_at', thirtyDaysAgo);
+          if (sigs) {
+            sigs.forEach(function(s) {
+              if (s.created_at && s.created_at.slice(0, 10) < today) {
+                markSeen(SEEN_SIGNALS_KEY, s.id);
+              }
+            });
+          }
+          localStorage.setItem(SEEN_SEEDED_KEY, 'true');
+          window._needsSeedSeen = false;
         }
+
+        restoreFilters();
+        applyFilters();
+
+        // Show activity feed as default view
+        showActivityFeed();
       } catch (err) {
         console.error('Error loading companies:', err);
         document.getElementById('company-list').innerHTML = `
@@ -923,6 +1401,38 @@
     }
 
 
+    // Stage multiselect — close dropdown when clicking outside
+    document.addEventListener('click', function(e) {
+      var dropdown = document.getElementById('stage-dropdown');
+      var toggle = document.getElementById('stage-toggle');
+      if (dropdown && !dropdown.contains(e.target) && e.target !== toggle) {
+        dropdown.classList.remove('open');
+      }
+    });
+
+    function getSelectedStages() {
+      const checks = document.querySelectorAll('#stage-dropdown input[type="checkbox"]:checked');
+      return Array.from(checks).map(c => c.value);
+    }
+
+    function updateStageLabel() {
+      const selected = getSelectedStages();
+      const label = document.getElementById('stage-label');
+      if (selected.length === 0) {
+        label.textContent = 'All Stages';
+      } else if (selected.length === 1) {
+        const text = selected[0] === 'none' ? 'No Status' : selected[0].replace(/_/g, ' ');
+        label.textContent = text.charAt(0).toUpperCase() + text.slice(1);
+      } else {
+        label.textContent = selected.length + ' stages selected';
+      }
+    }
+
+    function onStageChange() {
+      updateStageLabel();
+      applyFilters();
+    }
+
     // Restore saved filter state
     function restoreFilters() {
       try {
@@ -930,18 +1440,24 @@
         if (!saved) return;
         if (saved.province) document.getElementById('province-filter').value = saved.province;
         if (saved.sortBy) document.getElementById('sort-by').value = saved.sortBy;
-        if (saved.stage) document.getElementById('stage-filter').value = saved.stage;
+        if (saved.stages && Array.isArray(saved.stages)) {
+          const checks = document.querySelectorAll('#stage-dropdown input[type="checkbox"]');
+          checks.forEach(cb => { cb.checked = saved.stages.includes(cb.value); });
+          updateStageLabel();
+        }
+        if (saved.newOnly) document.getElementById('new-only-filter').checked = true;
       } catch (e) { /* ignore */ }
     }
 
     // Apply filters
     function applyFilters() {
-      const province = document.getElementById('province-filter').value;
-      const sortBy = document.getElementById('sort-by').value;
-      const stage = document.getElementById('stage-filter').value;
+      var province = document.getElementById('province-filter').value;
+      var sortBy = document.getElementById('sort-by').value;
+      var stages = getSelectedStages();
+      var newOnly = document.getElementById('new-only-filter').checked;
 
       // Persist to localStorage
-      localStorage.setItem('mpa-filters', JSON.stringify({ province, sortBy, stage }));
+      localStorage.setItem('mpa-filters', JSON.stringify({ province, sortBy, stages, newOnly }));
 
       let filtered = [...companies];
 
@@ -950,11 +1466,17 @@
         filtered = filtered.filter(c => c.province === province);
       }
 
-      // Filter by pipeline stage
-      if (stage === 'none') {
-        filtered = filtered.filter(c => !c.pipeline_stage);
-      } else if (stage) {
-        filtered = filtered.filter(c => c.pipeline_stage === stage);
+      // Filter by pipeline stage (multiselect)
+      if (stages.length > 0) {
+        filtered = filtered.filter(c => {
+          if (stages.includes('none') && !c.pipeline_stage) return true;
+          return stages.includes(c.pipeline_stage);
+        });
+      }
+
+      // Filter to new only
+      if (newOnly) {
+        filtered = filtered.filter(c => !isSeen(SEEN_COMPANIES_KEY, c.id));
       }
 
       // Sort
@@ -973,6 +1495,149 @@
       return filtered;
     }
 
+    // ═══════════════════════════════════════
+    // Activity Feed (main content default view)
+    // ═══════════════════════════════════════
+
+    var activitySignals = [];
+
+    function showActivityFeed() {
+      document.getElementById('activity-feed').style.display = '';
+      document.getElementById('company-detail').style.display = 'none';
+      selectedCompanyId = null;
+      // Deselect sidebar items
+      document.querySelectorAll('.company-item.active').forEach(function(el) {
+        el.classList.remove('active');
+      });
+      loadActivityFeed();
+    }
+
+    async function loadActivityFeed() {
+      var feed = document.getElementById('activity-feed');
+      feed.innerHTML = '<div class="activity-empty">Loading signals...</div>';
+
+      try {
+        var thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
+        var { data, error } = await supabase
+          .from('signals')
+          .select('*, companies(id, name, province, succession_composite)')
+          .gte('created_at', thirtyDaysAgo)
+          .order('created_at', { ascending: false });
+
+        if (error) throw error;
+        activitySignals = data || [];
+        renderActivityFeed(activitySignals);
+      } catch (err) {
+        feed.innerHTML = '<div class="activity-empty">Error loading signals: ' + err.message + '</div>';
+      }
+    }
+
+    function classifyUrgency(signal) {
+      var cat = (signal.signal_category || '').toLowerCase();
+      var desc = (signal.description || '').toLowerCase();
+
+      if (cat === 'health_event' || cat === 'obituary') return 'urgent';
+      if (desc.indexOf('acquired') > -1 && desc.indexOf('rumor') === -1) return 'urgent';
+      if (cat === 'pe_fund_life' || cat === 'asset_sale') return 'urgent';
+      if (desc.indexOf('receivership') > -1 || desc.indexOf('restructuring') > -1) return 'urgent';
+
+      if (signal.signal_type === 'leadership') return 'notable';
+      if (cat === 'ceo_hire' || cat === 'founder_departure' || cat === 'founder_transition') return 'notable';
+      if (cat === 'board_change' || cat === 'new_investor' || cat === 'capital_raise') return 'notable';
+      if (cat === 'legacy_signals' || cat === 'legacy') return 'notable';
+      if (cat === 'new_contract' || cat === 'expansion' || cat === 'market_expansion') return 'notable';
+      if (cat === 'merger' || cat === 'm&a_announcement') return 'notable';
+
+      return 'routine';
+    }
+
+    function timeAgo(dateStr) {
+      var diff = Date.now() - new Date(dateStr).getTime();
+      var hours = Math.floor(diff / (1000 * 60 * 60));
+      if (hours < 1) return 'just now';
+      if (hours < 24) return hours + 'h ago';
+      var days = Math.floor(hours / 24);
+      if (days === 1) return '1 day ago';
+      if (days < 7) return days + ' days ago';
+      var weeks = Math.floor(days / 7);
+      if (weeks === 1) return '1 week ago';
+      return weeks + ' weeks ago';
+    }
+
+    function renderActivityFeed(signals) {
+      var feed = document.getElementById('activity-feed');
+
+      if (!signals || signals.length === 0) {
+        feed.innerHTML = '<div class="activity-empty">No signals in the last 30 days.<br>Run the monitoring agent to scan for updates.</div>';
+        return;
+      }
+
+      var urgent = [];
+      var notable = [];
+      var routine = [];
+
+      signals.forEach(function(s) {
+        var tier = classifyUrgency(s);
+        if (tier === 'urgent') urgent.push(s);
+        else if (tier === 'notable') notable.push(s);
+        else routine.push(s);
+      });
+
+      var recentCount = signals.filter(function(s) {
+        return !isSeen(SEEN_SIGNALS_KEY, s.id);
+      }).length;
+
+      var html = '<div class="activity-feed-header">'
+        + '<div><h2>Activity Feed</h2>'
+        + '<div class="activity-subtitle">Last 30 days across all companies'
+        + (recentCount > 0 ? ' &middot; <span style="color:#ff781e;font-weight:600;">' + recentCount + ' new</span>' : '')
+        + '</div></div></div>';
+
+      if (urgent.length > 0) {
+        html += '<div class="activity-group-header urgent">Urgent (' + urgent.length + ')</div>';
+        html += urgent.map(renderActivityItem).join('');
+      }
+
+      if (notable.length > 0) {
+        html += '<div class="activity-group-header notable">Notable (' + notable.length + ')</div>';
+        html += notable.map(renderActivityItem).join('');
+      }
+
+      if (routine.length > 0) {
+        html += '<div class="activity-group-header routine">Routine (' + routine.length + ')</div>';
+        html += routine.map(renderActivityItem).join('');
+      }
+
+      feed.innerHTML = html;
+    }
+
+    function renderActivityItem(signal) {
+      var companyName = signal.companies ? signal.companies.name : 'Unknown';
+      var companyId = signal.companies ? signal.companies.id : '';
+      var province = signal.companies ? signal.companies.province : '';
+      var unseen = !isSeen(SEEN_SIGNALS_KEY, signal.id);
+      var signalType = signal.signal_type || '';
+      var category = (signal.signal_category || '').replace(/_/g, ' ');
+
+      return '<div class="activity-item" onclick="selectCompany(\'' + companyId + '\', true)">'
+        + '<div class="activity-type-indicator ' + signalType + '"></div>'
+        + '<div class="activity-item-body">'
+        + '<div class="activity-item-top">'
+        + '<span class="activity-company">' + companyName + '</span>'
+        + '<span class="activity-province">' + province + '</span>'
+        + '<span class="activity-signal-type ' + signalType + '">' + signalType.replace('_', ' ') + '</span>'
+        + (unseen ? '<span style="font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;background:rgba(255,120,30,0.15);color:#ff781e;text-transform:uppercase;">new</span>' : '')
+        + '<span class="activity-time">' + timeAgo(signal.created_at) + '</span>'
+        + '</div>'
+        + '<div class="activity-desc">' + (signal.description || category) + '</div>'
+        + (signal.source_url ? '<a class="activity-source" href="' + signal.source_url + '" target="_blank" onclick="event.stopPropagation();">View source</a>' : '')
+        + '</div></div>';
+    }
+
+    // ═══════════════════════════════════════
+    // Render company list
+    // ═══════════════════════════════════════
+
     // Render company list
     function renderCompanyList(list = companies) {
       const container = document.getElementById('company-list');
@@ -988,10 +1653,12 @@
           : company.succession_readiness === 'Medium'
             ? 'priority-medium'
             : 'priority-low';
+        const unseen = !isSeen(SEEN_COMPANIES_KEY, company.id);
 
         return `
           <div class="company-item ${company.id === selectedCompanyId ? 'active' : ''}"
                onclick="selectCompany('${company.id}')">
+            ${unseen ? '<span class="badge-new">NEW</span>' : ''}
             <div class="company-rank">#${index + 1} · ${company.province}</div>
             <div class="company-name">${company.name}</div>
             <div class="company-meta">
@@ -1005,8 +1672,9 @@
     }
 
     // Select company and show details
-    async function selectCompany(companyId) {
+    async function selectCompany(companyId, scrollToTimeline) {
       selectedCompanyId = companyId;
+      markCompanySeen(companyId);
       applyFilters();
 
       // Close sidebar on mobile
@@ -1022,7 +1690,7 @@
         supabase.from('key_people').select('*').eq('company_id', companyId),
         supabase.from('research_sources').select('*').eq('company_id', companyId),
         supabase.from('user_feedback').select('*').eq('company_id', companyId).maybeSingle(),
-        supabase.from('signals').select('*').eq('company_id', companyId).order('signal_date', { ascending: false }),
+        supabase.from('signals').select('*').eq('company_id', companyId).order('created_at', { ascending: false }),
         supabase.from('connections').select('*').eq('company_id', companyId),
         supabase.from('pipeline').select('*').eq('company_id', companyId).maybeSingle(),
         supabase.from('potential_acquirers').select('*').eq('company_id', companyId),
@@ -1038,9 +1706,18 @@
       const acquirers = acquirersRes.data || [];
       const investors = investorsRes.data || [];
 
-      document.getElementById('empty-state').style.display = 'none';
+      document.getElementById('activity-feed').style.display = 'none';
       document.getElementById('company-detail').style.display = 'block';
-      document.getElementById('company-detail').innerHTML = renderCompanyDetail(company, people, sources, feedback, signals, connections, pipeline, acquirers, investors);
+      document.getElementById('company-detail').innerHTML =
+        '<button class="back-to-feed" onclick="showActivityFeed()">&larr; Back to Activity Feed</button>'
+        + renderCompanyDetail(company, people, sources, feedback, signals, connections, pipeline, acquirers, investors);
+
+      if (scrollToTimeline) {
+        var timeline = document.getElementById('activity-timeline');
+        if (timeline) {
+          setTimeout(function() { timeline.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 100);
+        }
+      }
     }
 
     // Render company detail
@@ -1124,6 +1801,47 @@
             </div>
           </div>
         </div>
+
+        <!-- Activity Timeline -->
+        ${signals.length > 0 ? `
+        <div class="section-grid" id="activity-timeline">
+          <div class="section" style="grid-column: 1 / -1;">
+            <div class="section-header">
+              <span class="section-title">Activity Timeline (${signals.length})</span>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+              ${signals.map(function(signal) {
+                var signalType = signal.signal_type || '';
+                var typeColor = signalType === 'sell_side' ? 'var(--accent-amber)'
+                  : signalType === 'buy_side' ? 'var(--accent-emerald)'
+                  : signalType === 'leadership' ? '#a78bfa'
+                  : signalType === 'financial' ? 'var(--accent-gold)'
+                  : signalType === 'strategic' ? '#6ee7b7'
+                  : 'var(--accent-blue)';
+                var typeBg = signalType === 'sell_side' ? 'var(--accent-amber-dim)'
+                  : signalType === 'buy_side' ? 'var(--accent-emerald-dim)'
+                  : signalType === 'leadership' ? 'rgba(167,139,250,0.15)'
+                  : signalType === 'financial' ? 'var(--accent-gold-dim)'
+                  : signalType === 'strategic' ? 'rgba(110,231,183,0.15)'
+                  : 'var(--accent-blue-dim)';
+                var unseenSignal = !isSeen(SEEN_SIGNALS_KEY, signal.id);
+                var ago = timeAgo(signal.created_at);
+                return '<div style="display:flex;gap:12px;padding:12px;background:var(--bg-tertiary);border-radius:10px;border-left:3px solid ' + typeColor + ';">'
+                  + '<div style="flex:1;">'
+                  + '<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">'
+                  + '<span class="source-type" style="background:' + typeBg + ';color:' + typeColor + ';">' + signalType.replace('_',' ') + '</span>'
+                  + '<span style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.04em;color:var(--text-muted);">' + (signal.signal_category || '').replace(/_/g,' ') + '</span>'
+                  + (unseenSignal ? '<span style="font-size:8px;font-weight:700;padding:2px 6px;border-radius:3px;background:rgba(255,120,30,0.15);color:#ff781e;text-transform:uppercase;">new</span>' : '')
+                  + '<span style="font-size:11px;color:var(--text-muted);margin-left:auto;">' + ago + '</span>'
+                  + '</div>'
+                  + '<div style="font-size:13px;color:var(--text-secondary);line-height:1.5;">' + (signal.description || '') + '</div>'
+                  + (signal.source_url ? '<a href="' + signal.source_url + '" target="_blank" class="source-link" style="font-size:11px;margin-top:6px;display:inline-block;">View Source</a>' : '')
+                  + '</div></div>';
+              }).join('')}
+            </div>
+          </div>
+        </div>
+        ` : ''}
 
         <!-- Company Profile (markdown narrative) -->
         ${company.markdown_content && company.markdown_content.length > 100 ? `
@@ -1240,30 +1958,6 @@
                   </div>
                 </div>`;
               }).join('')}
-            </div>
-          </div>
-        </div>
-        ` : ''}
-
-        <!-- Transaction Signals -->
-        ${signals.length > 0 ? `
-        <div class="section-grid">
-          <div class="section" style="grid-column: 1 / -1;">
-            <div class="section-header">
-              <span class="section-title">Transaction Signals (${signals.length})</span>
-            </div>
-            <div class="signals-list" style="display: flex; flex-direction: column; gap: 12px;">
-              ${signals.map(signal => `
-                <div class="signal-item" style="padding: 12px; background: var(--bg-tertiary); border-radius: 10px; border-left: 3px solid ${signal.signal_type === 'sell_side' ? 'var(--accent-amber)' : signal.signal_type === 'buy_side' ? 'var(--accent-emerald)' : 'var(--accent-blue)'};">
-                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                    <span class="source-type" style="background: ${signal.signal_type === 'sell_side' ? 'var(--accent-amber-dim)' : signal.signal_type === 'buy_side' ? 'var(--accent-emerald-dim)' : 'var(--accent-blue-dim)'}; color: ${signal.signal_type === 'sell_side' ? 'var(--accent-amber)' : signal.signal_type === 'buy_side' ? 'var(--accent-emerald)' : 'var(--accent-blue)'};">${signal.signal_type?.replace('_', ' ')}</span>
-                    <span style="font-size: 11px; color: var(--text-muted);">${signal.signal_date ? new Date(signal.signal_date).toLocaleDateString() : ''}</span>
-                  </div>
-                  <div style="font-size: 13px; font-weight: 500; margin-bottom: 4px;">${signal.signal_category?.replace('_', ' ')}</div>
-                  <div style="font-size: 13px; color: var(--text-secondary);">${signal.description}</div>
-                  ${signal.source_url ? `<a href="${signal.source_url}" target="_blank" class="source-link" style="font-size: 11px; margin-top: 6px; display: inline-block;">View Source</a>` : ''}
-                </div>
-              `).join('')}
             </div>
           </div>
         </div>
