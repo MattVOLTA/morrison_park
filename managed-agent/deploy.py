@@ -66,12 +66,37 @@ export SCRAPINGDOG_API_KEY="__SCRAPINGDOG_API_KEY__"
 These are pre-configured. Do NOT ask for credentials — just export and use them.
 
 ═══════════════════════════════════════════════
+FEEDBACK LEARNING — Query Ken's ratings first
+═══════════════════════════════════════════════
+
+IMMEDIATELY after exporting credentials, query Ken's feedback to learn his preferences:
+```bash
+curl -s "${SUPABASE_URL}/rest/v1/user_feedback?select=accuracy_score,novelty_score,actionability_score,would_pursue,notes,companies(name,province,industry,ownership_type,revenue_estimate)" \
+  -H "apikey: ${SUPABASE_KEY}" -H "Authorization: Bearer ${SUPABASE_KEY}"
+```
+
+Parse the results and sort rated companies into three buckets:
+- MAGIC (accuracy + novelty + actionability >= 12): Use these as templates. Find similar companies.
+- DECENT (total 9-11): Acceptable but room to improve targeting.
+- MISS (total < 9): Study what went wrong. Avoid similar profiles.
+
+PATTERNS TO APPLY (learned from Ken's ratings):
+1. NOVELTY IS THE KILLER METRIC. Companies Ken already knows score low. Prioritize companies unlikely to be on his radar — smaller revenue, non-obvious industries, companies without a major public profile.
+2. PRE-TRANSACTION IDENTIFICATION IS MAGIC. Ken wants companies BEFORE deals happen. If a company has an announced acquisition — note it but deprioritize vs. companies still independently held.
+3. FOUNDER-OWNED INDUSTRIALS WITH SUCCESSION = GOLD. The highest-rated companies are founder-owned manufacturers with succession signals discovered before any deal activity.
+4. PE-BACKED = LOWER VALUE. Ken says "once PE is involved, need for banker goes down." Still include PE-backed companies but flag clearly: "PE-BACKED: Reduced MPA advisory opportunity."
+5. PROFESSIONAL SERVICE PARTNERSHIPS = LOWER PRIORITY. Engineering/consulting/law firms that are employee-owned or partnership-structured "usually address succession internally." Deprioritize but don't reject.
+6. ALREADY-ACQUIRED = WORST ERROR. A company that was recently sold earned accuracy=1. ALWAYS verify acquisition status.
+
+═══════════════════════════════════════════════
 WORKFLOW
 ═══════════════════════════════════════════════
 
 1. EXPORT CREDENTIALS (run the export commands above)
 
-2. GET EXISTING COMPANIES for the target province:
+2. LEARN FROM FEEDBACK (run the feedback query above, review patterns)
+
+3. GET EXISTING COMPANIES for the target province:
 ```bash
 curl -s "${SUPABASE_URL}/rest/v1/companies?province=eq.${PROVINCE}&select=name,id,industry,revenue_estimate" \
   -H "apikey: ${SUPABASE_KEY}" \
@@ -79,7 +104,7 @@ curl -s "${SUPABASE_URL}/rest/v1/companies?province=eq.${PROVINCE}&select=name,i
 ```
 Save this list — you will check every candidate against it.
 
-3. SEARCH FOR COMPANIES matching ICP criteria. Use web_search with queries like:
+4. SEARCH FOR COMPANIES matching ICP criteria. Use web_search with queries like:
    - "${province} largest private companies"
    - "${province} founder owned business succession"
    - "${province} family business manufacturing"
@@ -88,40 +113,51 @@ Save this list — you will check every candidate against it.
    - "${province} business awards fastest growing"
    - Sector-specific: "${province} energy company private", "${province} construction company owner"
 
-4. FOR EACH CANDIDATE COMPANY:
+5. FOR EACH CANDIDATE COMPANY:
    a. DEDUP CHECK: Compare name against existing companies list (case-insensitive, substring match). SKIP if already exists.
-   b. QUALIFY: Check must-haves from ICP. Revenue >$10M? Atlantic Canada? Private? DISQUALIFY if missing.
-   c. RESEARCH: Use web_search + web_fetch to gather:
+   b. ACQUISITION CHECK (CRITICAL — prevents worst feedback scores):
+      Search: "{company name} acquired", "{company name} sold to", "{company name} merger completed"
+      If the company was acquired in the last 36 months: DISQUALIFY with note "Already acquired by [acquirer] in [year]".
+      If ownership recently changed to PE: Flag as "PE-BACKED" and proceed with reduced priority.
+   c. QUALIFY: Check must-haves from ICP. Revenue >$10M? Atlantic Canada? Private? DISQUALIFY if missing.
+   d. FEEDBACK PATTERN CHECK: Compare this company against patterns from Ken's ratings:
+      - Professional service partnership? → Lower priority, note "partnership succession typically handled internally"
+      - PE-backed? → Include but flag: "PE backing reduces MPA advisory need per Ken's feedback"
+      - Founder-owned industrial with succession signals? → BOOST priority — matches Ken's highest-rated profile
+      - Large employer (>500 staff) or frequently in news? → Flag potential low novelty
+   e. RESEARCH: Use web_search + web_fetch to gather:
       - Company fundamentals (revenue, employees, products, history)
       - Ownership structure (who owns it, family/founder/PE)
       - Key people (owners, executives, board members)
       - Recent activity (news, deals, expansions, awards)
       - Competitive position
-   d. SCORE ICP TIER:
+   f. SCORE ICP TIER:
       - Tier 1: $30M-$150M revenue, primary sector, founder-owned 15+yr, owner 58+
       - Tier 2: $15M-$30M or $150M-$300M, secondary sector, family/PE
       - Tier 3: $10M-$15M or $300M+, adjacent sector
-   e. CALCULATE SUCCESSION SCORECARD (1-5 each):
+   g. CALCULATE SUCCESSION SCORECARD (1-5 each):
       - Owner Age: 1 (<55), 2 (55-60), 3 (60-65), 4 (65-72), 5 (>72)
       - Tenure: 1 (<10yr), 2 (10-15yr), 3 (15-25yr), 4 (25-35yr), 5 (>35yr)
       - Next-Gen Clarity: 1 (clear successor), 3 (unclear), 5 (no successor)
       - Legacy Signals: 1 (none), 3 (some philanthropy), 5 (strong legacy focus)
       - Activity Trajectory: 1 (active growth), 3 (steady), 5 (slowing/divesting)
-   f. FIND AND SAVE AT LEAST 3 KEY PEOPLE per company:
+   h. FIND AND SAVE AT LEAST 3 KEY PEOPLE per company:
       - Owner/CEO, CFO, COO/VP Operations, board members
       - For each: name, title, estimated age, tenure, ownership %, LinkedIn URL
       - MINIMUM 3 people per company — search harder if you only find 1-2
       - Try: company website "team"/"about"/"leadership", LinkedIn company page, news articles with executive names
-   g. SCRAPE LINKEDIN for key people (see ScrapingDog section below)
-   h. SAVE TO DATABASE (see Supabase section below)
-   i. SAVE AT LEAST 5 RESEARCH SOURCES per company (company website, news articles, LinkedIn, industry reports, government filings). Each source must have a URL.
+   i. SCRAPE LINKEDIN for key people (see ScrapingDog section below)
+   j. SAVE TO DATABASE (see Supabase section below)
+   k. SAVE AT LEAST 5 RESEARCH SOURCES per company (company website, news articles, LinkedIn, industry reports, government filings). Each source must have a URL.
 
-5. REPORT SUMMARY when done:
+6. REPORT SUMMARY when done:
    - Total companies scanned vs. saved
    - Companies by ICP tier
    - Top succession-ready companies (highest composite scores)
    - Notable findings or patterns
    - Companies that were disqualified and why
+   - FEEDBACK ALIGNMENT: How many new companies match Ken's high-scoring "magic" profile (founder-owned, industrial, succession signals) vs. patterns he deprioritizes (PE-backed, partnerships)
+   - NOVELTY PREDICTION: Flag which companies are most likely to be new to Ken vs. potentially already known
 
 ═══════════════════════════════════════════════
 SUPABASE REST API REFERENCE

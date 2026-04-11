@@ -67,12 +67,49 @@ export SCRAPINGDOG_API_KEY="__SCRAPINGDOG_API_KEY__"
 These are pre-configured. Do NOT ask for credentials — just export and use them.
 
 ═══════════════════════════════════════════════
+FEEDBACK LEARNING — Prioritize monitoring by Ken's ratings
+═══════════════════════════════════════════════
+
+IMMEDIATELY after exporting credentials, query Ken's feedback to learn monitoring priorities:
+```bash
+curl -s "${SUPABASE_URL}/rest/v1/user_feedback?select=company_id,accuracy_score,novelty_score,actionability_score,would_pursue,notes,companies(name,province,industry,ownership_type)" \
+  -H "apikey: ${SUPABASE_KEY}" -H "Authorization: Bearer ${SUPABASE_KEY}"
+```
+
+Use feedback to create three MONITORING PRIORITY TIERS:
+
+TIER A — Deep Monitoring (spend 3-4 searches per company):
+- would_pursue=true AND (actionability_score >= 4 OR total_score >= 12)
+- Companies with NO feedback yet (unrated = unknown value, monitor until rated)
+
+TIER B — Standard Monitoring (spend 1-2 searches per company):
+- would_pursue=true AND total_score 9-11
+- PE-backed companies Ken still wants to track
+
+TIER C — Light Monitoring (one quick search only):
+- would_pursue=false
+- Companies where Ken's notes say "already met" or "well known"
+- PE-backed professional services (lowest value per Ken's feedback)
+
+SIGNAL URGENCY BOOSTING BY TIER:
+- TIER A companies: Boost all signals one urgency level (ROUTINE → NOTABLE, NOTABLE → URGENT)
+- TIER C companies: Reduce all signals one urgency level (NOTABLE → ROUTINE)
+- Exception: Ownership changes, acquisitions, and health events are ALWAYS URGENT regardless of tier
+
+WHAT KEN WANTS FROM MONITORING (from his feedback notes):
+- "The magic would be if this system could bring me a company BEFORE this deal gets done" — prioritize PRE-transaction signals
+- "Predicting events before they happen based on scorecard" — connect succession score changes to predicted timelines
+- "Separating outputs into tiers of quality and actionability" — digest MUST tier by feedback-informed priority
+
+═══════════════════════════════════════════════
 WORKFLOW
 ═══════════════════════════════════════════════
 
 1. EXPORT CREDENTIALS (run the export commands above)
 
-2. PULL PIPELINE COMPANIES to monitor, sorted by succession score:
+2. LEARN FROM FEEDBACK (run the feedback query above, assign company tiers)
+
+3. PULL PIPELINE COMPANIES to monitor, sorted by succession score:
 ```bash
 curl -s "${SUPABASE_URL}/rest/v1/pipeline?stage=not.in.(closed,passed)&select=company_id,stage,priority,client_type,companies(id,name,province,industry,succession_composite,succession_readiness,last_monitored_at)&order=companies.succession_composite.desc" \
   -H "apikey: ${SUPABASE_KEY}" -H "Authorization: Bearer ${SUPABASE_KEY}"
@@ -80,7 +117,12 @@ curl -s "${SUPABASE_URL}/rest/v1/pipeline?stage=not.in.(closed,passed)&select=co
 
 If filtering by province, add: `&companies.province=eq.NB`
 
-3. FOR EACH COMPANY (highest succession score first):
+Cross-reference feedback with pipeline companies. Assign each a tier (A/B/C). Process in this order:
+1. TIER A companies (highest succession_composite first)
+2. TIER B companies (highest succession_composite first)
+3. TIER C companies (if tool budget allows — skip if >150 tool calls used)
+
+4. FOR EACH COMPANY (tiered order, highest priority first):
 
    a. PULL EXISTING SIGNALS for dedup:
    ```bash
@@ -111,7 +153,12 @@ If filtering by province, add: `&companies.province=eq.NB`
       - Check for headline/title changes
       - Look for "next chapter", "transition", "legacy" language
 
-   f. ASSESS each finding using the Signal Assessment Framework (below)
+   f. ASSESS each finding using the Signal Assessment Framework (below), WITH FEEDBACK ADJUSTMENT:
+      - Check the company's feedback tier (A/B/C from step 2)
+      - TIER A companies: Boost signals one urgency level (Ken has expressed high interest)
+      - TIER C companies: Reduce signals one urgency level (Ken has expressed low interest)
+      - ALWAYS URGENT regardless of tier: acquisition announced, health event, PE fund exit, receivership
+      - For companies Ken rated actionability >= 4: include WHY Ken rated it highly in the digest
 
    g. CLASSIFY SIGNALS CORRECTLY using these rules:
       - CEO/President/executive appointment or departure → signal_type: "leadership"
@@ -152,7 +199,7 @@ If filtering by province, add: `&companies.province=eq.NB`
       - New URGENT signal? Increase priority
       - Company acquired/closed? Move to "closed" or "passed"
 
-4. PRODUCE WEEKLY DIGEST (see output format below)
+5. PRODUCE WEEKLY DIGEST (see output format below)
 
 ═══════════════════════════════════════════════
 SIGNAL ASSESSMENT FRAMEWORK
@@ -210,8 +257,16 @@ At the end of the session, produce a digest in this format:
 ### ROUTINE (Recorded)
 [Company]: [Signal description]
 
+### Feedback-Informed Priorities
+**Tier A (High Interest) — Ken's top-rated companies:**
+[Company]: Ken's rating [X/15], would_pursue: [yes]. Ken's note: "[quote]"
+  Latest signal: [signal or "No new activity"]
+
+**Unrated Companies — Need Ken's Input:**
+[List companies with no user_feedback entry — Ken should rate these]
+
 ### Summary
-- Companies monitored: X
+- Companies monitored: X (Tier A: Y, Tier B: Z, Tier C: W)
 - New signals saved: Y (Z urgent, W notable, V routine)
 - Companies with no new activity: [list]
 - Next monitoring recommended: [date]
