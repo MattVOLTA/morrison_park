@@ -973,6 +973,83 @@
 
     .activity-source:hover { text-decoration: underline; }
 
+    .activity-item-footer {
+      display: flex;
+      align-items: center;
+      margin-top: 8px;
+      gap: 12px;
+    }
+
+    .activity-feedback {
+      display: inline-flex;
+      gap: 6px;
+      margin-left: auto;
+    }
+
+    .thumb {
+      width: 28px;
+      height: 28px;
+      padding: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      border: 1px solid var(--border-subtle);
+      border-radius: 6px;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .thumb:hover {
+      border-color: var(--border-medium);
+      color: var(--text-secondary);
+    }
+
+    .thumb svg { display: block; }
+
+    .thumb-up.thumb-active {
+      color: #ffffff;
+      background: var(--accent-emerald);
+      border-color: var(--accent-emerald);
+    }
+
+    .thumb-down.thumb-active {
+      color: #ffffff;
+      background: var(--accent-rose);
+      border-color: var(--accent-rose);
+    }
+
+    .activity-comment {
+      margin-top: 8px;
+      display: none;
+    }
+
+    .activity-item.has-vote .activity-comment {
+      display: block;
+    }
+
+    .comment-input {
+      width: 100%;
+      padding: 6px 10px;
+      font-size: 12px;
+      font-family: inherit;
+      color: var(--text-primary);
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border-subtle);
+      border-radius: 6px;
+      outline: none;
+      transition: border-color 0.15s ease;
+    }
+
+    .comment-input:focus {
+      border-color: var(--accent-blue);
+    }
+
+    .comment-input::placeholder {
+      color: var(--text-muted);
+    }
+
     .activity-empty {
       text-align: center;
       padding: 60px 24px;
@@ -1518,14 +1595,29 @@
 
       try {
         var thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
-        var { data, error } = await supabase
-          .from('signals')
-          .select('*, companies(id, name, province, succession_composite)')
-          .gte('created_at', thirtyDaysAgo)
-          .order('created_at', { ascending: false });
+        var [signalsRes, feedbackRes] = await Promise.all([
+          supabase
+            .from('signals')
+            .select('*, companies(id, name, province, succession_composite)')
+            .gte('created_at', thirtyDaysAgo)
+            .order('created_at', { ascending: false }),
+          supabase
+            .from('signal_feedback')
+            .select('signal_id, vote, comment'),
+        ]);
 
-        if (error) throw error;
-        activitySignals = data || [];
+        if (signalsRes.error) throw signalsRes.error;
+        if (feedbackRes.error) throw feedbackRes.error;
+
+        var feedbackBySignalId = {};
+        (feedbackRes.data || []).forEach(function(f) {
+          feedbackBySignalId[f.signal_id] = { vote: f.vote, comment: f.comment };
+        });
+
+        activitySignals = (signalsRes.data || []).map(function(s) {
+          s.feedback = feedbackBySignalId[s.id] || null;
+          return s;
+        });
         renderActivityFeed(activitySignals);
       } catch (err) {
         feed.innerHTML = '<div class="activity-empty">Error loading signals: ' + err.message + '</div>';
@@ -1611,6 +1703,72 @@
       feed.innerHTML = html;
     }
 
+    async function handleSignalVote(signalId, vote, btnEl) {
+      var signal = (activitySignals || []).find(function(s) { return s.id === signalId; });
+      var currentVote = signal && signal.feedback ? signal.feedback.vote : null;
+      var itemEl = btnEl.closest('.activity-item');
+      var upEl = itemEl.querySelector('.thumb-up');
+      var downEl = itemEl.querySelector('.thumb-down');
+
+      try {
+        if (currentVote === vote) {
+          // Undo: delete the feedback row
+          var { error } = await supabase
+            .from('signal_feedback')
+            .delete()
+            .eq('signal_id', signalId);
+          if (error) throw error;
+
+          if (signal) signal.feedback = null;
+          upEl.classList.remove('thumb-active');
+          downEl.classList.remove('thumb-active');
+          itemEl.classList.remove('has-vote');
+          var input = itemEl.querySelector('.comment-input');
+          if (input) input.value = '';
+        } else {
+          // Upsert new vote; preserve comment on switch
+          var existingComment = signal && signal.feedback ? signal.feedback.comment : null;
+          var { error } = await supabase
+            .from('signal_feedback')
+            .upsert({
+              signal_id: signalId,
+              vote: vote,
+              comment: existingComment,
+              updated_at: new Date().toISOString(),
+            }, { onConflict: 'signal_id' });
+          if (error) throw error;
+
+          if (signal) signal.feedback = { vote: vote, comment: existingComment };
+          upEl.classList.toggle('thumb-active', vote === 'up');
+          downEl.classList.toggle('thumb-active', vote === 'down');
+          itemEl.classList.add('has-vote');
+        }
+      } catch (err) {
+        console.error('Error saving vote:', err);
+        alert('Could not save feedback: ' + err.message);
+      }
+    }
+
+    async function handleCommentBlur(signalId, commentText) {
+      var signal = (activitySignals || []).find(function(s) { return s.id === signalId; });
+      // Only persist comments when a vote exists — avoids orphan rows.
+      if (!signal || !signal.feedback) return;
+      var trimmed = commentText.trim();
+      var nextComment = trimmed.length > 0 ? trimmed : null;
+      if (nextComment === signal.feedback.comment) return;
+
+      try {
+        var { error } = await supabase
+          .from('signal_feedback')
+          .update({ comment: nextComment, updated_at: new Date().toISOString() })
+          .eq('signal_id', signalId);
+        if (error) throw error;
+        signal.feedback.comment = nextComment;
+      } catch (err) {
+        console.error('Error saving comment:', err);
+      }
+    }
+
     function renderActivityItem(signal) {
       var companyName = signal.companies ? signal.companies.name : 'Unknown';
       var companyId = signal.companies ? signal.companies.id : '';
@@ -1618,8 +1776,18 @@
       var unseen = !isSeen(SEEN_SIGNALS_KEY, signal.id);
       var signalType = signal.signal_type || '';
       var category = (signal.signal_category || '').replace(/_/g, ' ');
+      var feedback = signal.feedback || null;
+      var voteClass = feedback ? ' has-vote' : '';
+      var upActive = feedback && feedback.vote === 'up' ? ' thumb-active' : '';
+      var downActive = feedback && feedback.vote === 'down' ? ' thumb-active' : '';
+      var commentValue = feedback && feedback.comment
+        ? String(feedback.comment).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+        : '';
 
-      return '<div class="activity-item" onclick="selectCompany(\'' + companyId + '\', true)">'
+      var thumbUpSvg = '<svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true"><path d="M2 21h4V9H2v12zm20-11.5c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L13.17 1 6.59 7.59C6.22 7.95 6 8.45 6 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73V9.5z"/></svg>';
+      var thumbDownSvg = '<svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true"><path d="M22 3h-4v12h4V3zM2 14.5c0 1.1.9 2 2 2h6.31l-.95 4.57-.03.32c0 .41.17.79.44 1.06L10.83 23l6.59-6.59c.37-.36.58-.86.58-1.41V5c0-1.1-.9-2-2-2H7c-.83 0-1.54.5-1.84 1.22L2.14 11.27c-.09.23-.14.47-.14.73v2.5z"/></svg>';
+
+      return '<div class="activity-item' + voteClass + '" data-signal-id="' + signal.id + '" onclick="selectCompany(\'' + companyId + '\', true)">'
         + '<div class="activity-type-indicator ' + signalType + '"></div>'
         + '<div class="activity-item-body">'
         + '<div class="activity-item-top">'
@@ -1630,7 +1798,20 @@
         + '<span class="activity-time">' + timeAgo(signal.created_at) + '</span>'
         + '</div>'
         + '<div class="activity-desc">' + (signal.description || category) + '</div>'
-        + (signal.source_url ? '<a class="activity-source" href="' + signal.source_url + '" target="_blank" onclick="event.stopPropagation();">View source</a>' : '')
+        + '<div class="activity-item-footer">'
+        + (signal.source_url ? '<a class="activity-source" href="' + signal.source_url + '" target="_blank" onclick="event.stopPropagation();">View source</a>' : '<span></span>')
+        + '<div class="activity-feedback">'
+        + '<button type="button" class="thumb thumb-up' + upActive + '" aria-label="Helpful" title="Helpful" onclick="event.stopPropagation(); handleSignalVote(\'' + signal.id + '\', \'up\', this);">' + thumbUpSvg + '</button>'
+        + '<button type="button" class="thumb thumb-down' + downActive + '" aria-label="Not useful" title="Not useful" onclick="event.stopPropagation(); handleSignalVote(\'' + signal.id + '\', \'down\', this);">' + thumbDownSvg + '</button>'
+        + '</div>'
+        + '</div>'
+        + '<div class="activity-comment">'
+        + '<input type="text" class="comment-input" data-signal-id="' + signal.id + '"'
+        + ' placeholder="Why? (optional — helps tune the agents)"'
+        + ' value="' + commentValue + '"'
+        + ' onclick="event.stopPropagation();"'
+        + ' onblur="handleCommentBlur(\'' + signal.id + '\', this.value);">'
+        + '</div>'
         + '</div></div>';
     }
 

@@ -16,17 +16,32 @@ export type Database = {
     Tables: {
       companies: {
         Row: {
+          company_description: string | null
+          company_history: string | null
+          competitive_position: string | null
           confidence: string | null
           created_at: string | null
+          deal_activity: string | null
           employee_count: number | null
+          executive_summary: string | null
+          financial_highlights: Json | null
           founded_year: number | null
+          generated_by_model: string | null
+          geographies: string[] | null
           id: string
           industry: string | null
+          industry_memberships: string | null
+          industry_tailwinds: string | null
+          last_monitored_at: string | null
           legal_name: string | null
           location: string
+          major_projects: string | null
           markdown_content: string | null
+          markets_customers: string | null
+          model_metadata: Json | null
           name: string
           ownership_type: string | null
+          products_services: string | null
           province: string
           research_date: string | null
           revenue_estimate: number | null
@@ -35,23 +50,40 @@ export type Database = {
           score_nextgen_clarity: number | null
           score_owner_age: number | null
           score_tenure: number | null
+          stock_exchange: string | null
           succession_composite: number | null
           succession_readiness: string | null
+          ticker_symbol: string | null
           updated_at: string | null
           website: string | null
         }
         Insert: {
+          company_description?: string | null
+          company_history?: string | null
+          competitive_position?: string | null
           confidence?: string | null
           created_at?: string | null
+          deal_activity?: string | null
           employee_count?: number | null
+          executive_summary?: string | null
+          financial_highlights?: Json | null
           founded_year?: number | null
+          generated_by_model?: string | null
+          geographies?: string[] | null
           id?: string
           industry?: string | null
+          industry_memberships?: string | null
+          industry_tailwinds?: string | null
+          last_monitored_at?: string | null
           legal_name?: string | null
           location: string
+          major_projects?: string | null
           markdown_content?: string | null
+          markets_customers?: string | null
+          model_metadata?: Json | null
           name: string
           ownership_type?: string | null
+          products_services?: string | null
           province: string
           research_date?: string | null
           revenue_estimate?: number | null
@@ -60,23 +92,40 @@ export type Database = {
           score_nextgen_clarity?: number | null
           score_owner_age?: number | null
           score_tenure?: number | null
+          stock_exchange?: string | null
           succession_composite?: number | null
           succession_readiness?: string | null
+          ticker_symbol?: string | null
           updated_at?: string | null
           website?: string | null
         }
         Update: {
+          company_description?: string | null
+          company_history?: string | null
+          competitive_position?: string | null
           confidence?: string | null
           created_at?: string | null
+          deal_activity?: string | null
           employee_count?: number | null
+          executive_summary?: string | null
+          financial_highlights?: Json | null
           founded_year?: number | null
+          generated_by_model?: string | null
+          geographies?: string[] | null
           id?: string
           industry?: string | null
+          industry_memberships?: string | null
+          industry_tailwinds?: string | null
+          last_monitored_at?: string | null
           legal_name?: string | null
           location?: string
+          major_projects?: string | null
           markdown_content?: string | null
+          markets_customers?: string | null
+          model_metadata?: Json | null
           name?: string
           ownership_type?: string | null
+          products_services?: string | null
           province?: string
           research_date?: string | null
           revenue_estimate?: number | null
@@ -85,8 +134,10 @@ export type Database = {
           score_nextgen_clarity?: number | null
           score_owner_age?: number | null
           score_tenure?: number | null
+          stock_exchange?: string | null
           succession_composite?: number | null
           succession_readiness?: string | null
+          ticker_symbol?: string | null
           updated_at?: string | null
           website?: string | null
         }
@@ -97,30 +148,39 @@ export type Database = {
           board_seat: boolean | null
           company_id: string | null
           created_at: string | null
+          generated_by_model: string | null
           id: string
           investment_amount: number | null
           investment_date: string | null
           investor_id: string | null
+          model_metadata: Json | null
+          round_type: string | null
           source_url: string
         }
         Insert: {
           board_seat?: boolean | null
           company_id?: string | null
           created_at?: string | null
+          generated_by_model?: string | null
           id?: string
           investment_amount?: number | null
           investment_date?: string | null
           investor_id?: string | null
+          model_metadata?: Json | null
+          round_type?: string | null
           source_url: string
         }
         Update: {
           board_seat?: boolean | null
           company_id?: string | null
           created_at?: string | null
+          generated_by_model?: string | null
           id?: string
           investment_amount?: number | null
           investment_date?: string | null
           investor_id?: string | null
+          model_metadata?: Json | null
+          round_type?: string | null
           source_url?: string
         }
         Relationships: [
@@ -147,14 +207,76 @@ export type Database = {
           },
         ]
       }
+      comparable_transactions: {
+        Row: {
+          acquirer_name: string | null
+          company_id: string
+          created_at: string | null
+          deal_value: number | null
+          description: string | null
+          generated_by_model: string | null
+          id: string
+          model_metadata: Json | null
+          multiple: string | null
+          source_url: string | null
+          target_name: string
+          transaction_date: string | null
+        }
+        Insert: {
+          acquirer_name?: string | null
+          company_id: string
+          created_at?: string | null
+          deal_value?: number | null
+          description?: string | null
+          generated_by_model?: string | null
+          id?: string
+          model_metadata?: Json | null
+          multiple?: string | null
+          source_url?: string | null
+          target_name: string
+          transaction_date?: string | null
+        }
+        Update: {
+          acquirer_name?: string | null
+          company_id?: string
+          created_at?: string | null
+          deal_value?: number | null
+          description?: string | null
+          generated_by_model?: string | null
+          id?: string
+          model_metadata?: Json | null
+          multiple?: string | null
+          source_url?: string | null
+          target_name?: string
+          transaction_date?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "comparable_transactions_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "comparable_transactions_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "company_dashboard_view"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       connections: {
         Row: {
           company_id: string | null
           connection_detail: string
           connection_type: string | null
           created_at: string | null
+          generated_by_model: string | null
           id: string
           introducer_relationship: string | null
+          model_metadata: Json | null
           potential_introducer: string | null
           source_url: string
         }
@@ -163,8 +285,10 @@ export type Database = {
           connection_detail: string
           connection_type?: string | null
           created_at?: string | null
+          generated_by_model?: string | null
           id?: string
           introducer_relationship?: string | null
+          model_metadata?: Json | null
           potential_introducer?: string | null
           source_url: string
         }
@@ -173,8 +297,10 @@ export type Database = {
           connection_detail?: string
           connection_type?: string | null
           created_at?: string | null
+          generated_by_model?: string | null
           id?: string
           introducer_relationship?: string | null
+          model_metadata?: Json | null
           potential_introducer?: string | null
           source_url?: string
         }
@@ -198,9 +324,11 @@ export type Database = {
       investors: {
         Row: {
           created_at: string | null
+          generated_by_model: string | null
           geographic_focus: string[] | null
           id: string
           investor_type: string | null
+          model_metadata: Json | null
           name: string
           sectors: string[] | null
           source_url: string
@@ -208,9 +336,11 @@ export type Database = {
         }
         Insert: {
           created_at?: string | null
+          generated_by_model?: string | null
           geographic_focus?: string[] | null
           id?: string
           investor_type?: string | null
+          model_metadata?: Json | null
           name: string
           sectors?: string[] | null
           source_url: string
@@ -218,9 +348,11 @@ export type Database = {
         }
         Update: {
           created_at?: string | null
+          generated_by_model?: string | null
           geographic_focus?: string[] | null
           id?: string
           investor_type?: string | null
+          model_metadata?: Json | null
           name?: string
           sectors?: string[] | null
           source_url?: string
@@ -230,42 +362,69 @@ export type Database = {
       }
       key_people: {
         Row: {
+          affiliation: string | null
           age_estimate: number | null
           company_id: string | null
+          conversation_starters: string | null
           created_at: string | null
+          generated_by_model: string | null
           id: string
+          linkedin_about: string | null
+          linkedin_headline: string | null
+          linkedin_scraped_at: string | null
+          linkedin_themes: string | null
           linkedin_url: string | null
+          model_metadata: Json | null
           name: string
           notes: string | null
           ownership_percentage: number | null
+          person_type: string | null
           role: string | null
           source_url: string
           tenure_years: number | null
           title: string | null
         }
         Insert: {
+          affiliation?: string | null
           age_estimate?: number | null
           company_id?: string | null
+          conversation_starters?: string | null
           created_at?: string | null
+          generated_by_model?: string | null
           id?: string
+          linkedin_about?: string | null
+          linkedin_headline?: string | null
+          linkedin_scraped_at?: string | null
+          linkedin_themes?: string | null
           linkedin_url?: string | null
+          model_metadata?: Json | null
           name: string
           notes?: string | null
           ownership_percentage?: number | null
+          person_type?: string | null
           role?: string | null
           source_url: string
           tenure_years?: number | null
           title?: string | null
         }
         Update: {
+          affiliation?: string | null
           age_estimate?: number | null
           company_id?: string | null
+          conversation_starters?: string | null
           created_at?: string | null
+          generated_by_model?: string | null
           id?: string
+          linkedin_about?: string | null
+          linkedin_headline?: string | null
+          linkedin_scraped_at?: string | null
+          linkedin_themes?: string | null
           linkedin_url?: string | null
+          model_metadata?: Json | null
           name?: string
           notes?: string | null
           ownership_percentage?: number | null
+          person_type?: string | null
           role?: string | null
           source_url?: string
           tenure_years?: number | null
@@ -281,6 +440,63 @@ export type Database = {
           },
           {
             foreignKeyName: "key_people_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "company_dashboard_view"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ma_transactions: {
+        Row: {
+          company_id: string
+          counterparty: string | null
+          created_at: string | null
+          deal_value: number | null
+          description: string
+          generated_by_model: string | null
+          id: string
+          model_metadata: Json | null
+          source_url: string | null
+          transaction_date: string | null
+          transaction_type: string | null
+        }
+        Insert: {
+          company_id: string
+          counterparty?: string | null
+          created_at?: string | null
+          deal_value?: number | null
+          description: string
+          generated_by_model?: string | null
+          id?: string
+          model_metadata?: Json | null
+          source_url?: string | null
+          transaction_date?: string | null
+          transaction_type?: string | null
+        }
+        Update: {
+          company_id?: string
+          counterparty?: string | null
+          created_at?: string | null
+          deal_value?: number | null
+          description?: string
+          generated_by_model?: string | null
+          id?: string
+          model_metadata?: Json | null
+          source_url?: string | null
+          transaction_date?: string | null
+          transaction_type?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ma_transactions_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ma_transactions_company_id_fkey"
             columns: ["company_id"]
             isOneToOne: false
             referencedRelation: "company_dashboard_view"
@@ -348,7 +564,9 @@ export type Database = {
           acquirer_type: string | null
           company_id: string | null
           created_at: string | null
+          generated_by_model: string | null
           id: string
+          model_metadata: Json | null
           rationale: string | null
           recent_deals: string | null
           source_url: string
@@ -358,7 +576,9 @@ export type Database = {
           acquirer_type?: string | null
           company_id?: string | null
           created_at?: string | null
+          generated_by_model?: string | null
           id?: string
+          model_metadata?: Json | null
           rationale?: string | null
           recent_deals?: string | null
           source_url: string
@@ -368,7 +588,9 @@ export type Database = {
           acquirer_type?: string | null
           company_id?: string | null
           created_at?: string | null
+          generated_by_model?: string | null
           id?: string
+          model_metadata?: Json | null
           rationale?: string | null
           recent_deals?: string | null
           source_url?: string
@@ -390,6 +612,57 @@ export type Database = {
           },
         ]
       }
+      products: {
+        Row: {
+          company_id: string
+          created_at: string | null
+          description: string | null
+          generated_by_model: string | null
+          id: string
+          model_metadata: Json | null
+          name: string
+          product_type: string | null
+          source_url: string | null
+        }
+        Insert: {
+          company_id: string
+          created_at?: string | null
+          description?: string | null
+          generated_by_model?: string | null
+          id?: string
+          model_metadata?: Json | null
+          name: string
+          product_type?: string | null
+          source_url?: string | null
+        }
+        Update: {
+          company_id?: string
+          created_at?: string | null
+          description?: string | null
+          generated_by_model?: string | null
+          id?: string
+          model_metadata?: Json | null
+          name?: string
+          product_type?: string | null
+          source_url?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "products_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "products_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "company_dashboard_view"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       research_sources: {
         Row: {
           access_date: string | null
@@ -397,7 +670,9 @@ export type Database = {
           confidence: string | null
           created_at: string | null
           data_points: string[] | null
+          generated_by_model: string | null
           id: string
+          model_metadata: Json | null
           source_name: string
           source_type: string | null
           source_url: string
@@ -408,7 +683,9 @@ export type Database = {
           confidence?: string | null
           created_at?: string | null
           data_points?: string[] | null
+          generated_by_model?: string | null
           id?: string
+          model_metadata?: Json | null
           source_name: string
           source_type?: string | null
           source_url: string
@@ -419,7 +696,9 @@ export type Database = {
           confidence?: string | null
           created_at?: string | null
           data_points?: string[] | null
+          generated_by_model?: string | null
           id?: string
+          model_metadata?: Json | null
           source_name?: string
           source_type?: string | null
           source_url?: string
@@ -441,13 +720,50 @@ export type Database = {
           },
         ]
       }
+      signal_feedback: {
+        Row: {
+          comment: string | null
+          created_at: string
+          id: string
+          signal_id: string
+          updated_at: string
+          vote: string
+        }
+        Insert: {
+          comment?: string | null
+          created_at?: string
+          id?: string
+          signal_id: string
+          updated_at?: string
+          vote: string
+        }
+        Update: {
+          comment?: string | null
+          created_at?: string
+          id?: string
+          signal_id?: string
+          updated_at?: string
+          vote?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "signal_feedback_signal_id_fkey"
+            columns: ["signal_id"]
+            isOneToOne: true
+            referencedRelation: "signals"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       signals: {
         Row: {
           company_id: string | null
           confidence: string | null
           created_at: string | null
           description: string
+          generated_by_model: string | null
           id: string
+          model_metadata: Json | null
           signal_category: string | null
           signal_date: string | null
           signal_type: string | null
@@ -458,7 +774,9 @@ export type Database = {
           confidence?: string | null
           created_at?: string | null
           description: string
+          generated_by_model?: string | null
           id?: string
+          model_metadata?: Json | null
           signal_category?: string | null
           signal_date?: string | null
           signal_type?: string | null
@@ -469,7 +787,9 @@ export type Database = {
           confidence?: string | null
           created_at?: string | null
           description?: string
+          generated_by_model?: string | null
           id?: string
+          model_metadata?: Json | null
           signal_category?: string | null
           signal_date?: string | null
           signal_type?: string | null
@@ -550,20 +870,32 @@ export type Database = {
           accuracy_score: number | null
           acquirer_count: number | null
           actionability_score: number | null
+          company_description: string | null
+          company_history: string | null
+          competitive_position: string | null
           confidence: string | null
           created_at: string | null
+          deal_activity: string | null
           employee_count: number | null
+          executive_summary: string | null
           feedback_notes: string | null
           founded_year: number | null
           id: string | null
           industry: string | null
+          industry_memberships: string | null
           legal_name: string | null
           location: string | null
+          major_projects: string | null
           markdown_content: string | null
+          markets_customers: string | null
           name: string | null
           novelty_score: number | null
           ownership_type: string | null
           people_count: number | null
+          pipeline_client_type: string | null
+          pipeline_priority: number | null
+          pipeline_stage: string | null
+          products_services: string | null
           province: string | null
           research_date: string | null
           revenue_estimate: number | null
@@ -733,6 +1065,8 @@ export type CompanyInvestor = Database['public']['Tables']['company_investors'][
 export type CompanyInvestorInsert = Database['public']['Tables']['company_investors']['Insert']
 export type Signal = Database['public']['Tables']['signals']['Row']
 export type SignalInsert = Database['public']['Tables']['signals']['Insert']
+export type SignalFeedback = Database['public']['Tables']['signal_feedback']['Row']
+export type SignalFeedbackInsert = Database['public']['Tables']['signal_feedback']['Insert']
 export type Connection = Database['public']['Tables']['connections']['Row']
 export type ConnectionInsert = Database['public']['Tables']['connections']['Insert']
 export type Pipeline = Database['public']['Tables']['pipeline']['Row']
@@ -740,6 +1074,7 @@ export type PipelineInsert = Database['public']['Tables']['pipeline']['Insert']
 
 // Signal type enums for type safety
 export type SignalType = 'sell_side' | 'buy_side' | 'growth' | 'leadership' | 'financial' | 'strategic'
+export type SignalVote = 'up' | 'down'
 export type ConnectionType = 'board' | 'conference' | 'philanthropy' | 'advisor' | 'alumni' | 'investor' | 'personal' | 'other'
 export type PipelineStage = 'prospect' | 'researching' | 'outreach' | 'engaged' | 'active_deal' | 'closed' | 'passed'
 export type ClientType = 'sell_side' | 'buy_side' | 'growth_capital'
