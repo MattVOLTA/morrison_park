@@ -973,6 +973,81 @@
 
     .activity-source:hover { text-decoration: underline; }
 
+    .activity-item.selected {
+      border-color: var(--accent-gold);
+      box-shadow: inset 3px 0 0 var(--accent-gold), 0 0 0 1px var(--accent-gold-dim);
+      background: var(--bg-tertiary);
+    }
+
+    .activity-archive-btn {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+      background: transparent;
+      border: 1px solid var(--border-subtle);
+      padding: 4px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .activity-archive-btn:hover {
+      color: var(--text-primary);
+      border-color: var(--accent-gold);
+      background: var(--accent-gold-dim);
+    }
+
+    .activity-tabs {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+
+    .activity-tab {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+      background: transparent;
+      border: 1px solid var(--border-subtle);
+      padding: 6px 12px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .activity-tab:hover {
+      color: var(--text-primary);
+      border-color: var(--border-medium);
+    }
+
+    .activity-tab.active {
+      color: var(--accent-gold);
+      background: var(--accent-gold-dim);
+      border-color: var(--accent-gold);
+    }
+
+    .activity-shortcuts-legend {
+      margin-left: auto;
+      font-size: 11px;
+      color: var(--text-muted);
+      letter-spacing: 0.02em;
+    }
+
+    .activity-shortcuts-legend kbd {
+      display: inline-block;
+      padding: 1px 5px;
+      margin: 0 2px;
+      font-family: inherit;
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border-subtle);
+      border-radius: 3px;
+    }
+
     .activity-item-footer {
       display: flex;
       align-items: center;
@@ -1426,6 +1501,7 @@
     // Initialize
     document.addEventListener('DOMContentLoaded', async () => {
       await loadCompanies();
+      document.addEventListener('keydown', handleActivityKeydown);
     });
 
     // Load companies from Supabase
@@ -1577,6 +1653,18 @@
     // ═══════════════════════════════════════
 
     var activitySignals = [];
+    var activityTab = 'active'; // 'active' | 'archived'
+    var activeCount = 0;
+    var archivedCount = 0;
+    var selectedSignalIndex = null;
+
+    function setActivityTab(tab) {
+      if (tab !== 'active' && tab !== 'archived') return;
+      if (activityTab === tab) return;
+      activityTab = tab;
+      selectedSignalIndex = null;
+      loadActivityFeed();
+    }
 
     function showActivityFeed() {
       document.getElementById('activity-feed').style.display = '';
@@ -1594,13 +1682,24 @@
       feed.innerHTML = '<div class="activity-empty">Loading signals...</div>';
 
       try {
-        var thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
-        var [signalsRes, feedbackRes] = await Promise.all([
-          supabase
-            .from('signals')
-            .select('*, companies(id, name, province, succession_composite)')
+        var signalsQuery = supabase
+          .from('signals')
+          .select('*, companies(id, name, province, succession_composite)');
+
+        if (activityTab === 'active') {
+          var thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
+          signalsQuery = signalsQuery
+            .is('archived_at', null)
             .gte('created_at', thirtyDaysAgo)
-            .order('created_at', { ascending: false }),
+            .order('created_at', { ascending: false });
+        } else {
+          signalsQuery = signalsQuery
+            .not('archived_at', 'is', null)
+            .order('archived_at', { ascending: false });
+        }
+
+        var [signalsRes, feedbackRes] = await Promise.all([
+          signalsQuery,
           supabase
             .from('signal_feedback')
             .select('signal_id, vote, comment'),
@@ -1618,10 +1717,33 @@
           s.feedback = feedbackBySignalId[s.id] || null;
           return s;
         });
+
+        refreshActivityCounts();
         renderActivityFeed(activitySignals);
       } catch (err) {
         feed.innerHTML = '<div class="activity-empty">Error loading signals: ' + err.message + '</div>';
       }
+    }
+
+    async function refreshActivityCounts() {
+      try {
+        var thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
+        var activeRes = await supabase
+          .from('signals')
+          .select('id', { count: 'exact', head: true })
+          .is('archived_at', null)
+          .gte('created_at', thirtyDaysAgo);
+        var archivedRes = await supabase
+          .from('signals')
+          .select('id', { count: 'exact', head: true })
+          .not('archived_at', 'is', null);
+        if (typeof activeRes.count === 'number') activeCount = activeRes.count;
+        if (typeof archivedRes.count === 'number') archivedCount = archivedRes.count;
+        var activeTabEl = document.querySelector('.activity-tab[data-tab="active"]');
+        var archivedTabEl = document.querySelector('.activity-tab[data-tab="archived"]');
+        if (activeTabEl) activeTabEl.textContent = 'Active (' + activeCount + ')';
+        if (archivedTabEl) archivedTabEl.textContent = 'Archive (' + archivedCount + ')';
+      } catch (_) { /* ignore count failures */ }
     }
 
     function classifyUrgency(signal) {
@@ -1659,8 +1781,41 @@
     function renderActivityFeed(signals) {
       var feed = document.getElementById('activity-feed');
 
+      var subtitle = activityTab === 'active'
+        ? 'Last 30 days across all companies'
+        : 'Archived signals, most recent first';
+
+      var recentCount = activityTab === 'active'
+        ? signals.filter(function(s) { return !isSeen(SEEN_SIGNALS_KEY, s.id); }).length
+        : 0;
+
+      var activeLabel = 'Active' + (activityTab === 'active'
+        ? ' (' + signals.length + ')'
+        : (activeCount ? ' (' + activeCount + ')' : ''));
+      var archivedLabel = 'Archive' + (activityTab === 'archived'
+        ? ' (' + signals.length + ')'
+        : (archivedCount ? ' (' + archivedCount + ')' : ''));
+
+      var header = '<div class="activity-feed-header">'
+        + '<div><h2>Activity Feed</h2>'
+        + '<div class="activity-subtitle">' + subtitle
+        + (recentCount > 0 ? ' &middot; <span style="color:#ff781e;font-weight:600;">' + recentCount + ' new</span>' : '')
+        + '</div></div></div>';
+
+      var actionWord = activityTab === 'active' ? 'archive' : 'restore';
+      var tabs = '<div class="activity-tabs">'
+        + '<button class="activity-tab' + (activityTab === 'active' ? ' active' : '') + '" data-tab="active" onclick="setActivityTab(\'active\')">' + activeLabel + '</button>'
+        + '<button class="activity-tab' + (activityTab === 'archived' ? ' active' : '') + '" data-tab="archived" onclick="setActivityTab(\'archived\')">' + archivedLabel + '</button>'
+        + '<span class="activity-shortcuts-legend" title="Keyboard shortcuts: j ' + actionWord + 's the selected signal and advances. k moves back. Esc clears selection.">'
+        + '<kbd>j</kbd> ' + actionWord + ' &middot; <kbd>k</kbd> back &middot; <kbd>Esc</kbd> clear'
+        + '</span>'
+        + '</div>';
+
       if (!signals || signals.length === 0) {
-        feed.innerHTML = '<div class="activity-empty">No signals in the last 30 days.<br>Run the monitoring agent to scan for updates.</div>';
+        var emptyMsg = activityTab === 'active'
+          ? 'No signals in the last 30 days.<br>Run the monitoring agent to scan for updates.'
+          : 'Nothing archived yet. Archive signals from the Active tab to see them here.';
+        feed.innerHTML = header + tabs + '<div class="activity-empty">' + emptyMsg + '</div>';
         return;
       }
 
@@ -1675,30 +1830,21 @@
         else routine.push(s);
       });
 
-      var recentCount = signals.filter(function(s) {
-        return !isSeen(SEEN_SIGNALS_KEY, s.id);
-      }).length;
+      var flatOrder = urgent.concat(notable).concat(routine);
+      var indexById = {};
+      flatOrder.forEach(function(s, i) { indexById[s.id] = i; });
 
-      var html = '<div class="activity-feed-header">'
-        + '<div><h2>Activity Feed</h2>'
-        + '<div class="activity-subtitle">Last 30 days across all companies'
-        + (recentCount > 0 ? ' &middot; <span style="color:#ff781e;font-weight:600;">' + recentCount + ' new</span>' : '')
-        + '</div></div></div>';
-
-      if (urgent.length > 0) {
-        html += '<div class="activity-group-header urgent">Urgent (' + urgent.length + ')</div>';
-        html += urgent.map(renderActivityItem).join('');
+      function renderGroup(label, tier, items) {
+        if (items.length === 0) return '';
+        var out = '<div class="activity-group-header ' + tier + '">' + label + ' (' + items.length + ')</div>';
+        out += items.map(function(s) { return renderActivityItem(s, indexById[s.id]); }).join('');
+        return out;
       }
 
-      if (notable.length > 0) {
-        html += '<div class="activity-group-header notable">Notable (' + notable.length + ')</div>';
-        html += notable.map(renderActivityItem).join('');
-      }
-
-      if (routine.length > 0) {
-        html += '<div class="activity-group-header routine">Routine (' + routine.length + ')</div>';
-        html += routine.map(renderActivityItem).join('');
-      }
+      var html = header + tabs
+        + renderGroup('Urgent', 'urgent', urgent)
+        + renderGroup('Notable', 'notable', notable)
+        + renderGroup('Routine', 'routine', routine);
 
       feed.innerHTML = html;
     }
@@ -1769,7 +1915,7 @@
       }
     }
 
-    function renderActivityItem(signal) {
+    function renderActivityItem(signal, flatIndex) {
       var companyName = signal.companies ? signal.companies.name : 'Unknown';
       var companyId = signal.companies ? signal.companies.id : '';
       var province = signal.companies ? signal.companies.province : '';
@@ -1778,16 +1924,24 @@
       var category = (signal.signal_category || '').replace(/_/g, ' ');
       var feedback = signal.feedback || null;
       var voteClass = feedback ? ' has-vote' : '';
+      var selectedClass = (selectedSignalIndex !== null && flatIndex === selectedSignalIndex) ? ' selected' : '';
       var upActive = feedback && feedback.vote === 'up' ? ' thumb-active' : '';
       var downActive = feedback && feedback.vote === 'down' ? ' thumb-active' : '';
       var commentValue = feedback && feedback.comment
         ? String(feedback.comment).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
         : '';
+      var archiveLabel = activityTab === 'active' ? 'Archive' : 'Restore';
+      var archiveHandler = activityTab === 'active'
+        ? "archiveSignal('" + signal.id + "')"
+        : "restoreSignal('" + signal.id + "')";
 
       var thumbUpSvg = '<svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true"><path d="M2 21h4V9H2v12zm20-11.5c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L13.17 1 6.59 7.59C6.22 7.95 6 8.45 6 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73V9.5z"/></svg>';
       var thumbDownSvg = '<svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true"><path d="M22 3h-4v12h4V3zM2 14.5c0 1.1.9 2 2 2h6.31l-.95 4.57-.03.32c0 .41.17.79.44 1.06L10.83 23l6.59-6.59c.37-.36.58-.86.58-1.41V5c0-1.1-.9-2-2-2H7c-.83 0-1.54.5-1.84 1.22L2.14 11.27c-.09.23-.14.47-.14.73v2.5z"/></svg>';
 
-      return '<div class="activity-item' + voteClass + '" data-signal-id="' + signal.id + '" onclick="selectCompany(\'' + companyId + '\', true)">'
+      return '<div class="activity-item' + voteClass + selectedClass + '"'
+        + ' data-signal-id="' + signal.id + '"'
+        + ' data-signal-index="' + flatIndex + '"'
+        + ' onclick="onActivityItemClick(event, \'' + companyId + '\', ' + flatIndex + ')">'
         + '<div class="activity-type-indicator ' + signalType + '"></div>'
         + '<div class="activity-item-body">'
         + '<div class="activity-item-top">'
@@ -1800,6 +1954,7 @@
         + '<div class="activity-desc">' + (signal.description || category) + '</div>'
         + '<div class="activity-item-footer">'
         + (signal.source_url ? '<a class="activity-source" href="' + signal.source_url + '" target="_blank" onclick="event.stopPropagation();">View source</a>' : '<span></span>')
+        + '<button type="button" class="activity-archive-btn" onclick="event.stopPropagation(); ' + archiveHandler + '">' + archiveLabel + '</button>'
         + '<div class="activity-feedback">'
         + '<button type="button" class="thumb thumb-up' + upActive + '" aria-label="Helpful" title="Helpful" onclick="event.stopPropagation(); handleSignalVote(\'' + signal.id + '\', \'up\', this);">' + thumbUpSvg + '</button>'
         + '<button type="button" class="thumb thumb-down' + downActive + '" aria-label="Not useful" title="Not useful" onclick="event.stopPropagation(); handleSignalVote(\'' + signal.id + '\', \'down\', this);">' + thumbDownSvg + '</button>'
@@ -1813,6 +1968,106 @@
         + ' onblur="handleCommentBlur(\'' + signal.id + '\', this.value);">'
         + '</div>'
         + '</div></div>';
+    }
+
+    function onActivityItemClick(event, companyId, flatIndex) {
+      selectedSignalIndex = typeof flatIndex === 'number' ? flatIndex : null;
+      if (companyId) selectCompany(companyId, true);
+    }
+
+    async function archiveSignal(signalId) {
+      await mutateSignalArchive(signalId, new Date().toISOString(), 'archive');
+    }
+
+    async function restoreSignal(signalId) {
+      await mutateSignalArchive(signalId, null, 'restore');
+    }
+
+    async function mutateSignalArchive(signalId, archivedAtValue, verb) {
+      var removedIndex = -1;
+      for (var i = 0; i < activitySignals.length; i++) {
+        if (activitySignals[i].id === signalId) { removedIndex = i; break; }
+      }
+      if (removedIndex === -1) return;
+
+      activitySignals.splice(removedIndex, 1);
+      if (verb === 'archive') { activeCount = Math.max(0, activeCount - 1); archivedCount += 1; }
+      else { archivedCount = Math.max(0, archivedCount - 1); activeCount += 1; }
+
+      if (selectedSignalIndex !== null) {
+        if (activitySignals.length === 0) selectedSignalIndex = null;
+        else if (selectedSignalIndex >= activitySignals.length) selectedSignalIndex = activitySignals.length - 1;
+      }
+      renderActivityFeed(activitySignals);
+
+      var { error } = await supabase
+        .from('signals')
+        .update({ archived_at: archivedAtValue })
+        .eq('id', signalId);
+
+      if (error) {
+        alert('Failed to ' + verb + ' signal: ' + error.message);
+        loadActivityFeed();
+      }
+    }
+
+    function handleActivityKeydown(e) {
+      if (e.ctrlKey || e.metaKey || e.altKey) return;
+      var key = e.key;
+      if (key !== 'j' && key !== 'k' && key !== 'Escape') return;
+
+      var feedEl = document.getElementById('activity-feed');
+      if (!feedEl || feedEl.style.display === 'none') return;
+      if (selectedCompanyId) return;
+
+      var target = e.target;
+      if (target && target.tagName) {
+        var tag = target.tagName.toUpperCase();
+        if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
+        if (target.isContentEditable) return;
+      }
+
+      if (!activitySignals || activitySignals.length === 0) return;
+
+      if (key === 'Escape') {
+        if (selectedSignalIndex === null) return;
+        e.preventDefault();
+        selectedSignalIndex = null;
+        renderActivityFeed(activitySignals);
+        return;
+      }
+
+      if (key === 'k') {
+        e.preventDefault();
+        if (selectedSignalIndex === null) selectedSignalIndex = 0;
+        else selectedSignalIndex = Math.max(0, selectedSignalIndex - 1);
+        renderActivityFeed(activitySignals);
+        scrollSelectedIntoView();
+        return;
+      }
+
+      if (key === 'j') {
+        e.preventDefault();
+        if (selectedSignalIndex === null) {
+          selectedSignalIndex = 0;
+          renderActivityFeed(activitySignals);
+          scrollSelectedIntoView();
+          return;
+        }
+        var current = activitySignals[selectedSignalIndex];
+        if (!current) return;
+        if (activityTab === 'active') archiveSignal(current.id);
+        else restoreSignal(current.id);
+        setTimeout(scrollSelectedIntoView, 0);
+      }
+    }
+
+    function scrollSelectedIntoView() {
+      if (selectedSignalIndex === null) return;
+      var el = document.querySelector('.activity-item.selected');
+      if (el && el.scrollIntoView) {
+        el.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+      }
     }
 
     // ═══════════════════════════════════════
